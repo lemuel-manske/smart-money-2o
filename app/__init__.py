@@ -1,5 +1,4 @@
 from datetime import timedelta
-from typing import TYPE_CHECKING
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -7,9 +6,6 @@ from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 
-if TYPE_CHECKING:
-	from typings import db_type_proxy
-	db: db_type_proxy.SQLAlchemy
 
 app = Flask('SmartMoney')
 
@@ -29,7 +25,4 @@ cors = CORS(app, supports_credentials=True)
 jwt = JWTManager(app)
 
 
-import routes
-
-if __name__ == '__main__':
-	app.run(debug=True)
+from app.routes import routes, user
