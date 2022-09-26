@@ -1,4 +1,4 @@
 # smart-money-2o
-Web development project, made with ReactJS and Flask.
+Web development project, made with Flask.
 
-requirements -> `pip install -r requirements.txt`
+`pip install -r requirements.txt`
