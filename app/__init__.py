@@ -15,15 +15,16 @@ app.config['SECRET_KEY'] = \
 	b',`\xe2\x95\xe0\x84\xd0\x0c=8\x19\xdbU\xe2\xff\xdb&\xbc\x11\xf3\xdb\xd1\xabO\xac0\xd6\xd0}v\x8c\x10'
 	
 app.config['JWT_TOKEN_LOCATION'] = ['headers']
-app.config['JWT_HEADER_NAME'] = 'Authorization'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=3)
 
 db = SQLAlchemy(app)
 db.session.execute('PRAGMA FOREIGN_KEYS=ON')
 
 bcrypt = Bcrypt(app)
-cors = CORS(app)
 jwt = JWTManager(app)
 
+TOKEN_UPDATE_HEADER = 'X-SM-Update-Bearer-Token'
 
-from app.routes import routes, user
+cors = CORS(app, expose_headers=[TOKEN_UPDATE_HEADER], allow_headers=['Authorization'])
+
+from app.routes import routes
