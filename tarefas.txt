@@ -1,0 +1,17 @@
+Autenticacao:
+	- '/login' ........login -> JWT (Lemuel)
+	- '/cadastrar' ....cadastrar -> registrar no banco (Larissa)
+	- '/minha-conta' ..usuario -> opção de edição de dados (Liriel)
+			- (nome, email, senha); tornar a conta premium
+
+Aplicação: 
+	- dashboard ( barra de navegação )
+		- gráficos e tabelas
+		- Adicionar 
+			- transação 
+			- conta_bancária
+			- planejamento
+
+	
+
+	
