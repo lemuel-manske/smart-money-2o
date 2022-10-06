@@ -1,3 +1,11 @@
+Prioridades:
+	- '/listar' -> rota de listagem genérica
+	- '/incluir' -> rota de inclusão genérica
+
+	- remover
+	- editar
+
+
 Autenticacao:
 	- '/login' ........login -> JWT (Lemuel)
 	- '/cadastrar' ....cadastrar -> registrar no banco (Larissa)
