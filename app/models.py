@@ -15,7 +15,7 @@ class Usuario(db.Model):
 
 	contas_bancarias = db.relationship('ContaBancaria', backref='usuario', lazy='select')
 
-	json = to_json('id', 'name', 'email', 'password')
+	json = to_json('id', 'nome', 'email', 'senha')
 
 	def __str__(self):
 		return f'<Usuario: id:{self.id}, nome:{self.name}, email:{self.email}, \
