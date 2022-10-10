@@ -1,6 +1,5 @@
 from enum import Enum, auto
 
-
 class Moedas(Enum):
 	BRAZIL = "R$"
 	USDOLAR = "U$"
