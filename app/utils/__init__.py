@@ -7,16 +7,16 @@ from typing import TypeVar
 
 T = TypeVar('T')
 
-def get_validate(type: 'type[T]', *fields: str) -> 'tuple[T, ...]':
-	data = request.get_json()
+def get_validate(data: any, schema: 'dict[str, type]') -> 'dict[str, any]':
 
-	if (type(fields) != dict):
+	if type(data) != dict:
 		abort(BAD_REQUEST)
 
-	for field in fields:
-		if (field not in data) or (type(data[field]) != type):
+	for key in schema:
+		if (key not in data) or (type(data[key]) != schema[key]):
 			abort(BAD_REQUEST)
-	
-	return itemgetter(*fields)(data)
+
+	return data
+
 	
 
