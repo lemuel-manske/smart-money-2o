@@ -1,6 +1,5 @@
 from http.client import BAD_REQUEST
 from operator import itemgetter
-from urllib.parse import scheme_chars
 
 from flask import abort
 
