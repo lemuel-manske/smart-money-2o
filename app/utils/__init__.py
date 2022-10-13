@@ -1,11 +1,8 @@
-from ast import Return
 from http.client import BAD_REQUEST
 from operator import itemgetter
+from urllib.parse import scheme_chars
 
-from flask import request, abort
-from typing import TypeVar
-
-T = TypeVar('T')
+from flask import abort
 
 def get_validate(data: any, schema: 'dict[str, type]') -> 'dict[str, any]':
 
@@ -16,7 +13,7 @@ def get_validate(data: any, schema: 'dict[str, type]') -> 'dict[str, any]':
 		if (key not in data) or (type(data[key]) != schema[key]):
 			abort(BAD_REQUEST)
 
-	return data
+	return itemgetter(*schema)(data)
 
 	
 

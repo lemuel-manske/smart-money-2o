@@ -9,30 +9,66 @@ from app.utils import get_validate
 
 @app.route('/home', methods=['GET'])
 def home_route():
+	'''
+	Rota home/padrão.
+	'''
 	return '<h1>Home</h1>'
 
 
 @app.route('/login', methods=['POST'])
 def rota_login():
-	email, senha = get_validate(request.get_json(), {'email': str, 'senha':str})
+	'''
+	Realiza o login do usuário via POST.
+
+	Realiza request de dados em json (email e senha), 
+	validando os mesmos (get_validade).
+
+	Returns:
+		CÓD. 200 (OK): Criação de JWT (identidade id) e 
+			retorna objeto usuário em formato json.
+		CÓD. 401 (UNAUTHORIZED): senha incorreta.
+		CÓD. 404 (NOT_FOUND): usuário não encontrado 
+			no banco de dados.
+	'''
+	email, senha = get_validate(request.get_json(), \
+		{'email': str, 
+		 'senha':str})
 
 	usuario = Usuario.query.filter_by(email=email).first()
 
 	if (usuario == None):
 		abort(NOT_FOUND)
 
-	if not usuario.senha == senha:
+	if not bcrypt.check_password_hash(usuario.senha, senha):
 		abort(UNAUTHORIZED)
 	
-	#TODO: criar JWT
+	tk = create_access_token(identity=usuario.id)
 
-	return jsonify(usuario.json())
+	response = jsonify(usuario.json())
+	response.headers.set(TOKEN_UPDATE_HEADER, tk)
 
+	return response
+	
 
 @app.route('/register', methods=['POST'])
 def rota_register():
+	'''
+	Realiza registro de um novo usuário via POST.
+
+	Realiza request de dados em json (email, senha e nome),
+	validando os mesmos (get_validate).
+
+	Realiza o login imediatamente após confirmação de sucesso (JWT).
+
+	Returns:
+		CÓD. 200 (OK): Criação de JWT (identidade id) e 
+			retorna objeto usuário em formato json.
+		CÓD. 409 (CONFLICT): Usuário já existe (filtro p/ email).
+	'''
 	email, senha, nome = get_validate(request.get_json(), \
-		{'email': str,'senha': str,'nome': str})
+		{'email': str,
+		 'senha': str,
+		 'nome': str})
 
 	if Usuario.query.filter_by(email=email).first() != None:
 		abort(CONFLICT)
