@@ -24,7 +24,9 @@ bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 
 TOKEN_UPDATE_HEADER = 'X-SM-Update-Bearer-Token'
+# SM -> Smart Money
 
 cors = CORS(app, expose_headers=[TOKEN_UPDATE_HEADER], allow_headers=['Authorization'])
 
+from app.routes import auth
 from app.routes import routes
