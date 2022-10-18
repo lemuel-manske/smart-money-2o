@@ -1,7 +1,7 @@
 from http.client import CONFLICT, NOT_FOUND, UNAUTHORIZED
 
 from flask import abort, jsonify, request
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 
 from app import TOKEN_UPDATE_HEADER, app, db, bcrypt
 from app.models import Usuario
@@ -22,7 +22,7 @@ def rota_login():
 		CÓD. 404 (NOT_FOUND): usuário não encontrado 
 			no banco de dados.
 	'''
-	email, senha = get_validate(request.get_json(), \
+	email, senha = get_validate(request.get_json(),
 		{'email': str, 
 		 'senha':str})
 
@@ -39,7 +39,7 @@ def rota_login():
 	response = jsonify(usuario.json())
 	response.headers.set(TOKEN_UPDATE_HEADER, tk)
 
-	return response
+	return response, 200
 	
 
 @app.route('/register', methods=['POST'])
@@ -81,9 +81,13 @@ def rota_register():
 	response = jsonify(novo_usuario.json())
 	response.headers.set(TOKEN_UPDATE_HEADER, tk)
 
-	return response
+	return response, 200
 
 
 @app.route('/account', methods=['GET'])
+@jwt_required()
 def rota_account():	
-	pass
+	current_user_id = get_jwt_identity()
+	curr_user = Usuario.query.filter_by(id=current_user_id).first()
+	
+	return jsonify(curr_user.json()), 200

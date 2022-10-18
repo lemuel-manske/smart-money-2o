@@ -8,9 +8,9 @@ class Moedas(Enum):
 	IENE = "¥"
 
 class Instituicoes(Enum):
-	NUBANK = auto()
-	INTER = auto()
-	BRADESCO = auto()
+	NUBANK = "NUBANK"
+	INTER = "INTER"
+	BRADESCO = "BRADESCO"
 	
 class TipoTransacao(Enum):
 	DESPESA = auto()

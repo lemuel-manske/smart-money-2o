@@ -12,21 +12,22 @@ class Usuario(db.Model):
 	nome = db.Column(db.Text, nullable=False)
 	email = db.Column(db.Text, nullable=False, unique=True)
 	senha = db.Column(db.Text, nullable=False)
+	premium = db.Column(db.Boolean, nullable=False, default=False)
 
 	contas_bancarias = db.relationship('ContaBancaria', backref='usuario', lazy='select')
 
-	json = to_json('id', 'nome', 'email', 'senha')
+	json = to_json('id', 'nome', 'email', 'senha', 'premium')	
 
 	def __str__(self):
 		return f'<Usuario: id:{self.id}, nome:{self.name}, email:{self.email}, \
-			senha:{self.password}>'
+			senha:{self.password}, premium:{self.premium}>'
 
 
 class ContaBancaria(db.Model):
 	__tablename__ = 'conta_bancaria'
 
 	id = db.Column(db.Integer, primary_key=True)
-	moeda = db.Column(db.Enum(Moedas), nullable=False, default=(Moedas.BRAZIL))
+	moeda = db.Column(db.Enum(Moedas), nullable=False, default=(Moedas.BRAZIL.value))
 	saldo = db.Column(db.Numeric, nullable=False)
 	instituicao = db.Column(db.Enum(Instituicoes), nullable=False)
 
