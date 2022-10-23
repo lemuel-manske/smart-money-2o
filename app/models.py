@@ -1,10 +1,21 @@
+from enum import Enum
+
 from app import db
 from app.utils.choices import Instituicoes, Moedas, TipoTransacao
 
+
+def get_val(self, field):
+	v = self.__getattribute__(field)
+
+	if isinstance(field, Enum):
+		return v.name
+	else:
+		return v
+
 def to_json(*fields):
-	return lambda self: { field: self.__getattribute__(field) for field in fields }
-
-
+	return lambda self: { 
+		field: get_val(self, field) for field in fields 
+	}
 class Usuario(db.Model):
 	__tablename__ = 'usuario'
 
@@ -27,7 +38,7 @@ class ContaBancaria(db.Model):
 	__tablename__ = 'conta_bancaria'
 
 	id = db.Column(db.Integer, primary_key=True)
-	moeda = db.Column(db.Enum(Moedas), nullable=False, default=(Moedas.BRAZIL.value))
+	moeda = db.Column(db.Enum(Moedas), nullable=False, default=(Moedas.BRAZIL.name))
 	saldo = db.Column(db.Numeric, nullable=False)
 	instituicao = db.Column(db.Enum(Instituicoes), nullable=False)
 
