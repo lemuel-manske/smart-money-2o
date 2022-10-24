@@ -1,5 +1,7 @@
 from enum import Enum
 
+from sqlalchemy.sql import func
+
 from app import db
 from app.utils.choices import Instituicoes, Moedas, TipoTransacao
 
@@ -56,12 +58,13 @@ class ContaBancaria(db.Model):
 			saldo:{self.saldo}, instituicao:{self.instituicao}, id_usuario:{self.id_usuario}>'
 
 
+# referencia importante para db.Data -> https://stackoverflow.com/questions/13370317/sqlalchemy-default-datetime
 class Planejamento(db.Model):
 	__tablename__ = 'planejamento'
 
 	id = db.Column(db.Integer, primary_key=True)
-	data_criacao = db.Column(db.Date, nullable=False)
-	data_termino = db.Column(db.Date, nullable=False)
+	data_criacao = db.Column(db.DateTime(timezone=True), nullable=False, server_default=func.now())
+	data_termino = db.Column(db.DateTime(timezone=True), nullable=False)
 	limite_gastos = db.Column(db.Numeric, nullable=False)
 
 	id_conta_bancaria = db.Column(db.Integer, db.ForeignKey('conta_bancaria.id'))
@@ -81,7 +84,7 @@ class Transacao(db.Model):
 	tipo = db.Column(db.Enum(TipoTransacao), nullable=False)
 	valor = db.Column(db.Numeric, nullable=False)
 	descricao = db.Column(db.Text, nullable=False)
-	resolvido = db.Column(db.Boolean, nullable=False, default=False)
+	resolvido = db.Column(db.Boolean, nullable=False, default=False) # pago (despesa) x recebido (receita)
 	data_origem = db.Column(db.Date, nullable=False)
 
 	id_categoria = db.Column(db.Integer, db.ForeignKey('categoria.id'))
