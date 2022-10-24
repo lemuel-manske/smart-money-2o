@@ -7,6 +7,7 @@ from app import TOKEN_UPDATE_HEADER, app, db, bcrypt
 from app.models import Usuario
 from app.utils import get_validate
 
+
 @app.route('/login', methods=['POST'])
 def rota_login():
 	'''
@@ -42,7 +43,7 @@ def rota_login():
 	return response, 200
 	
 
-@app.route('/register', methods=['POST'])
+@app.route('/cadastro', methods=['POST'])
 def rota_register():
 	'''
 	Realiza registro de um novo usuário via POST.
@@ -78,13 +79,13 @@ def rota_register():
 
 	tk = create_access_token(identity=novo_usuario.id)
 
-	response = jsonify(novo_usuario.json())
-	response.headers.set(TOKEN_UPDATE_HEADER, tk)
+	res = jsonify(novo_usuario.json())
+	res.headers.set(TOKEN_UPDATE_HEADER, tk)
 
-	return response, 200
+	return res, 200
 
 
-@app.route('/account', methods=['GET'])
+@app.route('/minha-conta', methods=['GET'])
 @jwt_required()
 def rota_account():	
 	current_user_id = get_jwt_identity()
