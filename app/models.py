@@ -7,7 +7,7 @@ from app.utils.choices import Instituicoes, Moedas, TipoTransacao
 def get_val(self, field):
 	v = self.__getattribute__(field)
 
-	if isinstance(field, Enum):
+	if issubclass(type(v), Enum):
 		return v.name
 	else:
 		return v
@@ -16,6 +16,7 @@ def to_json(*fields):
 	return lambda self: { 
 		field: get_val(self, field) for field in fields 
 	}
+
 class Usuario(db.Model):
 	__tablename__ = 'usuario'
 
