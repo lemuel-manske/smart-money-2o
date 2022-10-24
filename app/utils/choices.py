@@ -1,17 +1,24 @@
-from enum import Enum, auto
+from enum import Enum
 
-class Moedas(Enum):
+
+class EnumBase(Enum):
+
+	@classmethod
+	def has_name(cls, name):
+		return name in cls._member_names_ 
+
+class Moedas(EnumBase):
 	BRAZIL = "R$"
-	USDOLAR = "U$"
+	US_DOLAR = "U$"
 	EUR = "€"
 	LIBRA = "£"
 	IENE = "¥"
 
-class Instituicoes(Enum):
+class Instituicoes(EnumBase):
 	NUBANK = "NUBANK"
 	INTER = "INTER"
 	BRADESCO = "BRADESCO"
 	
-class TipoTransacao(Enum):
-	DESPESA = auto()
-	RECEITA = auto()
+class TipoTransacao(EnumBase):
+	DESPESA = "DESPESA"
+	RECEITA = "RECEITA"
