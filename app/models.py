@@ -1,3 +1,5 @@
+from calendar import month
+from datetime import timedelta
 from enum import Enum
 
 from sqlalchemy.sql import func
@@ -26,7 +28,7 @@ class Usuario(db.Model):
 	nome = db.Column(db.Text, nullable=False)
 	email = db.Column(db.Text, nullable=False, unique=True)
 	senha = db.Column(db.Text, nullable=False)
-	premium = db.Column(db.Boolean, nullable=False, default=False)
+	premium = db.Column(db.Boolean, nullable=False, default=False) # True | False
 
 	contas_bancarias = db.relationship('ContaBancaria', backref='usuario', lazy='select')
 
@@ -41,15 +43,13 @@ class ContaBancaria(db.Model):
 	__tablename__ = 'conta_bancaria'
 
 	id = db.Column(db.Integer, primary_key=True)
-	moeda = db.Column(db.Enum(Moedas), nullable=False, default=(Moedas.BRAZIL.name))
+	moeda = db.Column(db.Enum(Moedas), nullable=False, default=(Moedas.BRAZIL))
 	saldo = db.Column(db.Numeric, nullable=False)
 	instituicao = db.Column(db.Enum(Instituicoes), nullable=False)
 
 	id_usuario = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
 
 	despesas = db.relationship('Transacao', backref='conta_bancaria', lazy='select')
-	planejamento = db.relationship('Planejamento', uselist=False, 
-		backref='conta_bancaria', lazy='select')
 
 	json = to_json('id', 'moeda', 'saldo', 'instituicao', 'id_usuario')
 
@@ -57,35 +57,15 @@ class ContaBancaria(db.Model):
 		return f'<ContaBancaria: id:{self.id}, moeda:{self.moeda}, \
 			saldo:{self.saldo}, instituicao:{self.instituicao}, id_usuario:{self.id_usuario}>'
 
-
-# referencia importante para db.Data -> https://stackoverflow.com/questions/13370317/sqlalchemy-default-datetime
-class Planejamento(db.Model):
-	__tablename__ = 'planejamento'
-
-	id = db.Column(db.Integer, primary_key=True)
-	data_criacao = db.Column(db.DateTime(timezone=True), nullable=False, server_default=func.now())
-	data_termino = db.Column(db.DateTime(timezone=True), nullable=False)
-	limite_gastos = db.Column(db.Numeric, nullable=False)
-
-	id_conta_bancaria = db.Column(db.Integer, db.ForeignKey('conta_bancaria.id'))
-
-	json = to_json('id', 'data_criacao', 'data_termino', 'limite_gastos', 'id_conta_bancaria')
-
-	def __str__(self):
-		return f'<Planejamento: id:{self.id}, data_criacao:{self.data_criacao}, \
-			data_termino:{self.data_termino}, limite_gastos:{self.limite_gastos}, \
-				id_conta_bancaria:{self.id_conta_bancaria}>'
-
-
 class Transacao(db.Model):
 	__tablename__ = 'transacao'
 
 	id = db.Column(db.Integer, primary_key=True)
-	tipo = db.Column(db.Enum(TipoTransacao), nullable=False)
+	tipo = db.Column(db.Enum(TipoTransacao), nullable=False) # despesa | receita
 	valor = db.Column(db.Numeric, nullable=False)
 	descricao = db.Column(db.Text, nullable=False)
 	resolvido = db.Column(db.Boolean, nullable=False, default=False) # pago (despesa) x recebido (receita)
-	data_origem = db.Column(db.Date, nullable=False)
+	data_origem = db.Column(db.DateTime(timezone=True), nullable=False, server_default=func.utcnow())
 
 	id_categoria = db.Column(db.Integer, db.ForeignKey('categoria.id'))
 	id_conta_bancaria = db.Column(db.Integer, db.ForeignKey('conta_bancaria.id'))
@@ -105,6 +85,8 @@ class Categoria(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	nome = db.Column(db.Text, nullable=False)
 	icone = db.Column(db.Text, nullable=False)
+
+	# mercado, vestuario, saude, ...
 
 	transacoes = db.relationship('Transacao', backref='categoria', lazy='select')
 
