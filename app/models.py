@@ -12,6 +12,9 @@ from app.utils import do_add_commit
 T = TypeVar('T')
 
 def get_val(self, field: str) -> str:
+	'''
+	TODO
+	'''
 	v = self.__getattribute__(field)
 
 	if issubclass(type(v), Enum):
@@ -20,6 +23,9 @@ def get_val(self, field: str) -> str:
 		return v
 
 def to_json(*fields) -> dict:
+	'''
+	TODO
+	'''
 	return lambda self: {
 		field: get_val(self, field) for field in fields
 	}
@@ -74,7 +80,6 @@ class Usuario(BaseModelClass, db.Model):
 
 	json = to_json('id', 'nome', 'email', 'senha', 'premium')	
 
-
 	contas_bancarias = db.relationship('ContaBancaria', backref='usuario', lazy='select')
 	categorias = db.relationship('Categoria', backref='usuario', lazy='select')
 	transacoes = db.relationship('Transacao', backref='usuario', lazy='select')
@@ -121,8 +126,18 @@ class Transacao(BaseModelClass, db.Model):
 	id_categoria = db.Column(db.Integer, db.ForeignKey('categoria.id'), nullable=False)
 	id_conta_bancaria = db.Column(db.Integer, db.ForeignKey('conta_bancaria.id'), nullable=False)
 
-	def do_transacao(self, conta_bancaria:ContaBancaria) -> None:
-		#TODO: Numpy
+	def do_transacao(self, conta_bancaria: ContaBancaria) -> None:
+		'''
+		Reliza a transação (despesa ou receita),
+		reavendo o saldo da conta.
+
+		Args:
+			conta_bancaria: Instância de objeto `ContaBancaria`.
+
+		Returns:
+			None.
+		TODO: Numpy
+		'''
 		if self.resolvido:
 			if self.tipo == TipoTransacao.DESPESA:
 				conta_bancaria.saldo -= self.valor
