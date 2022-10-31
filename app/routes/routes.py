@@ -1,9 +1,9 @@
-from flask import abort, jsonify, request
+from flask import jsonify, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from app import app
 from app.models import Categoria, ContaBancaria, Transacao, Usuario
-from app.utils import get_validate
+from app.utils import get_validate, return_error
 from app.utils.choices import Moedas, Instituicoes, TipoTransacao
 
 
@@ -13,6 +13,21 @@ def home_route():
 	Rota home/padrão.
 	'''
 	return '<h1>Home</h1>'
+
+
+@app.route('/enum', methods=['GET'])
+def rota_informacoes_enum():
+	'''
+	Retorna classes enumeradores existentes.
+	'''
+	enums = [Moedas, Instituicoes, TipoTransacao]
+
+	res = [enum.__name__ for enum in enums]
+
+	# for enum in enums:
+	# 	res[enum.__name__] = 'a'
+
+	return jsonify(res)
 
 
 @app.route('/listar/<string:classe>', methods=['GET'])
@@ -43,7 +58,7 @@ def rota_listar(classe):
 	elif classe == 'categorias':
 		resultado = usuario.categorias
 	else:	
-		return jsonify('Nenhuma classe encontrada com o nome informado.'), 404
+		return_error(404, 'Nenhuma classe encontrada com o nome informado.')
 
 	resp = [ instance.json() for instance in resultado ]
 
@@ -80,7 +95,7 @@ def rota_criar_conta_bancaria():
 
 	if not Moedas.has_name(moeda.upper()) or \
 		not Instituicoes.has_name(instituicao.upper()):
-			return jsonify('Nome de moeda ou instituição informada não existente. Consulte /enum'), 400
+			return_error(400, 'Nome de moeda ou instituição informada não existente. Consulte /enum.')
 
 	nova_conta_bancaria: ContaBancaria = ContaBancaria.create(
 		moeda = Moedas[moeda.upper()],
@@ -116,14 +131,14 @@ def rota_criar_transacao(tipo:str = None):
 		.filter_by(id=id_categoria, id_usuario=id_usuario).first()
 
 	if conta_bancaria == None or categoria == None:
-		return jsonify('Nenhuma conta bancária ou categoria com o id informado \
-			foi encontrada. Consulte /listar/<nome_classe>.'), 404
+		return_error(404, 'Nenhuma conta bancária ou categoria com o id informado \
+			foi encontrada. Consulte /listar/<nome_classe>.')
 
 	if categoria.tipo.name != tipo.upper():
-		return jsonify(f'O id de categoria informado não corresponde a {tipo}'), 401
+		return_error(401, f'O id de categoria informado não corresponde a {tipo}')
 
 	if not TipoTransacao.has_name(tipo.upper()):
-		return jsonify('O tipo de transação informada por URL não corresponde a "despesa" ou "receita"'), 401
+		return_error(401, 'O tipo de transação informada por URL não corresponde a `despesa` ou `receita`')
 
 	nova_transacao: Transacao = Transacao.create(
 		tipo = TipoTransacao[tipo.upper()],
@@ -131,6 +146,7 @@ def rota_criar_transacao(tipo:str = None):
 		descricao = descricao,
 		resolvido = resolvido,
 		id_categoria = id_categoria,
+		id_usuario=id_usuario,
 		id_conta_bancaria = id_conta_bancaria,
 	)
 
@@ -168,7 +184,7 @@ def rota_criar_categoria(tipo:str):
 	id_usuario = get_jwt_identity()
 
 	if not TipoTransacao.has_name(tipo.upper()):
-		return jsonify('O tipo de categoria informada por URL não corresponde a "despesa" ou "receita"'), 401
+		return_error(401, 'O tipo de categoria informada por URL não corresponde a `despesa` ou `receita`')
 
 	nova_categoria: Categoria = Categoria.create(
 		tipo = TipoTransacao[tipo.upper()],

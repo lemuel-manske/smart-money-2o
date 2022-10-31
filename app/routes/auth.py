@@ -1,9 +1,9 @@
-from flask import abort, jsonify, request
+from flask import jsonify, request
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 
 from app import TOKEN_UPDATE_HEADER, app, bcrypt
 from app.models import Usuario
-from app.utils import get_validate
+from app.utils import get_validate, return_error
 
 
 @app.route('/login', methods=['POST'])
@@ -30,10 +30,10 @@ def rota_login():
 	usuario: Usuario = Usuario.query.filter_by(email=email).first()
 
 	if usuario == None:
-		return jsonify('Usuário não encontrado.'), 404
+		return_error(404, 'Usuário não encontrado.')
 
 	if not bcrypt.check_password_hash(usuario.senha, senha):
-		return jsonify('Senha incorreta.'), 409
+		return_error(401, 'Senha incorreta.')
 	
 	tk = create_access_token(identity=usuario.id)
 
@@ -66,7 +66,7 @@ def rota_register():
 		})
 
 	if Usuario.query.filter_by(email=email).first() != None:
-		return jsonify('Email já cadastrado.'), 409
+		return_error(409, 'Email já cadastrado.')
 		
 	senha_hash = bcrypt.generate_password_hash(senha).decode('UTF-8')
 
@@ -87,6 +87,17 @@ def rota_register():
 @app.route('/atualizar-conta', methods=['POST'])
 @jwt_required()
 def rota_atualizar_conta():
+	'''
+	Realiza a alteração dos dados do usuário via POST.
+
+	Realiza request de dados em json (email, senha, nova_senha e nome),
+	validando os mesmos (`get_validate`).
+
+	Returns:
+		CÓD. 200 (OK): Atualiza os dados e retorna objeto 
+			usuário em formato json.
+		CÓD. 401 (UNAUTHORIZED): Senha incorreta.
+	'''
 	email, senha, senha_nova, nome = get_validate(request.get_json(), \
 		{
 			'email': str,
@@ -100,7 +111,7 @@ def rota_atualizar_conta():
 	usuario: Usuario = Usuario.query.filter_by(id=id_usuario).first()
 
 	if not bcrypt.check_password_hash(usuario.senha, senha):
-		return jsonify('Senha incorreta.'), 409
+		return_error(401, 'Senha incorreta.')
 
 	nova_senha_hash = bcrypt.generate_password_hash(senha_nova).decode('UTF-8')
 

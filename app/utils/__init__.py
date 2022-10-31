@@ -1,10 +1,17 @@
-from http.client import BAD_REQUEST
-
 from operator import itemgetter
 
-from flask import abort
+from flask import abort, jsonify
 
 from app import db
+
+
+def return_error(status_code: int, message: str):
+	res = jsonify({
+		"message" : message,
+	})
+	res.status_code = status_code
+	
+	abort(res)
 
 def get_validate(data: any, schema: 'dict[str, type]') -> 'dict[str, any]':
 	'''
@@ -13,15 +20,14 @@ def get_validate(data: any, schema: 'dict[str, type]') -> 'dict[str, any]':
 
 	Returns:
 		CÓD. 400 (BAD_REQUEST): Campos inválidos.
-		Sucesso: Ordenação de campos vindos por request (itemgetter).
+		Sucesso: Ordenação de campos vindos por request (`itemgetter`).
 	'''
-
 	if type(data) != dict:
-		abort(BAD_REQUEST)
+		return_error(400, 'Informe os dados em formato json {...}')
 
 	for key in schema:
 		if (key not in data) or (type(data[key]) != schema[key]):
-			abort(BAD_REQUEST)
+			return_error(400, 'Campos inválidos. Consulte documentação.')
 
 	return itemgetter(*schema)(data)
 
