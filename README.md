@@ -2,3 +2,4 @@
 Web development project, made with Flask.
 
 `pip install -r requirements.txt`
+`execute run.py`
