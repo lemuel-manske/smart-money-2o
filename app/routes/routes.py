@@ -175,7 +175,7 @@ def rota_criar_transacao(tipo:str = 'despesa'):
 @jwt_required()
 def rota_criar_categoria(tipo:str):
 	'''
-	Reliza o cadastro de uma nova categoria 
+	Realiza o cadastro de uma nova categoria 
 	na conta do usuário via POST.
 
 	Realiza request de dados em json (nome e ícone), validando os 

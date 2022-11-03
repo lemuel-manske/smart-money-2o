@@ -131,15 +131,14 @@ class Transacao(BaseModelClass, db.Model):
 
 	def do_transacao(self, conta_bancaria: ContaBancaria) -> None:
 		'''
-		Reliza a transação (despesa ou receita),
-		reavendo o saldo da conta.
+		Realiza a transação (despesa ou receita),
+		reavendo o saldo da conta bancária.
 
 		Args:
 			conta_bancaria: Instância de objeto `ContaBancaria`.
 
 		Returns:
 			None.
-		TODO: Numpy
 		'''
 		if self.resolvido:
 			if self.tipo == TipoTransacao.DESPESA:
