@@ -13,7 +13,10 @@ T = TypeVar('T')
 
 def get_val(self, field: str) -> str:
 	'''
-	TODO
+	Captura o valor do campo (`self.__gettattribute`),
+	realizando verificação de compatibilidade com Enum,
+	retornando o nome do enumerador ou simplesmente o atributo,
+	caso não seja uma instancia de Enum.
 	'''
 	v = self.__getattribute__(field)
 
@@ -24,7 +27,7 @@ def get_val(self, field: str) -> str:
 
 def to_json(*fields) -> dict:
 	'''
-	TODO
+	Retorna um dicionário contendo os atributos da classe.
 	'''
 	return lambda self: {
 		field: get_val(self, field) for field in fields
