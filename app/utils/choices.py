@@ -2,12 +2,20 @@ from enum import Enum
 
 
 class EnumBase(Enum):
+
+	@classmethod
+	def repr(cls):
+		return {
+			cls.__name__: [ attr for attr in cls._member_names_ ]
+		}
+
 	@classmethod
 	def has_name(cls, name):
 		'''
-		Verifica se a classe enumeradora possui o nome especificado
+		Verifica se a classe enumeradora possui o nome especificado.
 		'''
 		return name in cls._member_names_ 
+
 
 class Moedas(EnumBase):
 	'''
@@ -23,6 +31,7 @@ class Moedas(EnumBase):
 	LIBRA = "£"
 	IENE = "¥"
 
+
 class Instituicoes(EnumBase):
 	'''
 	NUBANK = "NUBANK"
@@ -32,6 +41,7 @@ class Instituicoes(EnumBase):
 	NUBANK = "NUBANK"
 	INTER = "INTER"
 	BRADESCO = "BRADESCO"
+
 	
 class TipoTransacao(EnumBase):
 	'''
