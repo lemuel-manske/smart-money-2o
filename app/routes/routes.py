@@ -22,10 +22,7 @@ def rota_informacoes_enum():
 	'''
 	enums = [Moedas, Instituicoes, TipoTransacao]
 
-	res = [enum.__name__ for enum in enums]
-
-	# for enum in enums:
-	# 	res[enum.__name__] = 'a'
+	res = [enum.repr() for enum in enums]
 
 	return jsonify(res)
 
@@ -68,7 +65,7 @@ def rota_listar(classe):
 @jwt_required()
 def rota_criar_conta_bancaria():
 	'''
-	Reliza o cadastro de uma nova conta bancária 
+	Realiza o cadastro de uma nova conta bancária 
 	na conta do usuário via POST.
 
 	Realiza request de dados em json (tipo de moeda, saldo e instituição
@@ -109,9 +106,28 @@ def rota_criar_conta_bancaria():
 
 @app.route('/criar/transacao/<string:tipo>', methods=['POST'])
 @jwt_required()
-def rota_criar_transacao(tipo:str = None):
+def rota_criar_transacao(tipo:str = 'despesa'):
 	'''
-	TODO
+	Realiza o cadastro de uma nova transação 
+	na conta do usuário via POST.
+
+	Realiza request de dados em json (valor, descrição, resolvido, 
+	id_categoria e id_conta_bancaria), validando os mesmos (`get_validate`).
+
+	Para o parâmetro `tipo` na URL, é realizado verificação de 
+	correspondência com os valores presentes na classe
+	enumeradora `TipoTransacao`.
+
+	O id de categoria informado deve corresponder ao mesmo tipo informado por
+	URL, isto é, 'despesa' para ambos ou 'receita' para ambos.
+
+	Returns:
+		CÓD. 200 (OK): Cadastro de nova transação e retorno dos dados 
+			cadastrados em formato json.
+		CÓD 401 (UNAUTHORIZED): O id da categoria informado não corresponde;
+			parâmetro na URL não corresponde a nenhum valor na classe `TipoTransacao`
+		CÓD 404 (NOT_FOUND): Nenhuma conta bancária ou categoria com o 
+			id informado foi encontrada.
 	'''
 	valor, descricao, resolvido, id_categoria, id_conta_bancaria = get_validate(request.get_json(), 
 	{
