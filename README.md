@@ -4,6 +4,8 @@ Web development project, made with Flask.
 `pip install -r requirements.txt`
 `execute run.py`
 
+Exemplo curl: curl 191.52.6.57:5000/login -X POST -H "Content-Type: application/json" --data '{ "email":"lemuelkaue@gmail.com", "senha":"123"}'
+
 /login
 
 	'''
