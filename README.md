@@ -6,6 +6,8 @@ Web development project, made with Flask.
 
 curl 191.52.6.57:5000/login -X POST -H "Content-Type: application/json" --data '{ "email":"lemuelkaue@gmail.com", "senha":"123"}'
 
+curl 191.52.6.57:5000/minha-conta -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY2NzgyOTU5MSwianRpIjoiYTU1MDFjN2UtOTE3ZC00ZWZkLWIyZDYtZTEyM2IwOTliNmY1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjY3ODI5NTkxLCJleHAiOjE2NjgwODg3OTF9.VNcB0rXBsCi50KZEq4Xu-v-80aXC3FC4fayTNE_OLRA" -H "Content-Type: application/json"
+
 /login
 
 	Realiza o login do usuário via POST.
