@@ -7,12 +7,13 @@ from app.utils import get_validate, return_error
 from app.utils.choices import Moedas, Instituicoes, TipoTransacao
 
 
-@app.route('/home', methods=['GET'])
+@app.route('/', methods=['GET'])
 def home_route():
 	'''
 	Rota home/padrão.
+
 	'''
-	return '<h1>Home</h1>'
+	return '<a href="https://github.com/lemuel-manske/smart-money-2o">docs</a>'
 
 
 @app.route('/enum', methods=['GET'])
