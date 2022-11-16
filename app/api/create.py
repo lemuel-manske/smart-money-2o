@@ -1,68 +1,14 @@
-from flask import jsonify, request
+from flask import jsonify, request, Blueprint
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
-from app import app
-from app.models import Categoria, ContaBancaria, Transacao, Usuario
+from app.models import Categoria, ContaBancaria, Transacao
 from app.utils import get_validate, return_error
 from app.utils.choices import Moedas, Instituicoes, TipoTransacao
 
 
-@app.route('/', methods=['GET'])
-def home_route():
-	'''
-	Rota home/padrão.
+create_routes = Blueprint('create', __name__, url_prefix='/api/create')
 
-	'''
-	return '<a href="https://github.com/lemuel-manske/smart-money-2o">docs</a>'
-
-
-@app.route('/enum', methods=['GET'])
-def rota_informacoes_enum():
-	'''
-	Retorna classes enumeradores existentes.
-	'''
-	enums = [Moedas, Instituicoes, TipoTransacao]
-
-	res = [enum.repr() for enum in enums]
-
-	return jsonify(res)
-
-
-@app.route('/listar/<string:classe>', methods=['GET'])
-@jwt_required()
-def rota_listar(classe):
-	'''
-	Rota de listagem genérica.
-
-	Extrai a nome da classe através do URL e retorna as
-	informações contempladas pela conta do usuário na 
-	sessão (JWT necessário).
-
-	Returns:
-		CÓD. 200 (OK): Retorno de informações em formato json.
-		CÓD 404 (NOT_FOUND): Nome da classe informada não contempla
-			nenhum modelo do banco de dados.
-	'''	
-	id_usuario = get_jwt_identity()
-
-	usuario: Usuario = Usuario.query.filter_by(id=id_usuario).first()
-
-	resultado = None
-
-	if classe == 'contas-bancarias':
-		resultado = usuario.contas_bancarias
-	elif classe == 'transacoes':
-		resultado = usuario.transacoes
-	elif classe == 'categorias':
-		resultado = usuario.categorias
-	else:	
-		return_error(404, 'Nenhuma classe encontrada com o nome informado.')
-
-	resp = [ instance.json() for instance in resultado ]
-
-	return jsonify(resp)
-
-@app.route('/criar/conta-bancaria', methods=['POST'])
+@create_routes.route('/conta-bancaria', methods=['POST'])
 @jwt_required()
 def rota_criar_conta_bancaria():
 	'''
@@ -105,7 +51,7 @@ def rota_criar_conta_bancaria():
 	return jsonify(nova_conta_bancaria.json()), 200
 
 
-@app.route('/criar/transacao/<string:tipo>', methods=['POST'])
+@create_routes.route('/transacao/<string:tipo>', methods=['POST'])
 @jwt_required()
 def rota_criar_transacao(tipo:str = 'despesa'):
 	'''
@@ -172,7 +118,7 @@ def rota_criar_transacao(tipo:str = 'despesa'):
 	return jsonify(nova_transacao.json()), 200
 
 
-@app.route('/criar/categoria/<string:tipo>', methods=['POST'])
+@create_routes.route('/categoria/<string:tipo>', methods=['POST'])
 @jwt_required()
 def rota_criar_categoria(tipo:str):
 	'''

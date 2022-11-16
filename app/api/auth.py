@@ -1,12 +1,14 @@
-from flask import jsonify, request
+from flask import jsonify, request, Blueprint
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 
-from app import TOKEN_UPDATE_HEADER, app, bcrypt
+from app import TOKEN_UPDATE_HEADER, bcrypt
 from app.models import Usuario
-from app.utils import get_validate, return_error
+from app.utils import get_validate, return_error, email_validate
 
 
-@app.route('/login', methods=['POST'])
+auth_routes = Blueprint('auth', __name__, url_prefix='/api/auth')
+
+@auth_routes.post('/login')
 def rota_login():
 	'''
 	Realiza o login do usuário via POST.
@@ -43,7 +45,7 @@ def rota_login():
 	return res, 200
 	
 
-@app.route('/cadastro', methods=['POST'])
+@auth_routes.post('/cadastro')
 def rota_register():
 	'''
 	Realiza registro de um novo usuário via POST.
@@ -67,7 +69,10 @@ def rota_register():
 
 	if Usuario.query.filter_by(email=email).first() != None:
 		return_error(409, 'Email já cadastrado.')
-		
+
+	if not email_validate(email):
+		return_error(400, 'Email inválido')
+	
 	senha_hash = bcrypt.generate_password_hash(senha).decode('UTF-8')
 
 	novo_usuario: Usuario = Usuario.create(
@@ -84,7 +89,7 @@ def rota_register():
 	return res, 200
 
 
-@app.route('/atualizar-conta', methods=['POST'])
+@auth_routes.post('/atualizar-conta')
 @jwt_required()
 def rota_atualizar_conta():
 	'''
@@ -108,10 +113,13 @@ def rota_atualizar_conta():
 	
 	id_usuario = get_jwt_identity()
 
-	usuario: Usuario = Usuario.query.filter_by(id=id_usuario).first()
+	usuario: Usuario = Usuario.query.atual()
 
 	if not bcrypt.check_password_hash(usuario.senha, senha):
 		return_error(401, 'Senha incorreta.')
+
+	if not email_validate(email):
+		return_error(400, 'Email inválido')
 
 	nova_senha_hash = bcrypt.generate_password_hash(senha_nova).decode('UTF-8')
 
@@ -124,7 +132,7 @@ def rota_atualizar_conta():
 	return jsonify(usuario.json()), 200
 
 
-@app.route('/minha-conta', methods=['GET'])
+@auth_routes.get('/minha-conta')
 @jwt_required()
 def rota_account():
 	'''
@@ -134,8 +142,6 @@ def rota_account():
 		CÓD. 200 (OK): Retorno dos dados do usuário em
 			formato json.
 	'''
-	id_usuario = get_jwt_identity()
-
-	usuario: Usuario = Usuario.query.filter_by(id=id_usuario).first()
+	usuario: Usuario = Usuario.query.atual()
 	
 	return jsonify(usuario.json()), 200
