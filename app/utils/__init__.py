@@ -1,9 +1,13 @@
+import re
+
 from operator import itemgetter
 
 from flask import abort, jsonify
 
 from app import db
 
+
+EMAIL_REG_EX = re.compile("^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$")
 
 def return_error(status_code: int, message: str):
 	res = jsonify({
@@ -41,3 +45,10 @@ def do_add_commit(inst: db.Model):
 	'''
 	db.session.add(inst)
 	db.session.commit()
+
+def email_validate(self):
+	'''
+	Realiza a verificação de email com base em regular 
+	expression (EMAIL_REG_EX).
+	'''
+	return True if re.match(EMAIL_REG_EX, self.email) else False

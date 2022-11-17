@@ -4,7 +4,7 @@ from enum import Enum
 class EnumBase(Enum):
 
 	@classmethod
-	def repr(cls):
+	def representation(cls):
 		return {
 			cls.__name__: [ attr for attr in cls._member_names_ ]
 		}
