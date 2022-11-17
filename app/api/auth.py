@@ -6,7 +6,7 @@ from app.models import Usuario
 from app.utils import get_validate, return_error, email_validate
 
 
-auth_routes = Blueprint('auth', __name__, url_prefix='/api/auth')
+auth_routes = Blueprint('auth_routes', __name__, url_prefix='/api/auth')
 
 @auth_routes.post('/login')
 def rota_login():
@@ -46,7 +46,7 @@ def rota_login():
 	
 
 @auth_routes.post('/cadastro')
-def rota_register():
+def rota_cadastro():
 	'''
 	Realiza registro de um novo usuário via POST.
 

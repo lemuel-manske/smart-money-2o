@@ -5,7 +5,7 @@ from app.models import Usuario
 from app.utils import return_error
 
 
-list_routes = Blueprint('list', __name__, url_prefix='/api/list')
+list_routes = Blueprint('list_routes', __name__, url_prefix='/api/list')
 
 @list_routes.route('/<string:classe>', methods=['GET'])
 @jwt_required()

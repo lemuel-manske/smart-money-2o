@@ -6,7 +6,7 @@ from app.utils import get_validate, return_error
 from app.utils.choices import Moedas, Instituicoes, TipoTransacao
 
 
-create_routes = Blueprint('create', __name__, url_prefix='/api/create')
+create_routes = Blueprint('create_routes', __name__, url_prefix='/api/create')
 
 @create_routes.route('/conta-bancaria', methods=['POST'])
 @jwt_required()
