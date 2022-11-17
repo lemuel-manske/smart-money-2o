@@ -10,10 +10,9 @@ from app.utils.choices import Moedas, Instituicoes, TipoTransacao
 @app.route('/', methods=['GET'])
 def home_route():
 	'''
-	Rota home/padrão.
-
+	API docs.
 	'''
-	return '<a href="https://github.com/lemuel-manske/smart-money-2o">docs</a>'
+	return 'Larissa, Liriel e Lemuel: <a href="https://github.com/lemuel-manske/smart-money-2o">docs</a> ' + request.host
 
 
 @app.route('/enum', methods=['GET'])
