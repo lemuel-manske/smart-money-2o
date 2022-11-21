@@ -32,9 +32,13 @@ def create_app(config=Config):
 	from app.api.list import list_routes
 	from app.api.home import home_routes
 
+	from app.routes.auth import auth
+
 	app.register_blueprint(auth_routes)
 	app.register_blueprint(create_routes)
 	app.register_blueprint(home_routes)
 	app.register_blueprint(list_routes)
+
+	app.register_blueprint(auth)
 
 	return app
