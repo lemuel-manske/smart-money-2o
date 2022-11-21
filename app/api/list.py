@@ -22,9 +22,7 @@ def rota_listar(classe):
 		CÓD 404 (NOT_FOUND): Nome da classe informada não contempla
 			nenhum modelo do banco de dados.
 	'''	
-	id_usuario = get_jwt_identity()
-
-	usuario: Usuario = Usuario.query.filter_by(id=id_usuario).first()
+	usuario: Usuario = Usuario.query.filter_by(id=get_jwt_identity()).first()
 
 	resultado = None
 

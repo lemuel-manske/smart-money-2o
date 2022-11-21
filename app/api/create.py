@@ -35,8 +35,6 @@ def rota_criar_conta_bancaria():
 		'instituicao': str
 	})
 
-	id_usuario = get_jwt_identity()
-
 	if not Moedas.has_name(moeda.upper()) or \
 		not Instituicoes.has_name(instituicao.upper()):
 			return_error(400, 'Nome de moeda ou instituição informada não existente. Consulte /enum.')
@@ -45,7 +43,7 @@ def rota_criar_conta_bancaria():
 		moeda = Moedas[moeda.upper()],
 		saldo = saldo,
 		instituicao = Instituicoes[instituicao.upper()],
-		id_usuario = id_usuario
+		id_usuario = get_jwt_identity()
 	)
 
 	return jsonify(nova_conta_bancaria.json()), 200
@@ -109,7 +107,7 @@ def rota_criar_transacao(tipo:str = 'despesa'):
 		descricao = descricao,
 		resolvido = resolvido,
 		id_categoria = id_categoria,
-		id_usuario=id_usuario,
+		id_usuario = id_usuario,
 		id_conta_bancaria = id_conta_bancaria,
 	)
 
@@ -144,8 +142,6 @@ def rota_criar_categoria(tipo:str):
 		'icone': str
 	})
 
-	id_usuario = get_jwt_identity()
-
 	if not TipoTransacao.has_name(tipo.upper()):
 		return_error(401, 'O tipo de categoria informada por URL não corresponde a `despesa` ou `receita`')
 
@@ -153,7 +149,7 @@ def rota_criar_categoria(tipo:str):
 		tipo = TipoTransacao[tipo.upper()],
 		nome = nome,
 		icone = icone,
-		id_usuario = id_usuario
+		id_usuario = get_jwt_identity()
 	)
 
 	return jsonify(nova_categoria.json()), 200

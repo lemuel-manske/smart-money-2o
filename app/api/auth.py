@@ -111,9 +111,7 @@ def rota_atualizar_conta():
 			'nome': str
 		})
 	
-	id_usuario = get_jwt_identity()
-
-	usuario: Usuario = Usuario.query.atual()
+	usuario: Usuario = Usuario.query.filter_by(id=get_jwt_identity()).first()
 
 	if not bcrypt.check_password_hash(usuario.senha, senha):
 		return_error(401, 'Senha incorreta.')
@@ -142,6 +140,6 @@ def rota_account():
 		CÓD. 200 (OK): Retorno dos dados do usuário em
 			formato json.
 	'''
-	usuario: Usuario = Usuario.query.atual()
+	usuario: Usuario = Usuario.query.filter_by(id=get_jwt_identity()).first()
 	
 	return jsonify(usuario.json()), 200
