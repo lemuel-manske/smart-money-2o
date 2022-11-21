@@ -46,9 +46,9 @@ def do_add_commit(inst: db.Model):
 	db.session.add(inst)
 	db.session.commit()
 
-def email_validate(self):
+def email_validate(email):
 	'''
 	Realiza a verificação de email com base em regular 
 	expression (EMAIL_REG_EX).
 	'''
-	return True if re.match(EMAIL_REG_EX, self.email) else False
+	return True if re.match(EMAIL_REG_EX, email) else False
