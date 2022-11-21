@@ -1,7 +1,6 @@
 from enum import Enum
 from typing import Type, TypeVar
 
-from flask_jwt_extended import get_current_user
 from sqlalchemy.sql import func
 from sqlalchemy import inspect
 
@@ -83,8 +82,6 @@ class Usuario(BaseModelClass, db.Model):
 	premium = db.Column(db.Boolean, nullable=False, default=False) # True | False
 
 	json = to_json('id', 'nome', 'email', 'senha', 'premium')	
-
-	atual = lambda: get_current_user()
 
 	contas_bancarias = db.relationship('ContaBancaria', backref='usuario', lazy='select')
 	categorias = db.relationship('Categoria', backref='usuario', lazy='select')
