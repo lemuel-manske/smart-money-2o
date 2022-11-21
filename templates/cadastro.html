@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+
+<div class="container">
+	<main>
+		<div class="py-5 text-center">
+			<h2>Cadastro</h2>
+		</div>
+
+		<div>
+			<form class="row justify-content-center px-5 mb-5">
+				<div class="col-md-8">
+					<div class="form-floating mb-3">
+						<input type="email" class="form-control" id="email" placeholder="Email">
+						<label for="email">Email</label>
+					</div>
+					<div class="form-floating mb-3">
+						<input type="text" class="form-control" id="name" placeholder="Email">
+						<label for="name">Nome de usuário</label>
+					</div>
+					<div class="form-floating mb-3">
+						<input type="password" class="form-control" id="password" placeholder="Senha">
+						<label for="password">Senha</label>
+					</div>
+				</div>	
+			</form>
+
+			<div class="row justify-content-center">
+				<div class="col-auto">
+					<button class="px-5 btn btn-lg btn-primary rounded-pill" type="submit">CADASTRARS</button>
+				</div>
+			</div>
+		</div>
+	</main>
+</div>
+
+{% endblock %}
