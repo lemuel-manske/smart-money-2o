@@ -2,7 +2,7 @@ from flask import jsonify, Blueprint
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from app.models import Usuario
-from app.utils import return_error
+from app.utils import response
 
 
 list_routes = Blueprint('list_routes', __name__, url_prefix='/api/list')
@@ -33,7 +33,7 @@ def rota_listar(classe):
 	elif classe == 'categorias':
 		resultado = usuario.categorias
 	else:	
-		return_error(404, 'Nenhuma classe encontrada com o nome informado.')
+		response(404, 'Nenhuma classe encontrada com o nome informado.')
 
 	resp = [ instance.json() for instance in resultado ]
 

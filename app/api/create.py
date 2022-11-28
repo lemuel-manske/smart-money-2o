@@ -2,7 +2,7 @@ from flask import jsonify, request, Blueprint
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from app.models import Categoria, ContaBancaria, Transacao
-from app.utils import get_validate, return_error
+from app.utils import get_validate, response
 from app.utils.choices import Moedas, Instituicoes, TipoTransacao
 
 
@@ -37,7 +37,7 @@ def rota_criar_conta_bancaria():
 
 	if not Moedas.has_name(moeda.upper()) or \
 		not Instituicoes.has_name(instituicao.upper()):
-			return_error(400, 'Nome de moeda ou instituição informada não existente. Consulte /enum.')
+			response(400, 'Nome de moeda ou instituição informada não existente. Consulte /enum.')
 
 	nova_conta_bancaria: ContaBancaria = ContaBancaria.create(
 		moeda = Moedas[moeda.upper()],
@@ -92,14 +92,14 @@ def rota_criar_transacao(tipo:str = 'despesa'):
 		.filter_by(id=id_categoria, id_usuario=id_usuario).first()
 
 	if conta_bancaria == None or categoria == None:
-		return_error(404, 'Nenhuma conta bancária ou categoria com o id informado \
+		response(404, 'Nenhuma conta bancária ou categoria com o id informado \
 			foi encontrada. Consulte /listar/<nome_classe>.')
 
 	if categoria.tipo.name != tipo.upper():
-		return_error(401, f'O id de categoria informado não corresponde a {tipo}')
+		response(401, f'O id de categoria informado não corresponde a {tipo}')
 
 	if not TipoTransacao.has_name(tipo.upper()):
-		return_error(401, 'O tipo de transação informada por URL não corresponde a `despesa` ou `receita`')
+		response(401, 'O tipo de transação informada por URL não corresponde a `despesa` ou `receita`')
 
 	nova_transacao: Transacao = Transacao.create(
 		tipo = TipoTransacao[tipo.upper()],
@@ -143,7 +143,7 @@ def rota_criar_categoria(tipo:str):
 	})
 
 	if not TipoTransacao.has_name(tipo.upper()):
-		return_error(401, 'O tipo de categoria informada por URL não corresponde a `despesa` ou `receita`')
+		response(401, 'O tipo de categoria informada por URL não corresponde a `despesa` ou `receita`')
 
 	nova_categoria: Categoria = Categoria.create(
 		tipo = TipoTransacao[tipo.upper()],

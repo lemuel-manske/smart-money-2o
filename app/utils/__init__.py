@@ -9,13 +9,19 @@ from app import db
 
 EMAIL_REG_EX = re.compile("^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$")
 
-def return_error(status_code: int, message: str):
-	res = jsonify({
-		"message" : message,
-	})
+def response(status_code: int, message: str, target: str = None):
+	if target == None:
+		res = jsonify({
+			'msg' : message,
+		})
+	else:
+		res = jsonify({
+			'msg' : message,
+			'target' : target,
+		})
 	res.status_code = status_code
-	
-	abort(res)
+
+	return res
 
 def get_validate(data: any, schema: 'dict[str, type]') -> 'dict[str, any]':
 	'''
@@ -27,11 +33,11 @@ def get_validate(data: any, schema: 'dict[str, type]') -> 'dict[str, any]':
 		Sucesso: Ordenação de campos vindos por request (`itemgetter`).
 	'''
 	if type(data) != dict:
-		return_error(400, 'Informe os dados em formato json {...}')
+		response(400, 'Informe os dados em formato json {...}')
 
 	for key in schema:
 		if (key not in data) or (type(data[key]) != schema[key]):
-			return_error(400, 'Campos inválidos. Consulte documentação.')
+			response(400, 'Campos inválidos. Consulte documentação.')
 
 	return itemgetter(*schema)(data)
 
