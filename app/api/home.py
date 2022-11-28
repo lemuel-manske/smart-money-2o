@@ -3,7 +3,7 @@ from flask import jsonify, Blueprint
 from app.utils.choices import Moedas, Instituicoes, TipoTransacao
 
 
-home_routes = Blueprint('home_routes', __name__, url_prefix='/api/home')
+home_routes = Blueprint('home_routes', __name__)
 
 @home_routes.route('/', methods=['GET'])
 def home_route():
