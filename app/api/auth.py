@@ -3,7 +3,7 @@ from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_requir
 
 from app import TOKEN_UPDATE_HEADER, bcrypt
 from app.models import Usuario
-from app.utils import get_validate, return_error, email_validate
+from app.utils import get_validate, response, email_validate
 
 
 auth_routes = Blueprint('auth_routes', __name__, url_prefix='/api/auth')
@@ -32,17 +32,17 @@ def rota_login():
 	usuario: Usuario = Usuario.query.filter_by(email=email).first()
 
 	if usuario == None:
-		return_error(404, 'Usuário não encontrado.')
+		return response(404, 'Usuário não encontrado.', 'email')
 
 	if not bcrypt.check_password_hash(usuario.senha, senha):
-		return_error(401, 'Senha incorreta.')
+		return response(401, 'Senha incorreta.', 'senha')
 	
 	tk = create_access_token(identity=usuario.id)
 
-	res = jsonify(usuario.json())
+	res = response(200, usuario.json())
 	res.headers.set(TOKEN_UPDATE_HEADER, tk)
 
-	return res, 200
+	return res
 	
 
 @auth_routes.post('/cadastro')
@@ -68,10 +68,10 @@ def rota_cadastro():
 		})
 
 	if Usuario.query.filter_by(email=email).first() != None:
-		return_error(409, 'Email já cadastrado.')
+		return response(409, 'Email já cadastrado.', 'email')
 
 	if not email_validate(email):
-		return_error(400, 'Email inválido')
+		return response(400, 'Email inválido.', 'email')
 	
 	senha_hash = bcrypt.generate_password_hash(senha).decode('UTF-8')
 
@@ -83,10 +83,10 @@ def rota_cadastro():
 
 	tk = create_access_token(identity=novo_usuario.id)
 
-	res = jsonify(novo_usuario.json())
+	res = response(200, novo_usuario.json())
 	res.headers.set(TOKEN_UPDATE_HEADER, tk)
 
-	return res, 200
+	return res
 
 
 @auth_routes.post('/atualizar-conta')
@@ -114,10 +114,10 @@ def rota_atualizar_conta():
 	usuario: Usuario = Usuario.query.filter_by(id=get_jwt_identity()).first()
 
 	if not bcrypt.check_password_hash(usuario.senha, senha):
-		return_error(401, 'Senha incorreta.')
+		response(401, 'Senha incorreta.')
 
 	if not email_validate(email):
-		return_error(400, 'Email inválido')
+		response(400, 'Email inválido')
 
 	nova_senha_hash = bcrypt.generate_password_hash(senha_nova).decode('UTF-8')
 
