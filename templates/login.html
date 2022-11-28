@@ -8,23 +8,31 @@
 			<h2>Login</h2>
 		</div>
 
+		<div id="login-super-error"></div>
+
 		<div>
 			<form class="row justify-content-center px-5 mb-5">
 				<div class="col-md-8">
-					<div class="form-floating mb-3">
-						<input type="email" class="form-control" id="email" placeholder="Email">
-						<label for="email">Email</label>
+					<div class="input-group has-validation mb-3">	
+						<div class="form-floating">
+							<input type="email" class="form-control" id="email-login" placeholder="Email">
+							<label for="email-login">Email</label>
+						</div>
+						<div class="invalid-feedback" id="email-login-erro"></div>
 					</div>
-					<div class="form-floating mb-3">
-						<input type="password" class="form-control" id="password" placeholder="Senha">
-						<label for="password">Senha</label>
+					<div class="input-group has-validation mb-3">	
+						<div class="form-floating">
+							<input type="password" class="form-control" id="senha-login" placeholder="Senha">
+							<label for="senha">Senha</label>
+						</div>
+						<div class="invalid-feedback" id="senha-login-erro"></div>
 					</div>
 				</div>	
 			</form>
 
 			<div class="row justify-content-center">
 				<div class="col-auto">
-					<button class="px-5 btn btn-lg btn-primary rounded-pill" type="submit">ENTRAR</button>
+					<button id="login-submit" class="px-5 btn btn-lg btn-primary rounded-pill" type="submit">ENTRAR</button>
 				</div>
 			</div>
 		</div>

@@ -8,27 +8,40 @@
 			<h2>Cadastro</h2>
 		</div>
 
+		<div id="cadastro-super-error"></div>
+
 		<div>
 			<form class="row justify-content-center px-5 mb-5">
 				<div class="col-md-8">
-					<div class="form-floating mb-3">
-						<input type="email" class="form-control" id="email" placeholder="Email">
-						<label for="email">Email</label>
+					<div class="input-group has-validation mb-3">	
+						<div class="form-floating">
+							<input type="email" class="form-control" id="email-cadastro" placeholder="Email">
+							<label for="email-cadastro">Email</label>
+						</div>	
+						<div class="invalid-feedback" id="email-cadastro-erro"></div>
 					</div>
-					<div class="form-floating mb-3">
-						<input type="text" class="form-control" id="name" placeholder="Email">
-						<label for="name">Nome de usuário</label>
+					
+					<div class="input-group has-validation mb-3">	
+						<div class="form-floating is-invalid">
+							<input type="text" class="form-control is-invalid" id="nome-cadastro" placeholder="Email">
+							<label for="nome-cadastro">Nome de usuário</label>
+						</div>
+						<div class="invalid-feedback" id="nome-cadastro-erro"></div>
 					</div>
-					<div class="form-floating mb-3">
-						<input type="password" class="form-control" id="password" placeholder="Senha">
-						<label for="password">Senha</label>
+
+					<div class="input-group has-validation mb-3">	
+						<div class="form-floating">
+							<input type="password" class="form-control" id="senha-cadastro" placeholder="Senha">
+							<label for="senha">Senha</label>
+						</div>
+						<div class="invalid-feedback" id="senha-cadastro-erro"></div>
 					</div>
 				</div>	
 			</form>
 
 			<div class="row justify-content-center">
 				<div class="col-auto">
-					<button class="px-5 btn btn-lg btn-primary rounded-pill" type="submit">CADASTRARS</button>
+					<button id="cadastro-submit" class="px-5 btn btn-lg btn-primary rounded-pill" type="submit">CADASTRAR</button>
 				</div>
 			</div>
 		</div>
