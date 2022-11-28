@@ -13,7 +13,7 @@ jwt = JWTManager()
 
 TOKEN_UPDATE_HEADER = 'X-SM-Update-Bearer-Token'
 
-cors = CORS(expose_headers=[TOKEN_UPDATE_HEADER], allow_headers=['Authorization'])
+cors = CORS(expose_headers=[TOKEN_UPDATE_HEADER], allow_headers=['Authorization'], resources={r"*": {"origin": "*"}})
 
 def create_app(config=Config):
 	app = Flask('SmartMoney')
@@ -40,5 +40,5 @@ def create_app(config=Config):
 	app.register_blueprint(list_routes)
 
 	app.register_blueprint(auth)
-
+	
 	return app
