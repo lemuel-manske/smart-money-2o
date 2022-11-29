@@ -1,6 +1,10 @@
 Aplicação: 
 	- dashboard ( barra de navegação )
-		- gráficos e tabelas
+
+
+		- gráficos e tabela
+
+
 		- Adicionar 
 			- transação 
 			- conta_bancária
