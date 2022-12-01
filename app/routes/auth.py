@@ -4,11 +4,11 @@ auth = Blueprint('auth', __name__, url_prefix='/auth')
 
 @auth.get('/login')
 def render_login():
-	return render_template('login.html')
+	return render_template('login.html', title='Login')
 
 @auth.get('/cadastro')
 def render_cadastro():
-	return render_template('cadastro.html')
+	return render_template('cadastro.html', title='Cadastro')
 
 @auth.get('/atualizar-conta')
 def render_atualizar_conta():
