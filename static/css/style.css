@@ -1,0 +1,34 @@
+.btn-indigo {
+	border: none;
+	background-color: #3d0a91;
+}
+
+.btn-indigo:hover {
+	background-color: #140330;
+}
+
+.btn-indigo:first-child:active {
+	border: none;
+	background-color: #520dc2;
+}
+
+.btn-indigo:focus-visible {
+	border: none;
+	background-color:#520dc2;
+	box-shadow: none;
+}
+
+.base-side-bar {
+	height: 100vh;
+	max-height: 100vh;
+	overflow-x: auto;
+	overflow-y: hidden;
+}
+
+.dropdown-item:active {
+	background-color: #140330;
+}
+
+body {
+	min-height: 100vh;
+}
