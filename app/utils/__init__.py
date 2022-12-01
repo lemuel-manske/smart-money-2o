@@ -10,6 +10,19 @@ from app import db
 EMAIL_REG_EX = re.compile("^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$")
 
 def response(status_code: int, message: str, target: str = None):
+	'''
+	Realiza o retorno de resposta,
+	aceitando parâmetros de: código HTTP, mensagem e target (opcional).
+
+	O target vai ser o veículo de exibição do erro. 
+	Por exemplo: target = email, isso quer dizer que o 
+	erro ocorrido tem relação com o email infomado, como um 
+	email inválido, por exemplo.
+
+	Returns:
+		Objeto json contendo mensagem (msg), target e 
+			código HTTP (status code).
+	'''
 	if target == None:
 		res = jsonify({
 			'msg' : message,
