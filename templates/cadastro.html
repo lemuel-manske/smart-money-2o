@@ -3,49 +3,68 @@
 {% block conteudo %}
 
 <div class="container">
-	<main>
-		<div class="py-5 text-center">
-			<h2>Cadastro</h2>
-		</div>
+	<main style="height: 60vh;" class="row align-items-center">
+		<div class="col">
+			<div class="py-5 text-center">
+				<h2 class="h2">CADASTRO</h2>
+			</div>
 
-		<div id="cadastro-super-error"></div>
-
-		<div>
-			<form class="row justify-content-center px-5 mb-5">
-				<div class="col-md-8">
-					<div class="input-group has-validation mb-3">	
-						<div class="form-floating">
-							<input type="email" class="form-control" id="email-cadastro" placeholder="Email">
-							<label for="email-cadastro">Email</label>
-						</div>	
-						<div class="invalid-feedback" id="email-cadastro-erro"></div>
-					</div>
-					
-					<div class="input-group has-validation mb-3">	
-						<div class="form-floating is-invalid">
-							<input type="text" class="form-control is-invalid" id="nome-cadastro" placeholder="Email">
-							<label for="nome-cadastro">Nome de usuário</label>
+			<div id="cadastro-super-error"></div>
+			
+			<div>
+				<form class="row justify-content-center px-5 mb-5 form">
+					<div class="col-md-8">
+						<div class="input-group has-validation mb-3">
+							<div class="form-floating">
+								<input type="email" class="form-control" id="email-cadastro" placeholder="Email">
+								<label for="email-cadastro">Email</label>
+							</div>
+							<div class="invalid-feedback" id="email-cadastro-erro"></div>
 						</div>
-						<div class="invalid-feedback" id="nome-cadastro-erro"></div>
-					</div>
-
-					<div class="input-group has-validation mb-3">	
-						<div class="form-floating">
-							<input type="password" class="form-control" id="senha-cadastro" placeholder="Senha">
-							<label for="senha">Senha</label>
+			
+						<div class="input-group has-validation mb-3">
+							<div class="form-floating">
+								<input type="text" class="form-control" id="nome-cadastro" placeholder="Email">
+								<label for="nome-cadastro">Nome de usuário</label>
+							</div>
+							<div class="invalid-feedback" id="nome-cadastro-erro"></div>
 						</div>
-						<div class="invalid-feedback" id="senha-cadastro-erro"></div>
-					</div>
-				</div>	
-			</form>
+						
+						<div class="input-group has-validation mb-2">
+							<div class="form-floating">
+								<input type="password" class="form-control toggle-visibility" id="senha-cadastro" placeholder="Senha">
+								<label for="senha">Senha</label>
+							</div>
+							<div class="invalid-feedback" id="senha-cadastro-erro"></div>
+						</div>
 
-			<div class="row justify-content-center">
-				<div class="col-auto">
-					<button id="cadastro-submit" class="px-5 btn btn-lg btn-primary rounded-pill" type="submit">CADASTRAR</button>
+						<div class="d-flex justify-content-end">
+							<div class="form-check mb-3">
+								<label class="form-check-label" for="mostrar-senha">
+									Mostrar senha
+								</label>
+								<input class="form-check-input toggle-visibility-button" type="checkbox" value="" id="mostrar-senha">
+							</div>
+						</div>
+					</div>
+				</form>
+
+				<div class="row justify-content-center text-center">
+					<div class="col-auto">
+						<button id="cadastro-submit" class="px-5 btn btn-indigo btn-lg btn-primary rounded-pill" type="submit">CADASTRAR</button>
+					</div>
+
+					<p class="h6 my-4">Já possui uma conta? 
+						<a class="btn btn-light rounded-pill mx-2" href="{{ url_for('auth.render_login') }}">ENTRAR</a> 
+					</p>
 				</div>
 			</div>
 		</div>
 	</main>
 </div>
 
+{% endblock %}
+
+{% block script %}
+<script src="../static/js/show_password.js"></script>
 {% endblock %}
