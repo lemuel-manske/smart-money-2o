@@ -1,5 +1,5 @@
-from flask import jsonify, request, Blueprint
-from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
+from flask import request, Blueprint
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, unset_jwt_cookies
 
 from app import TOKEN_UPDATE_HEADER, bcrypt
 from app.models import Usuario
@@ -32,10 +32,10 @@ def rota_login():
 	usuario: Usuario = Usuario.query.filter_by(email=email).first()
 
 	if usuario == None:
-		return response(404, 'Usuário não encontrado.', 'email')
+		return response(404, 'Usuário não encontrado', 'email')
 
 	if not bcrypt.check_password_hash(usuario.senha, senha):
-		return response(401, 'Senha incorreta.', 'senha')
+		return response(401, 'Senha incorreta', 'senha')
 	
 	tk = create_access_token(identity=usuario.id)
 
@@ -58,6 +58,7 @@ def rota_cadastro():
 	Returns:
 		CÓD. 200 (OK): Criação de JWT (identidade id) e 
 			retorna objeto usuário em formato json.
+		CÓD. 400 (BAD REQUEST): Email inválido com base em regex.
 		CÓD. 409 (CONFLICT): Usuário já existe (filtro p/ email).
 	'''
 	email, senha, nome = get_validate(request.get_json(), \
@@ -68,10 +69,10 @@ def rota_cadastro():
 		})
 
 	if Usuario.query.filter_by(email=email).first() != None:
-		return response(409, 'Email já cadastrado.', 'email')
+		return response(409, 'Email já cadastrado', 'email')
 
 	if not email_validate(email):
-		return response(400, 'Email inválido.', 'email')
+		return response(400, 'Email inválido', 'email')
 	
 	senha_hash = bcrypt.generate_password_hash(senha).decode('UTF-8')
 
@@ -101,6 +102,7 @@ def rota_atualizar_conta():
 	Returns:
 		CÓD. 200 (OK): Atualiza os dados e retorna objeto 
 			usuário em formato json.
+		CÓD. 400 (BAD REQUEST): Email inválido com base em regex.
 		CÓD. 401 (UNAUTHORIZED): Senha incorreta.
 	'''
 	email, senha, senha_nova, nome = get_validate(request.get_json(), \
@@ -127,19 +129,38 @@ def rota_atualizar_conta():
 		nome=nome
 	)
 
-	return jsonify(usuario.json()), 200
+	res = response(200, usuario.json())
+
+	return res
+
+
+@auth_routes.get('/logout')
+@jwt_required()
+def rota_logout():
+	'''
+	Realiza o logout do usuário.
+
+	Returns:
+		CÓD. 200 (OK): JWT excluída.
+	'''
+	resp = response(200, 'Logout bem sucedido')
+	unset_jwt_cookies(resp)
+
+	return resp
 
 
 @auth_routes.get('/minha-conta')
 @jwt_required()
-def rota_account():
+def rota_minha_conta():
 	'''
-	Retorna os dados da conta do usuário com login na sessão.
+	Retorna as informações do usuário
 
 	Returns:
-		CÓD. 200 (OK): Retorno dos dados do usuário em
-			formato json.
+		CÓD. 200 (OK): Objeto json com informações 
+			da conta do usuário
 	'''
 	usuario: Usuario = Usuario.query.filter_by(id=get_jwt_identity()).first()
-	
-	return jsonify(usuario.json()), 200
+
+	resp = response(200, usuario.json())
+
+	return resp
