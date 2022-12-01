@@ -4,8 +4,8 @@ const fields = {
 		senha: '#senha-login'
 	},
 	cadastro: {
+		email: '#email-cadastro',
 		nome: '#nome-cadastro',
-		nome: '#email-cadastro',
 		senha: '#senha-cadastro'
 	}
 }
@@ -41,6 +41,41 @@ jQuery(function($) {
 				error: (xhr) => {
 					response = xhr.responseJSON;
 					showError(login_fields[response.target], response.msg);
+				}
+			})
+		}
+	})
+
+	$('#cadastro-submit').on('click', function () {
+		cadastro_fields = fields.cadastro;
+
+		let [ email, nome, senha ] = get_fields_values(cadastro_fields.email, cadastro_fields.nome, cadastro_fields.senha)
+
+		let is_error = !completed_fieds(
+			cadastro_fields.email,
+			cadastro_fields.nome,
+			cadastro_fields.senha
+		)
+
+		if (!is_error) {
+			$.ajax({
+				url: 'http://localhost:5000/api/auth/cadastro',
+				method: 'POST',
+				contentType: 'application/JSON',
+				dataType: 'json',
+				data: JSON.stringify({
+					email: email,
+					nome: nome,
+					senha: senha
+				}),
+
+				success: () => {
+					location.pathname = '/'
+				},
+				
+				error: (xhr) => {
+					response = xhr.responseJSON;
+					showError(cadastro_fields[response.target], response.msg);
 				}
 			})
 		}
