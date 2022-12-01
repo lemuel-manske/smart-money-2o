@@ -14,13 +14,17 @@
 		integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
 		crossorigin="anonymous"></script>
 
-	<title>{% block title %} {% endblock %} - Smart Money</title>
+	<link rel="stylesheet" href="../static/css/style.css">
+
+	<title>{{ title }} - Smart Money</title>
 </head>
 
-<body>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<body class="bg-white">
+	<nav class="navbar navbar-expand-lg navbar bg-light">
 		<div class="container-fluid">
-			<a class="navbar-brand text-white" href="#">Smart Money</a>
+			<a class="navbar-brand px-2" href="#">
+				<img style="height: 52px;" src="../static/img/logo.png" alt="identidade visual">
+			</a>
 
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
 				aria-controls="navbarContent" aria-expanded="false" aria-label="Navegar">
@@ -29,8 +33,9 @@
 
 			<div class="collapse navbar-collapse" id="navbarContent">
 				<div class="navbar-nav">
-					<a class="nav-link" href="http://localhost:5000/auth/login">LOGIN</a>
-					<a class="nav-link" href="http://localhost:5000/auth/cadastro">CADASTRO</a>
+					<a class="nav-link" href="{{ url_for('home_routes.home_route') }}">SMART MONEY</a>
+					<a class="nav-link" href="{{ url_for('auth.render_login') }}">LOGIN</a>
+					<a class="nav-link" href="{{ url_for('auth.render_cadastro') }}">CADASTRO</a>
 				</div>
 			</div>
 		</div>
@@ -46,5 +51,7 @@
 
 <script src="../static/js/auth/auth.js"></script>
 <script src="../static/js/utils.js"></script>
+
+{% block script %}{% endblock %}
 
 </html>
