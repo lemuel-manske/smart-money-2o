@@ -86,6 +86,7 @@ class Usuario(BaseModelClass, db.Model):
 	contas_bancarias = db.relationship('ContaBancaria', backref='usuario', lazy='select')
 	categorias = db.relationship('Categoria', backref='usuario', lazy='select')
 	transacoes = db.relationship('Transacao', backref='usuario', lazy='select')
+	transferencias = db.relationship('Transferencia', backref='usuario', lazy='select')
 
 	def __str__(self) -> str:
 		return f'<Usuario: id:{self.id}, nome:{self.name}, email:{self.email}, \
@@ -105,6 +106,7 @@ class ContaBancaria(BaseModelClass, db.Model):
 	id_usuario = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
 
 	despesas = db.relationship('Transacao', backref='conta_bancaria', lazy='select')
+	transferencias = db.relationship('Transferencia', backref='conta_bancaria', lazy='select')
 
 	def __str__(self) -> str:
 		return f'<ContaBancaria: id:{self.id}, moeda:{self.moeda}, \
@@ -170,3 +172,16 @@ class Categoria(BaseModelClass, db.Model):
 
 	def __str__(self) -> str:
 		return f'<Categoria: id:{self.id}, tipo:{self.tipo}, nome:{self.nome}, icone:{self.icone}>'
+
+class Transferencia(BaseModelClass, db.Model):
+	__tablename__ = 'transferencia'
+
+	id = db.Column(db.Integer, primary_key=True)
+	valor = db.Column(db.Numeric, nullable=False)
+	id_usuario = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
+	id_conta_bancaria_origem = db.Column(db.Integer, db.ForeignKey('conta_bancaria.id'), nullable=False)
+	id_conta_bancaria_destino = db.Column(db.Integer, db.ForeignKey('conta_bancaria.id'), nullable=False)
+
+	def __str__(self) -> str:
+		return f'<Transferencia: id:{self.id}, valor:{self.valor}, \
+			conta_origem:{self.id_conta_bancaria_origem}, conta_destino:{self.id_conta_bancaria_destino}>'
