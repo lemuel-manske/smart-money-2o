@@ -1,8 +1,9 @@
+from http.client import BAD_REQUEST
 import re
 
 from operator import itemgetter
 
-from flask import abort, jsonify
+from flask import jsonify, abort
 
 from app import db
 
@@ -46,11 +47,11 @@ def get_validate(data: any, schema: 'dict[str, type]') -> 'dict[str, any]':
 		Sucesso: Ordenação de campos vindos por request (`itemgetter`).
 	'''
 	if type(data) != dict:
-		response(400, 'Informe os dados em formato json {...}')
+		abort(BAD_REQUEST)
 
 	for key in schema:
 		if (key not in data) or (type(data[key]) != schema[key]):
-			response(400, 'Campos inválidos. Consulte documentação.')
+			abort(BAD_REQUEST)
 
 	return itemgetter(*schema)(data)
 
