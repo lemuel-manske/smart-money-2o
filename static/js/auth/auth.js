@@ -74,7 +74,7 @@ jQuery(function($) {
 
 				success: (res) => {
 					token = res.msg;
-					sessionStorage.setItem('x-sm-update-bearer-token', accessToken);
+					sessionStorage.setItem('x-sm-update-bearer-token', token);
 					location.pathname = '/app/';
 				},
 				
