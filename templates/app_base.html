@@ -68,7 +68,7 @@
 	</symbol>
 </svg>
 
-<body class="bg-secondary">
+<body class="bg-light">
 	<main>
 		<div class="d-flex flex-row">
 			<div class="d-flex flex-column flex-shrink-0 bg-light" style="width: 4.8rem; min-height: 100vh;">
@@ -99,6 +99,10 @@
 								<li>
 									<a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#formContaBancaria"
 										href="#">Conta bancária</a>
+								</li>
+								<li>
+									<a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#formTransferencia"
+										href="#">Transferência</a>
 								</li>
 							</ul>
 						</div>
@@ -281,8 +285,12 @@
 							</form>
 						</div>
 						<div class="modal-footer border-none">
-							<div class="d-flex mx-auto"><button type="button"
-									class="btn btn-indigo text-white rounded-pill px-3">ADICIONAR</button></div>
+							<div class="d-flex mx-auto">
+								<button type="button" id="receita-submit"
+										class="btn btn-indigo text-white rounded-pill px-3">
+									ADICIONAR
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -348,6 +356,58 @@
 					</div>
 				</div>
 			</div>
+
+			<div class="modal fade" id="formTransferencia" tabindex="-1" aria-labelledby="formTransferenciaLabel" aria-hidden="true">
+				<!--Formulario modal receita-->
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="formTransferenciaLabel">Adicionar transferência</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<form>
+								<div class="row mb-3 gy-3">
+									<div class="col">
+										<div class="form-floating">
+											<select id="contas-bancarias-origem" class="form-select">
+												</select>
+											<label for="contas-bancarias-origem">Conta bancária origem</label>
+										</div>
+										<div class="invalid-feedback" id="contas-bancarias-origem-erro"></div>
+									</div>
+									<div class="col">
+										<div class="form-floating">
+											<select id="contas-bancarias-destino" class="form-select">
+												</select>
+											<label for="contas-bancarias-destino">Conta bancária destino</label>
+											</div>
+										<div class="invalid-feedback" id="contas-bancarias-destino-erro"></div>
+									</div>
+								</div>
+		
+								<div class="input-group has-validation mb-3">
+									<div class="form-floating">
+										<input type="number" step="any" class="form-control" id="valor-transferencia"
+											placeholder="Valor">
+										<label for="valor-transferencia">Valor</label>
+									</div>
+									<div class="invalid-feedback" id="valor-transferencia-erro"></div>
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer border-none">
+							<div class="d-flex mx-auto">
+								<button type="button" id="transferencia-submit"
+										class="btn btn-indigo text-white rounded-pill px-3">
+									ADICIONAR
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<div class="col">
 				{% block conteudo %}
 				{% endblock %}
