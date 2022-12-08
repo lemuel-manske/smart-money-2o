@@ -12,7 +12,7 @@ const fields = {
 
 jQuery(function($) {
 
-	cleanErrors();
+	clean_errors();
 
 	$('#login-submit').on('click', function() {
 		login_fields = fields.login;
@@ -33,14 +33,17 @@ jQuery(function($) {
 					email: email,
 					senha: senha
 				}),
-
-				success: () => {
-					location.pathname = '/';
+				
+				success: (res) => {
+					token = res.msg;
+					localStorage.setItem('x-sm-update-bearer-token', token);
+				
+					location.pathname = '/app/';
 				},
 
 				error: (xhr) => {
 					response = xhr.responseJSON;
-					showError(login_fields[response.target], response.msg);
+					show_error(login_fields[response.target], response.msg);
 				}
 			})
 		}
@@ -69,13 +72,15 @@ jQuery(function($) {
 					senha: senha
 				}),
 
-				success: () => {
-					location.pathname = '/'
+				success: (res) => {
+					token = res.msg;
+					sessionStorage.setItem('x-sm-update-bearer-token', accessToken);
+					location.pathname = '/app/';
 				},
 				
 				error: (xhr) => {
 					response = xhr.responseJSON;
-					showError(cadastro_fields[response.target], response.msg);
+					show_error(cadastro_fields[response.target], response.msg);
 				}
 			})
 		}
