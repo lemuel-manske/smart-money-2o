@@ -21,7 +21,7 @@ def get_val(self, field: str) -> str:
 	v = self.__getattribute__(field)
 
 	if issubclass(type(v), Enum):
-		return v.name
+		return v.value
 	else:
 		return v
 
@@ -97,19 +97,26 @@ class ContaBancaria(BaseModelClass, db.Model):
 	__tablename__ = 'conta_bancaria'
 
 	id = db.Column(db.Integer, primary_key=True)
-	moeda = db.Column(db.Enum(Moedas), nullable=False, default=(Moedas.BRAZIL))
+	nome = db.Column(db.Text, nullable=False)
+	moeda = db.Column(db.Enum(Moedas), nullable=False, default=(Moedas.REAL))
 	saldo = db.Column(db.Numeric, nullable=False)
 	instituicao = db.Column(db.Enum(Instituicoes), nullable=False)
 
-	json = to_json('id', 'moeda', 'saldo', 'instituicao', 'id_usuario')
+	json = to_json('id', 'nome', 'moeda', 'saldo', 'instituicao', 'id_usuario')
 
 	id_usuario = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
 
 	despesas = db.relationship('Transacao', backref='conta_bancaria', lazy='select')
-	transferencias = db.relationship('Transferencia', backref='conta_bancaria', lazy='select')
+
+	# https://www.reddit.com/r/flask/comments/2o4ejl/af_flask_sqlalchemy_two_foreign_keys_referencing/
+	
+	transferencias_realizadas = db.relationship('Transferencia', backref='conta_bancaria_origem', \
+		lazy='select', foreign_keys='Transferencia.id_conta_bancaria_origem')
+	transferencias_recebidas = db.relationship('Transferencia', backref='conta_bancaria_destino', \
+		lazy='select', foreign_keys='Transferencia.id_conta_bancaria_destino')
 
 	def __str__(self) -> str:
-		return f'<ContaBancaria: id:{self.id}, moeda:{self.moeda}, \
+		return f'<ContaBancaria: id:{self.id}, nome:{self.nome}, moeda:{self.moeda}, \
 			saldo:{self.saldo}, instituicao:{self.instituicao}, \
 				id_usuario:{self.id_usuario}>'
 
@@ -164,7 +171,7 @@ class Categoria(BaseModelClass, db.Model):
 	nome = db.Column(db.Text, nullable=False)
 	icone = db.Column(db.Text, nullable=False)
 
-	json = to_json('id', 'nome', 'icone')
+	json = to_json('id', 'tipo', 'nome', 'icone')
 
 	id_usuario = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
 
