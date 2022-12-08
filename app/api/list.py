@@ -19,7 +19,7 @@ def rota_listar(classe):
 
 	Returns:
 		CÓD. 200 (OK): Retorno de informações em formato json.
-		CÓD 404 (NOT_FOUND): Nome da classe informada não contempla
+		CÓD. 404 (NOT_FOUND): Nome da classe informada não contempla
 			nenhum modelo do banco de dados.
 	'''	
 	usuario: Usuario = Usuario.query.filter_by(id=get_jwt_identity()).first()
@@ -32,8 +32,10 @@ def rota_listar(classe):
 		resultado = usuario.transacoes
 	elif classe == 'categorias':
 		resultado = usuario.categorias
+	elif classe == 'transferencias':
+		resultado = usuario.transferencias
 	else:	
-		response(404, 'Nenhuma classe encontrada com o nome informado.')
+		return response(404, 'Nenhuma classe encontrada com o nome informado.')
 
 	resp = [ instance.json() for instance in resultado ]
 
