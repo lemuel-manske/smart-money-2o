@@ -18,6 +18,11 @@ const fields = {
 		saldo: "#saldo-conta-bancaria",
 		moeda_select: '#selecionar-moeda',
 		instituicao_select: '#instituicao-bancaria'
+	},
+	transferencia: {
+		valor: "#valor-transferencia",
+		contas_bancarias_origem_select: "#contas-bancarias-origem",
+		contas_bancarias_destino_select: "#contas-bancarias-destino"
 	}
 }
 
@@ -122,7 +127,31 @@ jQuery(function($) {
 			$.each(contas_bancarias, function (i, conta) {
 				$(fields.despesa.contas_bancarias_select).append(
 					$('<option>', {
-						'value': conta.icone,
+						'value': conta.nome,
+						'id': conta.id,
+						'text': conta.nome,
+					})
+				)
+
+				$(fields.receita.contas_bancarias_select).append(
+					$('<option>', {
+						'value': conta.nome,
+						'id': conta.id,
+						'text': conta.nome,
+					})
+				)
+
+				$(fields.transferencia.contas_bancarias_origem_select).append(
+					$('<option>', {
+						'value': conta.nome,
+						'id': conta.id,
+						'text': conta.nome,
+					})
+				)
+
+				$(fields.transferencia.contas_bancarias_destino_select).append(
+					$('<option>', {
+						'value': conta.nome,
 						'id': conta.id,
 						'text': conta.nome,
 					})
