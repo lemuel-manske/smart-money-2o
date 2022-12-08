@@ -28,8 +28,9 @@ def rota_criar_conta_bancaria():
 		CÓD 404 (NOT_FOUND): Moeda ou instituição bancária informada não 
 			compatíveis com os valores presentes nos enumeradores.
 	'''
-	moeda, saldo, instituicao = get_validate(request.get_json(), 
+	nome, moeda, saldo, instituicao = get_validate(request.get_json(), 
 	{
+		'nome': str,
 		'moeda': str,
 		'saldo': str,
 		'instituicao': str
@@ -40,6 +41,7 @@ def rota_criar_conta_bancaria():
 			response(400, 'Nome de moeda ou instituição informada não existente. Consulte /enum.')
 
 	nova_conta_bancaria: ContaBancaria = ContaBancaria.create(
+		nome = nome,
 		moeda = Moedas[moeda.upper()],
 		saldo = saldo,
 		instituicao = Instituicoes[instituicao.upper()],
