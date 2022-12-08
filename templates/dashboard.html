@@ -2,186 +2,151 @@
 
 {% block conteudo %}
 
-<div class="container-fluid px-5 pt-5" >
-	<div>
+<div class="container-fluid px-5 pt-5">
+	<header>
 		<h1 class="display-4">Bem vindo</h1>
 		<hr>
-	</div>
+	</header>
 
-	<div class="row g-4 py-5">
-		<div class="col">
-			<div class="card rounded-4 shadow">
-				<div class="d-flex flex-column px-5 py-5 pb-3">
-					<div class="d-flex align-items-center pb-2">
-						<svg fill="#dc3545" class="me-3" height="2em" width="2em">
-							<use xlink:href="#arrow-down" />
-						</svg>
-						<h3 class="mb-0 fw-bold">DESPESAS</h3>
+	<section>
+		<div class="row g-4 py-5">
+			<article class="col">
+				<div class="card rounded-4 shadow">
+					<div class="d-flex flex-column px-5 py-5 pb-3">
+						<div class="d-flex align-items-center pb-2">
+							<svg fill="#dc3545" class="me-3" height="2em" width="2em">
+								<use xlink:href="#arrow-down" />
+							</svg>
+							<h3 class="mb-0 fw-bold">DESPESAS</h3>
+						</div>
+						<h3 class="d-flex">
+							{{ currency_symbol }}
+							<p class="ms-2" id="valor-despesas">00,00</p>
+						</h3>
+						<table class="table" id="tabela-despesas">
+							<thead>
+								<tr>
+									<th scope="col"></th>
+									<th scope="col">Valor</th>
+									<th scope="col">Categoria</th>
+									<th scope="col">Conta bancária</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th scope="row">1</th>
+									<td>Mark</td>
+									<td>Otto</td>
+									<td>@mdo</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
-					<h3 class="pb-3">R$ 00,00</h3>
-					<ul class="d-flex list-unstyled mt-auto">
-						<li class="d-flex align-items-center me-3">
-							<small>icon</small>
-						</li>
-						<li class="d-flex align-items-center me-3">
-							<small>value</small>
-						</li>
-						<li class="d-flex align-items-center">
-							<small>category</small>
-						</li>
-					</ul>
 				</div>
-			</div>
-		</div>
-		
-		<div class="col">
-			<div class="card rounded-4 shadow">
-				<div class="d-flex flex-column px-5 py-5 pb-3">
-					<div class="d-flex align-items-center pb-2">
-						<svg class="me-3" height="2em" width="2em">
-							<use xlink:href="#transferencia" />
-						</svg>
-						<h3 class="mb-0 fw-bold">TRANSFERÊNCIAS</h3>
-					</div>
-					<h3 class="pb-3">value</h3>
-					<ul class="d-flex list-unstyled mt-auto">
-						<li class="d-flex align-items-center me-3">
-							<small>icon</small>
-						</li>
-						<li class="d-flex align-items-center me-3">
-							<small>value</small>
-						</li>
-						<li class="d-flex align-items-center">
-							<small>category</small>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
+			</article>
 
-		<div class="col">
-			<div class="card rounded-4 shadow">
-				<div class="d-flex flex-column px-5 py-5 pb-3">
-					<div class="d-flex align-items-center pb-2">
-						<svg fill="#198754" class="me-3" height="2em" width="2em">
-							<use xlink:href="#arrow-up" />
-						</svg>
-						<h3 class="mb-0 fw-bold">RECEITAS</h3>
-					</div>
-					<h3 class="pb-3">value</h3>
-					<ul class="d-flex list-unstyled mt-auto">
-						<li class="d-flex align-items-center me-3">
-							<small>icon</small>
-						</li>
-						<li class="d-flex align-items-center me-3">
-							<small>value</small>
-						</li>
-						<li class="d-flex align-items-center">
-							<small>category</small>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
+			<article class="col">
+				<div class="card rounded-4 shadow">
+					<div class="d-flex flex-column px-5 py-5 pb-3">
+						<div class="d-flex align-items-center pb-2">
+							<svg class="me-3" height="2em" width="2em">
+								<use xlink:href="#transferencia" />
+							</svg>
+							<h3 class="mb-0 fw-bold">TRANSFERÊNCIAS</h3>
+						</div>
+						<h3 class="d-flex">
+							{{ currency_symbol }}
+							<p class="ms-2" id="valor-transferencias">00,00</p>
+						</h3>
 
-	<div class="row g-4 py-3">
-		<div class="col">
-			<div class="card rounded-4 shadow">
-				<div class="d-flex flex-column px-5 pt-4 pb-3">
-					<div class="text-center pb-3 pt-2">
-						<svg height="5em" width="5em">
-							<use xlink:href="#banco" />
-						</svg>
+						<table class="table" id="tabela-transferencias">
+							<thead>
+								<tr>
+									<th scope="col"></th>
+									<th scope="col">Valor</th>
+									<th scope="col">Categoria</th>
+									<th scope="col">Conta bancária</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th scope="row">1</th>
+									<td>Mark</td>
+									<td>Otto</td>
+									<td>@mdo</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
-					<h3 class="pb-3">saldo</h3>
-					<ul class="d-flex list-unstyled mt-auto">
-						<li class="d-flex align-items-center me-3">
-							<small>icon</small>
-						</li>
-						<li class="d-flex align-items-center me-3">
-							<small>value</small>
-						</li>
-						<li class="d-flex align-items-center">
-							<small>category</small>
-						</li>
-					</ul>
 				</div>
-			</div>
-		</div>
-		
-		<div class="col">
-			<div class="card rounded-4 shadow">
-				<div class="d-flex flex-column px-5 pt-4 pb-3">
-					<div class="text-center pb-3 pt-2">
-						<svg height="5em" width="5em">
-							<use xlink:href="#banco" />
-						</svg>
-					</div>
-					<h3 class="pb-3">saldo</h3>
-					<ul class="d-flex list-unstyled mt-auto">
-						<li class="d-flex align-items-center me-3">
-							<small>icon</small>
-						</li>
-						<li class="d-flex align-items-center me-3">
-							<small>value</small>
-						</li>
-						<li class="d-flex align-items-center">
-							<small>category</small>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
+			</article>
 
-		<div class="col">
-			<div class="card rounded-4 shadow">
-				<div class="d-flex flex-column px-5 pt-4 pb-3">
-					<div class="text-center pb-3 pt-2">
-						<svg height="5em" width="5em">
-							<use xlink:href="#banco" />
-						</svg>
+			<article class="col">
+				<div class="card rounded-4 shadow">
+					<div class="d-flex flex-column px-5 py-5 pb-3">
+						<div class="d-flex align-items-center pb-2">
+							<svg fill="#198754" class="me-3" height="2em" width="2em">
+								<use xlink:href="#arrow-up" />
+							</svg>
+							<h3 class="mb-0 fw-bold">RECEITAS</h3>
+						</div>
+						<h3 class="d-flex">
+							{{ currency_symbol }}
+							<p class="ms-2" id="valor-receitas">00,00</p>
+						</h3>
+						<table class="table" id="tabela-receitas">
+							<thead>
+								<tr>
+									<th scope="col"></th>
+									<th scope="col">Valor</th>
+									<th scope="col">Categoria</th>
+									<th scope="col">Conta bancária</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th scope="row">1</th>
+									<td>Mark</td>
+									<td>Otto</td>
+									<td>@mdo</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
-					<h3 class="pb-3">saldo</h3>
-					<ul class="d-flex list-unstyled mt-auto">
-						<li class="d-flex align-items-center me-3">
-							<small>icon</small>
-						</li>
-						<li class="d-flex align-items-center me-3">
-							<small>value</small>
-						</li>
-						<li class="d-flex align-items-center">
-							<small>category</small>
-						</li>
-					</ul>
 				</div>
-			</div>
+			</article>
 		</div>
+	</section>
 
-		<div class="col">
-			<div class="card rounded-4 shadow">
-				<div class="d-flex flex-column px-5 pt-4 pb-3">
-					<div class="text-center pb-3 pt-2">
-						<svg height="5em" width="5em">
-							<use xlink:href="#banco" />
-						</svg>
-					</div>
-					<h3 class="pb-3">saldo</h3>
-					<ul class="d-flex list-unstyled mt-auto">
-						<li class="d-flex align-items-center me-3">
-							<small>icon</small>
-						</li>
-						<li class="d-flex align-items-center me-3">
-							<small>value</small>
-						</li>
-						<li class="d-flex align-items-center">
-							<small>category</small>
-						</li>
-					</ul>
-				</div>
+	<section>
+		<header class="d-flex align-items-center">
+			<h4 class="display-6 me-2">Contas bancárias</h4>
+			<a class="btn btn-light rounded-pill mx-2" data-bs-toggle="modal" data-bs-target="#formContaBancaria"
+				href="#">ADICIONAR</a>
+		</header>
+
+		<hr>
+
+		<div class="row g-4 py-3" id="contas-bancarias-resume">
+			<!-- Populate on JS -->
+		</div>
+	</section>
+
+	<div class="toast-container position-fixed top-0 end-0 p-3">
+		<div id="flash-message" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+			<div class="toast-header">
+				<img class="rounded me-2" alt="...">
+				<strong class="me-auto">Smart Money</strong>
+				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+			<div class="toast-body">
 			</div>
 		</div>
 	</div>
 </div>
+
+{% endblock %}
+
+{% block script %}
 
 {% endblock %}
