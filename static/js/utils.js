@@ -6,6 +6,14 @@ function get_select_fields_values(...fields) {
 	return fields.map((id) => $(`${id} option:selected`).attr('value'));
 }
 
+function get_select_fields_id(...fields) {
+	return fields.map((id) => $(`${id} option:selected`).attr('id'));
+}
+
+function get_check_box_fields_values(...fields) {
+	return fields.map((id) => $(`${id}`).is(':checked'));
+}
+
 function show_error(field, msg) {
 	$(field).toggleClass('is-invalid', true);
 	$(field).parent().toggleClass('is-invalid', true);
@@ -32,6 +40,9 @@ function clean_errors() {
 		$(this).removeClass('is-invalid');
 	});
 	$('.form-floating').on('input', function() {
+		$(this).removeClass('is-invalid');
+	});
+	$('select').on('change', function() {
 		$(this).removeClass('is-invalid');
 	});
 }
