@@ -17,4 +17,3 @@ def render_atualizar_conta():
 @auth.get('/minha-conta')
 def render_minha_conta():
 	return render_template('minha_conta.html')
-
