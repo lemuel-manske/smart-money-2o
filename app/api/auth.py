@@ -2,11 +2,66 @@ from flask import request, Blueprint
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, unset_jwt_cookies
 
 from app import TOKEN_UPDATE_HEADER, bcrypt
-from app.models import Usuario
+from app.models import Categoria, ContaBancaria, Usuario
 from app.utils import get_validate, response, email_validate
+from app.utils.choices import Instituicoes, TipoTransacao
 
 
 auth_routes = Blueprint('auth_routes', __name__, url_prefix='/api/auth')
+
+
+# Vestuário
+# Saúde
+# Mercado
+# Entretenimento
+# Transporte 
+# Educação
+
+categorias_padroes = [
+	{
+		'tipo': 'DESPESA',
+		'icone': 'vest',
+		'nome': 'Vestuário',
+	},
+	{
+		'tipo': 'DESPESA',
+		'icone': 'hospital',
+		'nome': 'Saúde',
+	},
+	{
+		'tipo': 'DESPESA',
+		'icone': 'market',
+		'nome': 'Mercado',
+	},
+	{
+		'tipo': 'DESPESA',
+		'icone': 'entertainment',
+		'nome': 'Entretenimento',
+	},
+	{
+		'tipo': 'DESPESA',
+		'icone': 'transport',
+		'nome': 'Transporte',
+	},
+	{
+		'tipo': 'DESPESA',
+		'icone': 'education',
+		'nome': 'Educação',
+	},	
+	{
+		'tipo': 'RECEITA',
+		'icone': 'gift',
+		'nome': 'Presente',
+	},
+	{
+		'tipo': 'RECEITA',
+		'icone': 'cash',
+		'nome': 'Salário',
+	},
+
+]
+
+
 
 @auth_routes.post('/login')
 def rota_login():
@@ -39,7 +94,7 @@ def rota_login():
 	
 	tk = create_access_token(identity=usuario.id)
 
-	res = response(200, usuario.json())
+	res = response(200, tk)
 	res.headers.set(TOKEN_UPDATE_HEADER, tk)
 
 	return res
@@ -54,6 +109,8 @@ def rota_cadastro():
 	validando os mesmos (`get_validate`).
 
 	Realiza o login imediatamente após confirmação de sucesso (JWT).
+
+	Realiza a adição de categorias padrão na conta do usuário.
 
 	Returns:
 		CÓD. 200 (OK): Criação de JWT (identidade id) e 
@@ -77,14 +134,29 @@ def rota_cadastro():
 	senha_hash = bcrypt.generate_password_hash(senha).decode('UTF-8')
 
 	novo_usuario: Usuario = Usuario.create(
-		email=email,
-		senha=senha_hash,
-		nome=nome
+		email = email,
+		senha = senha_hash,
+		nome = nome
+	)
+
+	for categoria in categorias_padroes:
+		Categoria.create(
+			tipo = TipoTransacao[categoria['tipo']],
+			nome = categoria['nome'],
+			icone = categoria['icone'],
+			id_usuario = novo_usuario.id
+		)
+	
+	ContaBancaria.create(
+		nome = 'Carteira',
+		saldo = 0,
+		instituicao = Instituicoes['CARTEIRA'],
+		id_usuario = novo_usuario.id
 	)
 
 	tk = create_access_token(identity=novo_usuario.id)
 
-	res = response(200, novo_usuario.json())
+	res = response(200, tk)
 	res.headers.set(TOKEN_UPDATE_HEADER, tk)
 
 	return res
