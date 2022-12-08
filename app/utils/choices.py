@@ -4,9 +4,13 @@ from enum import Enum
 class EnumBase(Enum):
 
 	@classmethod
-	def representation(cls):
+	def to_json(cls):
+		'''
+		Cria um dicionário de representação das classes enumeradoras,
+		contendo chave e valor atribuídos.
+		'''
 		return {
-			cls.__name__: [ attr for attr in cls._member_names_ ]
+			cls.__name__: { attr: cls[attr].value for attr in cls._member_names_ }
 		}
 
 	@classmethod
@@ -19,15 +23,15 @@ class EnumBase(Enum):
 
 class Moedas(EnumBase):
 	'''
-	BRAZIL = "R$"
+	REAL = "R$"
 	US_DOLAR = "U$"
 	EUR = "€"
 	LIBRA = "£"
 	IENE = "¥"
 	'''
-	BRAZIL = "R$"
+	REAL = "R$"
 	US_DOLAR = "U$"
-	EUR = "€"
+	EURO = "€"
 	LIBRA = "£"
 	IENE = "¥"
 
@@ -38,10 +42,10 @@ class Instituicoes(EnumBase):
 	INTER = "INTER"
 	BRADESCO = "BRADESCO"
 	'''
-	NUBANK = "NUBANK"
-	INTER = "INTER"
-	BRADESCO = "BRADESCO"
-
+	NUBANK = "Nubank"
+	BANCO_INTER = "Banco Inter"
+	BRADESCO = "Bradesco"
+	CARTEIRA = "Carteira"
 	
 class TipoTransacao(EnumBase):
 	'''
