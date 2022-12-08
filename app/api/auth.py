@@ -10,13 +10,6 @@ from app.utils.choices import Instituicoes, TipoTransacao
 auth_routes = Blueprint('auth_routes', __name__, url_prefix='/api/auth')
 
 
-# Vestuário
-# Saúde
-# Mercado
-# Entretenimento
-# Transporte 
-# Educação
-
 categorias_padroes = [
 	{
 		'tipo': 'DESPESA',
