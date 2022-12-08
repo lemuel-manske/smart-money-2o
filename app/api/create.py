@@ -1,7 +1,7 @@
 from flask import jsonify, request, Blueprint
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
-from app.models import Categoria, ContaBancaria, Transacao
+from app.models import Categoria, ContaBancaria, Transacao, Transferencia
 from app.utils import get_validate, response
 from app.utils.choices import Moedas, Instituicoes, TipoTransacao
 
@@ -15,7 +15,7 @@ def rota_criar_conta_bancaria():
 	Realiza o cadastro de uma nova conta bancária 
 	na conta do usuário via POST.
 
-	Realiza request de dados em json (tipo de moeda, saldo e instituição
+	Realiza request de dados em json (nome, tipo de moeda, saldo e instituição
 	bancária), validando os mesmos (`get_validate`).
 
 	Para moeda e instituição é realizado verificação de 'compatibilidade'
@@ -38,7 +38,7 @@ def rota_criar_conta_bancaria():
 
 	if not Moedas.has_name(moeda.upper()) or \
 		not Instituicoes.has_name(instituicao.upper()):
-			response(400, 'Nome de moeda ou instituição informada não existente. Consulte /enum.')
+			return response(400, 'Nome de moeda ou instituição informada não existente. Consulte /enum.')
 
 	nova_conta_bancaria: ContaBancaria = ContaBancaria.create(
 		nome = nome,
@@ -48,7 +48,7 @@ def rota_criar_conta_bancaria():
 		id_usuario = get_jwt_identity()
 	)
 
-	return jsonify(nova_conta_bancaria.json()), 200
+	return response(200, nova_conta_bancaria.json())
 
 
 @create_routes.route('/transacao/<string:tipo>', methods=['POST'])
@@ -94,14 +94,14 @@ def rota_criar_transacao(tipo:str = 'despesa'):
 		.filter_by(id=id_categoria, id_usuario=id_usuario).first()
 
 	if conta_bancaria == None or categoria == None:
-		response(404, 'Nenhuma conta bancária ou categoria com o id informado \
+		return response(404, 'Nenhuma conta bancária ou categoria com o id informado \
 			foi encontrada. Consulte /listar/<nome_classe>.')
 
 	if categoria.tipo.name != tipo.upper():
-		response(401, f'O id de categoria informado não corresponde a {tipo}')
+		return response(401, f'O id de categoria informado não corresponde a {tipo}')
 
 	if not TipoTransacao.has_name(tipo.upper()):
-		response(401, 'O tipo de transação informada por URL não corresponde a `despesa` ou `receita`')
+		return response(401, 'O tipo de transação informada por URL não corresponde a `despesa` ou `receita`')
 
 	nova_transacao: Transacao = Transacao.create(
 		tipo = TipoTransacao[tipo.upper()],
@@ -115,7 +115,7 @@ def rota_criar_transacao(tipo:str = 'despesa'):
 
 	nova_transacao.do_transacao(conta_bancaria=conta_bancaria)
 
-	return jsonify(nova_transacao.json()), 200
+	return response(200, nova_transacao.json())
 
 
 @create_routes.route('/categoria/<string:tipo>', methods=['POST'])
@@ -145,7 +145,7 @@ def rota_criar_categoria(tipo:str):
 	})
 
 	if not TipoTransacao.has_name(tipo.upper()):
-		response(401, 'O tipo de categoria informada por URL não corresponde a `despesa` ou `receita`')
+		return response(401, 'O tipo de categoria informada por URL não corresponde a `despesa` ou `receita`')
 
 	nova_categoria: Categoria = Categoria.create(
 		tipo = TipoTransacao[tipo.upper()],
@@ -154,4 +154,42 @@ def rota_criar_categoria(tipo:str):
 		id_usuario = get_jwt_identity()
 	)
 
-	return jsonify(nova_categoria.json()), 200
+	return response(200, nova_categoria.json())
+
+
+@create_routes.route('/transferencia', methods=['POST'])
+@jwt_required()
+def rota_criar_transferencia():
+	'''
+	Realiza o cadastro de uma nova transferência
+	entre contas bancárias na conta do usuário via POST.
+	'''
+	valor, id_conta_bancaria_origem, id_conta_bancaria_destino = get_validate(request.get_json(), 
+	{
+		'valor': str,
+		'id_conta_bancaria_origem': int,
+		'id_conta_bancaria_destino': int
+	})
+
+	id_usuario = get_jwt_identity()
+
+	conta_bancaria_destino = ContaBancaria.query \
+		.filter_by(id=id_conta_bancaria_destino, id_usuario=id_usuario).first() 
+	
+	conta_bancaria_origem = ContaBancaria.query \
+		.filter_by(id=id_conta_bancaria_origem, id_usuario=id_usuario).first() 
+
+	if (conta_bancaria_destino == None or conta_bancaria_origem == None):
+		return response(401, 'Você não possui acesso a essa conta bancária')
+
+	if (conta_bancaria_destino.id == conta_bancaria_origem.id):
+		return response(400, 'A conta de destino deve ser diferente da conta de origem', 'contas_bancarias_destino_select')
+
+	nova_transferencia: Transferencia = Transferencia.create(
+		valor = valor,
+		id_usuario = id_usuario,
+		id_conta_bancaria_origem = id_conta_bancaria_origem,
+		id_conta_bancaria_destino = id_conta_bancaria_destino
+	)
+
+	return response(200, nova_transferencia.json())
