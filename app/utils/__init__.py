@@ -1,5 +1,6 @@
-from http.client import BAD_REQUEST
 import re
+
+from http.client import BAD_REQUEST
 
 from operator import itemgetter
 
