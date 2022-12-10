@@ -1,9 +1,12 @@
 // Resgatar TRANSAÇÕES
 $.ajax({
 	url: 'http://localhost:5000/api/list/transacoes',
-	method: 'GET',
+	method: 'GET', 
+	xhrFields: {
+		withCredentials: true
+	},
 	headers: {
-		'Authorization': 'Bearer ' + localStorage.getItem('x-sm-update-bearer-token')
+		'X-CSRF-TOKEN':getCookie('csrf_access_token')
 	},
 	
 	success: (res) => {
