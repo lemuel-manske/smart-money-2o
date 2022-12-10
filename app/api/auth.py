@@ -1,10 +1,14 @@
-from flask import request, Blueprint
-from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, unset_jwt_cookies
+from datetime import datetime, timedelta, timezone
 
-from app import TOKEN_UPDATE_HEADER, bcrypt
-from app.models import Categoria, ContaBancaria, Usuario
+from flask import Response, Blueprint, request
+
+from flask_jwt_extended import create_access_token, get_jwt, get_jwt_identity, jwt_required, set_access_cookies, unset_jwt_cookies
+
+from app import bcrypt
 from app.utils import get_validate, response, email_validate
 from app.utils.choices import Instituicoes, TipoTransacao
+
+from app.models import Categoria, ContaBancaria, Usuario
 
 
 auth_routes = Blueprint('auth_routes', __name__, url_prefix='/api/auth')
@@ -55,7 +59,6 @@ categorias_padroes = [
 ]
 
 
-
 @auth_routes.post('/login')
 def rota_login():
 	'''
@@ -88,7 +91,8 @@ def rota_login():
 	tk = create_access_token(identity=usuario.id)
 
 	res = response(200, tk)
-	res.headers.set(TOKEN_UPDATE_HEADER, tk)
+	
+	set_access_cookies(res, tk)
 
 	return res
 	
@@ -150,7 +154,8 @@ def rota_cadastro():
 	tk = create_access_token(identity=novo_usuario.id)
 
 	res = response(200, tk)
-	res.headers.set(TOKEN_UPDATE_HEADER, tk)
+	
+	set_access_cookies(res, tk)
 
 	return res
 
@@ -229,3 +234,19 @@ def rota_minha_conta():
 	resp = response(200, usuario.json())
 
 	return resp
+
+
+@auth_routes.after_app_request
+def refresh_jwt_token(response: Response):
+	try:
+		expire_timestamp = get_jwt()['exp']
+		now = datetime.now(timezone.utc)
+		target_timestamp = datetime.timestamp(now + timedelta(minutes=30))
+
+		if target_timestamp > expire_timestamp:
+			token = create_access_token(get_jwt_identity())
+			set_access_cookies(response, token)
+
+		return response
+	except (RuntimeError, KeyError):
+		return response

@@ -1,6 +1,6 @@
-from flask import Flask, redirect, url_for
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_cors import CORS
+# from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 
@@ -11,9 +11,9 @@ db = SQLAlchemy()
 bcrypt = Bcrypt()
 jwt = JWTManager()
 
-TOKEN_UPDATE_HEADER = 'X-SM-Update-Bearer-Token'
+# TOKEN_UPDATE_HEADER = 'X-SM-Update-Bearer-Token'
 
-cors = CORS(expose_headers=[TOKEN_UPDATE_HEADER], allow_headers=['Authorization'], resources={r"*": {"origin": "*"}})
+# cors = CORS(expose_headers=[TOKEN_UPDATE_HEADER], allow_headers=['Authorization'], resources={r"*": {"origin": "*"}})
 
 def create_app(config=Config):
 	app = Flask('SmartMoney')
@@ -22,7 +22,7 @@ def create_app(config=Config):
 	db.init_app(app)
 	bcrypt.init_app(app)
 	jwt.init_app(app)
-	cors.init_app(app)
+	# cors.init_app(app)
 
 	with app.app_context():
 		db.session.execute('PRAGMA FOREIGN_KEYS=ON')
