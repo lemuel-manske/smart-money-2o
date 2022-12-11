@@ -1,15 +1,15 @@
 from flask import Blueprint, render_template
-from flask_jwt_extended import jwt_required
 
-from app.decorators import requer_login
+from app.decorators import check_for_jwt
 
 main = Blueprint('main', __name__, url_prefix='/app')
 
 @main.get('/')
-@requer_login
+@check_for_jwt
 def render_dashboard():
-	return render_template('dashboard.html', title='Dashboard', currency_symbol='R$')
+	return render_template('dashboard.html', title='Dashboard')
 
-@main.get('/t')
-def render_teste():
-	return render_template('teste.html', title='Teste')
+@main.get('/historico')
+@check_for_jwt
+def render_historico():
+	return render_template('historico.html', title='Histórico')
