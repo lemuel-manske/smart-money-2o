@@ -130,10 +130,10 @@ $.ajax({
 		let transferencias_total = 0.0;
 
 		for (transf of transferencias) {
-			transferencias_total += parseFloat(transf.valor).toFixed(2);
+			transferencias_total += parseFloat(transf.valor);
 		}
 
-		$(ARTICLES.transferencia.valor_transferencias).append(`${MOEDA_USUARIO} ${transferencias_total}`);
+		$(ARTICLES.transferencia.valor_transferencias).append(`${MOEDA_USUARIO} ${transferencias_total.toFixed(2)}`);
 
 		$.each(transferencias.slice(0, 2), function(i, transf) {
 			$('#transferencias-default-row').toggleClass('d-none', !(transferencias.length === 0));
