@@ -15,34 +15,31 @@ def rota_criar_conta_bancaria():
 	Realiza o cadastro de uma nova conta bancária 
 	na conta do usuário via POST.
 
-	Realiza request de dados em json (nome, tipo de moeda, saldo e instituição
+	Realiza request de dados em json (nome, saldo e instituição
 	bancária), validando os mesmos (`get_validate`).
 
-	Para moeda e instituição é realizado verificação de 'compatibilidade'
-	com os tipos presentes em classes enumeradoras `Moeda` e `Instituicao` 
+	Para instituição bancária é realizado verificação de 'compatibilidade'
+	com os tipos presentes na classe enumeradora `Instituicao` 
 	(`choices.py`).
 
 	Returns:
 		CÓD. 200 (OK): Cadastro da conta bancária e retorno dos dados 
 			cadastrados em formato json.
-		CÓD 404 (NOT_FOUND): Moeda ou instituição bancária informada não 
-			compatíveis com os valores presentes nos enumeradores.
+		CÓD 404 (NOT_FOUND): Instituição bancária informada não 
+			compatível com os valores presentes no enumerador.
 	'''
-	nome, moeda, saldo, instituicao = get_validate(request.get_json(), 
+	nome, saldo, instituicao = get_validate(request.get_json(), 
 	{
 		'nome': str,
-		'moeda': str,
 		'saldo': str,
 		'instituicao': str
 	})
 
-	if not Moedas.has_name(moeda.upper()) or \
-		not Instituicoes.has_name(instituicao.upper()):
-			return response(400, 'Nome de moeda ou instituição informada não existente. Consulte /enum.')
+	if 	not Instituicoes.has_name(instituicao.upper()):
+		return response(400, 'Nome de instituição informada não existente. Consulte /enum/instituicao')
 
 	nova_conta_bancaria: ContaBancaria = ContaBancaria.create(
 		nome = nome,
-		moeda = Moedas[moeda.upper()],
 		saldo = saldo,
 		instituicao = Instituicoes[instituicao.upper()],
 		id_usuario = get_jwt_identity()
@@ -101,7 +98,7 @@ def rota_criar_transacao(tipo:str = 'despesa'):
 		return response(401, f'O id de categoria informado não corresponde a {tipo}')
 
 	if not TipoTransacao.has_name(tipo.upper()):
-		return response(401, 'O tipo de transação informada por URL não corresponde a `despesa` ou `receita`')
+		return response(401, 'O tipo de transação informada não corresponde a `despesa` ou `receita`')
 
 	nova_transacao: Transacao = Transacao.create(
 		tipo = TipoTransacao[tipo.upper()],
@@ -113,7 +110,7 @@ def rota_criar_transacao(tipo:str = 'despesa'):
 		id_conta_bancaria = id_conta_bancaria,
 	)
 
-	nova_transacao.do_transacao(conta_bancaria=conta_bancaria)
+	nova_transacao.realizar_transacao(conta_bancaria=conta_bancaria)
 
 	return response(200, nova_transacao.json())
 
@@ -191,5 +188,7 @@ def rota_criar_transferencia():
 		id_conta_bancaria_origem = id_conta_bancaria_origem,
 		id_conta_bancaria_destino = id_conta_bancaria_destino
 	)
+
+	nova_transferencia.realizar_transferencia(conta_bancaria_origem, conta_bancaria_destino)
 
 	return response(200, nova_transferencia.json())
