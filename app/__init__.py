@@ -24,6 +24,7 @@ def create_app(config=Config):
 	from app.api.auth import auth_routes
 	from app.api.user import user_routes
 	from app.api.create import create_routes
+	from app.api.delete import delete_routes
 	from app.api.list import list_routes
 
 	from app.routes.auth import auth
@@ -33,6 +34,7 @@ def create_app(config=Config):
 	app.register_blueprint(auth_routes)
 	app.register_blueprint(user_routes)
 	app.register_blueprint(create_routes)
+	app.register_blueprint(delete_routes)
 	app.register_blueprint(list_routes)
 
 	app.register_blueprint(auth)
