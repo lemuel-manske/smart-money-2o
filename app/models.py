@@ -159,6 +159,25 @@ class Transacao(BaseModelClass, db.Model):
 				
 			db.session.commit()
 
+	def excluir_transacao(self, conta_bancaria: ContaBancaria) -> None:
+		'''
+		Realiza a exlusão de uma transação (despesa ou receita),
+		reavendo o saldo da conta bancária.
+
+		Args:
+			conta_bancaria: Instância de objeto `ContaBancaria`.
+
+		Returns:
+			None.
+		'''
+		if self.resolvido:
+			if self.tipo == TipoTransacao.DESPESA:
+				conta_bancaria.saldo += self.valor
+			else:
+				conta_bancaria.saldo -= self.valor
+				
+			db.session.commit()
+
 	def __str__(self) -> str:
 		return f'<Transacao: id:{self.id}, tipo:{self.tipo}, valor:{self.valor}, \
 			descricao:{self.descricao}, resolvido:{self.resolvido}, data_origem:{self.data_origem}, \
