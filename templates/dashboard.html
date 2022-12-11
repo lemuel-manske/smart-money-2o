@@ -2,27 +2,28 @@
 
 {% block conteudo %}
 
-<div class="container-fluid px-5 pt-5">
+<div class="container-fluid px-5 mt-5">
 	<header>
 		<h1 class="display-4">Bem vindo</h1>
 		<hr>
 	</header>
 
 	<section>
-		<div class="row g-4 py-5">
+		<div class="row g-4 py-3">
 			<article class="col">
 				<div class="card rounded-4 shadow">
 					<div class="d-flex flex-column px-5 py-5 pb-3">
-						<div class="d-flex align-items-center pb-2">
+						<header class="d-flex align-items-center pb-2">
 							<svg fill="#dc3545" class="me-3" height="2em" width="2em">
 								<use xlink:href="#arrow-down" />
 							</svg>
 							<h3 class="mb-0 fw-bold">DESPESAS</h3>
-						</div>
+						</header>
+
 						<h3 class="d-flex">
-							{{ currency_symbol }}
-							<p class="ms-2" id="valor-despesas">00,00</p>
+							<p id="valor-despesas"></p>
 						</h3>
+
 						<table class="table" id="tabela-despesas">
 							<thead>
 								<tr>
@@ -33,11 +34,11 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<th scope="row">1</th>
-									<td>Mark</td>
-									<td>Otto</td>
-									<td>@mdo</td>
+								<tr id="despesas-default-row">
+									<th scope='row'>...</th>
+									<td>...</td>
+									<td>...</td>
+									<td>...</td>
 								</tr>
 							</tbody>
 						</table>
@@ -48,15 +49,15 @@
 			<article class="col">
 				<div class="card rounded-4 shadow">
 					<div class="d-flex flex-column px-5 py-5 pb-3">
-						<div class="d-flex align-items-center pb-2">
+						<header class="d-flex align-items-center pb-2">
 							<svg class="me-3" height="2em" width="2em">
-								<use xlink:href="#transferencia" />
+								<use xlink:href="#circle-arrows" />
 							</svg>
 							<h3 class="mb-0 fw-bold">TRANSFERÊNCIAS</h3>
-						</div>
+						</header>
+
 						<h3 class="d-flex">
-							{{ currency_symbol }}
-							<p class="ms-2" id="valor-transferencias">00,00</p>
+							<p id="valor-transferencias"></p>
 						</h3>
 
 						<table class="table" id="tabela-transferencias">
@@ -64,16 +65,16 @@
 								<tr>
 									<th scope="col"></th>
 									<th scope="col">Valor</th>
-									<th scope="col">Categoria</th>
-									<th scope="col">Conta bancária</th>
+									<th scope="col">Conta origem</th>
+									<th scope="col">Conta destino</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<th scope="row">1</th>
-									<td>Mark</td>
-									<td>Otto</td>
-									<td>@mdo</td>
+								<tr id="transferencias-default-row">
+									<th scope='row'>...</th>
+									<td>...</td>
+									<td>...</td>
+									<td>...</td>
 								</tr>
 							</tbody>
 						</table>
@@ -84,16 +85,17 @@
 			<article class="col">
 				<div class="card rounded-4 shadow">
 					<div class="d-flex flex-column px-5 py-5 pb-3">
-						<div class="d-flex align-items-center pb-2">
+						<header class="d-flex align-items-center pb-2">
 							<svg fill="#198754" class="me-3" height="2em" width="2em">
 								<use xlink:href="#arrow-up" />
 							</svg>
 							<h3 class="mb-0 fw-bold">RECEITAS</h3>
-						</div>
+						</header>
+
 						<h3 class="d-flex">
-							{{ currency_symbol }}
-							<p class="ms-2" id="valor-receitas">00,00</p>
+							<p id="valor-receitas"></p>
 						</h3>
+						
 						<table class="table" id="tabela-receitas">
 							<thead>
 								<tr>
@@ -104,11 +106,11 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<th scope="row">1</th>
-									<td>Mark</td>
-									<td>Otto</td>
-									<td>@mdo</td>
+								<tr id="receitas-default-row">
+									<th scope='row'>...</th>
+									<td>...</td>
+									<td>...</td>
+									<td>...</td>
 								</tr>
 							</tbody>
 						</table>
@@ -128,25 +130,26 @@
 		<hr>
 
 		<div class="row g-4 py-3" id="contas-bancarias-resume">
+
+			<div id="msg-sem-contas-bancarias" class="text-center py-5">
+				<h2>
+					Adicione sua primeira conta bancária </br>
+
+					<a class="my-4 btn btn-lg btn-indigo rounded-pill text-white mx-2" data-bs-toggle="modal" data-bs-target="#formContaBancaria"
+						href="#">ADICIONAR</a>
+				</h2>
+			</div>
+
 			<!-- Populate on JS -->
 		</div>
 	</section>
-
-	<div class="toast-container position-fixed top-0 end-0 p-3">
-		<div id="flash-message" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-			<div class="toast-header">
-				<img class="rounded me-2" alt="...">
-				<strong class="me-auto">Smart Money</strong>
-				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-			</div>
-			<div class="toast-body">
-			</div>
-		</div>
-	</div>
 </div>
 
 {% endblock %}
 
 {% block script %}
+
+<script src="../static/js/dashboard/popular_dashboard.js"></script>
+<script src="../static/js/dashboard/dashboard.js"></script>
 
 {% endblock %}
