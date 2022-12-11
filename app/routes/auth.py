@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template
 
+from app.decorators import check_for_jwt
+
 auth = Blueprint('auth', __name__, url_prefix='/auth')
 
 @auth.get('/login')
@@ -10,10 +12,7 @@ def render_login():
 def render_cadastro():
 	return render_template('cadastro.html', title='Cadastro')
 
-@auth.get('/atualizar-conta')
-def render_atualizar_conta():
-	return render_template('atualizar_conta.html')
-
 @auth.get('/minha-conta')
+@check_for_jwt
 def render_minha_conta():
 	return render_template('minha_conta.html')
