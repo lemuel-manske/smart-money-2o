@@ -1,9 +1,10 @@
-from flask import jsonify, request, Blueprint
+from flask import request, Blueprint
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
+from app import db
 from app.models import Categoria, ContaBancaria, Transacao, Transferencia
 from app.utils import get_validate, response
-from app.utils.choices import Moedas, Instituicoes, TipoTransacao
+from app.utils.choices import Instituicoes, TipoTransacao
 
 
 create_routes = Blueprint('create_routes', __name__, url_prefix='/api/create')
@@ -110,9 +111,37 @@ def rota_criar_transacao(tipo:str = 'despesa'):
 		id_conta_bancaria = id_conta_bancaria,
 	)
 
-	nova_transacao.realizar_transacao(conta_bancaria=conta_bancaria)
+	nova_transacao.realizar_transacao()
 
 	return response(200, nova_transacao.json())
+
+
+@create_routes.route('/transacao/realizar', methods=['POST'])
+@jwt_required()
+def rota_realizar_transacao():
+	'''
+	'''
+	id_transacao = get_validate(request.get_json(), 
+	{
+		'id_transacao': int
+	})
+
+	transacao: Transacao = Transacao.query.filter_by(id=id_transacao).first()
+
+	if transacao == None:
+		return response(404, 'Nenhuma transação encontrada')
+
+	if transacao.id_usuario != get_jwt_identity():
+		return response(401, 'Você não possui permissão para modificar essa transação')
+
+	transacao.update(
+		resolvido = True
+	)
+	db.session.commit()
+
+	transacao.realizar_transacao()
+
+	return response(200, 'Transação foi resolvida')
 
 
 @create_routes.route('/categoria/<string:tipo>', methods=['POST'])
