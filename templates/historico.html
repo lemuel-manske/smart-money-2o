@@ -1,0 +1,124 @@
+{% extends 'app_base.html' %}
+
+{% block conteudo %}
+
+<div class="container-fluid px-4 mt-5">
+	<article class="col p-3 my-5 bg-light shadow rounded-4">
+		<div class="p-2">
+			<div class="ms-5">
+				<header class="d-flex align-items-center pb-2">
+					<svg fill="#dc3545" class="me-3" height="2em" width="2em">
+						<use xlink:href="#arrow-down" />
+					</svg>
+					<h3 class="mb-0 fw-bold">DESPESAS</h3>
+				</header>
+				<h3>
+					<p id="valor-despesas"></p>
+				</h3>
+			</div>
+
+			<section class="row p-3 mb-2">
+				<div class="col text-center">
+					<h5>
+						PAGAS <br>
+						<small class="text-muted" id="despesas-pagas"></small>
+					</h5>
+				</div>
+
+				<div class="col text-center">
+					<h5>
+						NÃO PAGAS <br>
+						<small class="text-muted" id="despesas-nao-pagas"></small>
+					</h5>
+				</div>
+			</section>
+
+			<table class="table" id="tabela-despesas">
+				<thead>
+					<tr>
+						<th scope="col">Resolvido</th>
+						<th scope="col">Valor</th>
+						<th scope="col">Categoria</th>
+						<th scope="col">Conta</th>
+						<th scope="col">Descrição</th>
+						<th scope="col">Ações</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr id="despesas-default-row">
+						<th scope="row">...</th>
+						<td>...</td>
+						<td>...</td>
+						<td>...</td>
+						<td>...</td>
+						<td>...</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</article>
+
+	<article class="col p-3 my-5 bg-light shadow rounded-4">
+		<div class="p-2">
+			<div class="ms-5">
+				<header class="d-flex align-items-center pb-2">
+					<svg fill="#198754" class="me-3" height="2em" width="2em">
+						<use xlink:href="#arrow-up" />
+					</svg>
+					<h3 class="mb-0 fw-bold">RECEITAS</h3>
+				</header>
+				<h3>
+					<p id="valor-receitas"></p>
+				</h3>
+			</div>
+
+			<section class="row p-3 mb-2">
+				<div class="col text-center">
+					<h5>
+						RECEBIDAS <br>
+						<small class="text-muted" id="receitas-recebidas"></small>
+					</h5>
+				</div>
+
+				<div class="col text-center">
+					<h5>
+						NÃO RECEBIDAS <br>
+						<small class="text-muted" id="receitas-nao-recebidas"></small>
+					</h5>
+				</div>
+			</section>
+
+			<table class="table" id="tabela-receitas">
+				<thead>
+					<tr>
+						<th scope="col">Resolvido</th>
+						<th scope="col">Valor</th>
+						<th scope="col">Categoria</th>
+						<th scope="col">Conta</th>
+						<th scope="col">Descrição</th>
+						<th scope="col">Ações</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr id="receitas-default-row">
+						<th scope="row">...</th>
+						<td>...</td>
+						<td>...</td>
+						<td>...</td>
+						<td>...</td>
+						<td>...</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</article>
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+<script src="../static/js/historico/popular_historico.js"></script>
+<script src="../static/js/historico/forms.js"></script>
+
+{% endblock %}
