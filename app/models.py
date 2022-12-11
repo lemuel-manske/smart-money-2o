@@ -88,10 +88,10 @@ class Usuario(BaseModelClass, db.Model):
 
 	json = to_json('id', 'nome', 'email', 'senha', 'moeda', 'premium')	
 
-	contas_bancarias = db.relationship('ContaBancaria', backref='usuario', lazy='select')
-	categorias = db.relationship('Categoria', backref='usuario', lazy='select')
-	transacoes = db.relationship('Transacao', backref='usuario', lazy='select')
-	transferencias = db.relationship('Transferencia', backref='usuario', lazy='select')
+	contas_bancarias = db.relationship('ContaBancaria', backref='usuario', lazy='select', cascade="all, delete-orphan")
+	categorias = db.relationship('Categoria', backref='usuario', lazy='select', cascade="all, delete-orphan")
+	transacoes = db.relationship('Transacao', backref='usuario', lazy='select', cascade="all, delete-orphan")
+	transferencias = db.relationship('Transferencia', backref='usuario', lazy='select', cascade="all, delete-orphan")
 
 	def __str__(self) -> str:
 		return f'<Usuario: id:{self.id}, nome:{self.nome}, email:{self.email}, \
@@ -108,12 +108,12 @@ class ContaBancaria(BaseModelClass, db.Model):
 
 	id_usuario = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
 
-	transacoes = db.relationship('Transacao', backref='conta_bancaria', lazy='select')
+	transacoes = db.relationship('Transacao', backref='conta_bancaria', lazy='select', cascade="all, delete-orphan")
 	
 	transferencias_realizadas = db.relationship('Transferencia', backref='conta_bancaria_origem', \
-		lazy='select', foreign_keys='Transferencia.id_conta_bancaria_origem')
+		lazy='select', foreign_keys='Transferencia.id_conta_bancaria_origem', cascade="all, delete-orphan")
 	transferencias_recebidas = db.relationship('Transferencia', backref='conta_bancaria_destino', \
-		lazy='select', foreign_keys='Transferencia.id_conta_bancaria_destino')
+		lazy='select', foreign_keys='Transferencia.id_conta_bancaria_destino', cascade="all, delete-orphan")
 
 	json = to_json('id', 'nome', 'saldo', 'instituicao', 'usuario')
 
@@ -140,41 +140,35 @@ class Transacao(BaseModelClass, db.Model):
 	json = to_json('id', 'tipo', 'valor', 'descricao', 'resolvido', \
 		'data_origem', 'usuario', 'categoria', 'conta_bancaria')
 	
-	def realizar_transacao(self, conta_bancaria: ContaBancaria) -> None:
+	def realizar_transacao(self) -> None:
 		'''
 		Realiza a transação (despesa ou receita),
 		reavendo o saldo da conta bancária.
 
-		Args:
-			conta_bancaria: Instância de objeto `ContaBancaria`.
-
 		Returns:
 			None.
 		'''
 		if self.resolvido:
 			if self.tipo == TipoTransacao.DESPESA:
-				conta_bancaria.saldo -= self.valor
+				self.conta_bancaria.saldo -= self.valor
 			else:
-				conta_bancaria.saldo += self.valor
+				self.conta_bancaria.saldo += self.valor
 				
 			db.session.commit()
 
-	def excluir_transacao(self, conta_bancaria: ContaBancaria) -> None:
+	def excluir_transacao(self) -> None:
 		'''
 		Realiza a exlusão de uma transação (despesa ou receita),
 		reavendo o saldo da conta bancária.
-
-		Args:
-			conta_bancaria: Instância de objeto `ContaBancaria`.
-
+		
 		Returns:
 			None.
 		'''
 		if self.resolvido:
 			if self.tipo == TipoTransacao.DESPESA:
-				conta_bancaria.saldo += self.valor
+				self.conta_bancaria.saldo += self.valor
 			else:
-				conta_bancaria.saldo -= self.valor
+				self.conta_bancaria.saldo -= self.valor
 				
 			db.session.commit()
 
@@ -213,21 +207,30 @@ class Transferencia(BaseModelClass, db.Model):
 
 	json = to_json('id', 'valor', 'usuario', 'conta_bancaria_origem', 'conta_bancaria_destino')
 
-	def realizar_transferencia(self, conta_bancaria_origem: ContaBancaria, conta_bancaria_destino: ContaBancaria) -> None:
+	def realizar_transferencia(self) -> None:
 		'''
 		Realiza a transferência entre contas bancárias,
 		reavendo o saldo da conta bancária origem e adicionando
 		na conta bancária destino.
 
-		Args:
-			conta_bancaria_origem: Instância de objeto `ContaBancaria`.
-			conta_bancaria_desino: Instância de objeto `ContaBancaria`.
+		Returns:
+			None.
+		'''
+		self.conta_bancaria_origem.saldo -= self.valor
+		self.conta_bancaria_destino.saldo += self.valor
+
+		db.session.commit()
+
+	def excluir_transferencia(self) -> None:
+		'''
+		Remove a transferência entre contas bancárias,
+		reavendo o saldo da conta bancária origem e destino.
 
 		Returns:
 			None.
 		'''
-		conta_bancaria_origem.saldo -= self.valor
-		conta_bancaria_destino.saldo += self.valor
+		self.conta_bancaria_origem.saldo += self.valor
+		self.conta_bancaria_destino.saldo -= self.valor
 
 		db.session.commit()
 
