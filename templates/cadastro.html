@@ -3,16 +3,14 @@
 {% block conteudo %}
 
 <div class="container">
-	<main style="height: 60vh;" class="row align-items-center">
+	<main class="row align-items-center">
 		<div class="col">
 			<div class="py-5 text-center">
 				<h2 class="h2">CADASTRO</h2>
 			</div>
-
-			<div id="cadastro-super-error"></div>
 			
 			<div>
-				<form class="row justify-content-center px-5 mb-5 form">
+				<form class="row justify-content-center px-5 mb-5">
 					<div class="col-md-8">
 						<div class="input-group has-validation mb-3">
 							<div class="form-floating">
@@ -30,20 +28,21 @@
 							<div class="invalid-feedback" id="nome-cadastro-erro"></div>
 						</div>
 						
-						<div class="input-group has-validation mb-2">
-							<div class="form-floating">
-								<input type="password" class="form-control toggle-visibility" id="senha-cadastro" placeholder="Senha">
-								<label for="senha">Senha</label>
+						<div class="show-password-group">
+							<div class="input-group has-validation mb-2">
+								<div class="form-floating">
+									<input type="password" class="form-control toggle-visibility" id="senha-cadastro" placeholder="Senha">
+									<label for="senha">Senha</label>
+								</div>
+								<div class="invalid-feedback" id="senha-cadastro-erro"></div>
 							</div>
-							<div class="invalid-feedback" id="senha-cadastro-erro"></div>
-						</div>
-
-						<div class="d-flex justify-content-end">
-							<div class="form-check mb-3">
-								<label class="form-check-label" for="mostrar-senha">
-									Mostrar senha
-								</label>
-								<input class="form-check-input toggle-visibility-button" type="checkbox" value="" id="mostrar-senha">
+							<div class="d-flex justify-content-end">
+								<div class="form-check mb-3">
+									<label class="form-check-label" for="mostrar-senha">
+										Mostrar senha
+									</label>
+									<input class="form-check-input toggle-visibility-button" type="checkbox" value="" id="mostrar-senha">
+								</div>
 							</div>
 						</div>
 					</div>
