@@ -4,7 +4,7 @@ from app.utils.choices import Moedas, Instituicoes, TipoTransacao
 from app.utils import response
 
 
-home = Blueprint('home_routes', __name__)
+home = Blueprint('home', __name__)
 
 @home.route('/', methods=['GET'])
 def home_route():
