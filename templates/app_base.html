@@ -5,24 +5,64 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<!-- CSS only -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
-		integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-
-	<!-- JavaScript Bundle with Popper -->
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
-		crossorigin="anonymous"></script>
+	<!-- Bootstrap: CSS only -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 
 	<link rel="stylesheet" href="../static/css/style.css">
 
 	<title>{{ title }} - Smart Money</title>
 </head>
 
+<!-- Símbolos e ícones utilizados : FONTAWESOME e BOOTSTRAP ICONS -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+
+	<symbol id="circle-x" viewBox="0 0 16 16">
+		<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+	</symbol>
+
+	<symbol id="exclamation-point" viewBox="0 0 16 16">
+		<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+	</symbol>
+
+	<symbol id="circle-check" viewBox="0 0 16 16">
+			<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+	</symbol>
+
 	<symbol id="home" viewBox="0 0 16 16">
 		<path
 			d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z" />
+	</symbol>
+
+	<symbol id="shirt" viewBox="0 0 640 512">
+		<path d="M211.8 0c7.8 0 14.3 5.7 16.7 13.2C240.8 51.9 277.1 80 320 80s79.2-28.1 91.5-66.8C413.9 5.7 420.4 0 428.2 0h12.6c22.5 0 44.2 7.9 61.5 22.3L628.5 127.4c6.6 5.5 10.7 13.5 11.4 22.1s-2.1 17.1-7.8 23.6l-56 64c-11.4 13.1-31.2 14.6-44.6 3.5L480 197.7V448c0 35.3-28.7 64-64 64H224c-35.3 0-64-28.7-64-64V197.7l-51.5 42.9c-13.3 11.1-33.1 9.6-44.6-3.5l-56-64c-5.7-6.5-8.5-15-7.8-23.6s4.8-16.6 11.4-22.1L137.7 22.3C155 7.9 176.7 0 199.2 0h12.6z"/>
+	</symbol>
+
+	<symbol id="market" viewBox="0 0 576 512">
+		<path d="M547.6 103.8L490.3 13.1C485.2 5 476.1 0 466.4 0H109.6C99.9 0 90.8 5 85.7 13.1L28.3 103.8c-29.6 46.8-3.4 111.9 51.9 119.4c4 .5 8.1 .8 12.1 .8c26.1 0 49.3-11.4 65.2-29c15.9 17.6 39.1 29 65.2 29c26.1 0 49.3-11.4 65.2-29c15.9 17.6 39.1 29 65.2 29c26.2 0 49.3-11.4 65.2-29c16 17.6 39.1 29 65.2 29c4.1 0 8.1-.3 12.1-.8c55.5-7.4 81.8-72.5 52.1-119.4zM499.7 254.9l-.1 0c-5.3 .7-10.7 1.1-16.2 1.1c-12.4 0-24.3-1.9-35.4-5.3V384H128V250.6c-11.2 3.5-23.2 5.4-35.6 5.4c-5.5 0-11-.4-16.3-1.1l-.1 0c-4.1-.6-8.1-1.3-12-2.3V384v64c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V384 252.6c-4 1-8 1.8-12.3 2.3z"/>
+	</symbol>
+
+	<symbol id="entertainment" viewBox="0 0 640 512">
+		<path d="M399.3 509.7c-58.2-8.8-108.2-72.8-137.6-119.7c-20-31.9-25.1-70.3-19.6-107.7L266.3 118c1.4-9.8 5.1-19.2 12.9-25.2c20.2-15.6 72.4-41.5 185.1-24.5s155.2 57.4 170 78.3c5.7 8 6.5 18.1 5.1 27.9L615.2 338.8c-5.5 37.3-21.5 72.6-49.8 97.2c-41.7 36.1-108 82.5-166.1 73.7zm17.1-277.7c.1-.5 .2-1.1 .3-1.6c3.2-21.8-11.6-42-33.1-45.3s-41.5 11.8-44.7 33.5c-.1 .5-.1 1.1-.2 1.6c-.6 5.4 5.2 8.4 10.3 6.7c9-3 18.8-3.9 28.7-2.4s19.1 5.3 26.8 10.8c4.4 3.1 10.8 2 11.8-3.3zm112.6 22.2c4.4 3.1 10.8 2 11.8-3.3c.1-.5 .2-1.1 .3-1.6c3.2-21.8-11.6-42-33.1-45.3s-41.5 11.8-44.7 33.5c-.1 .5-.1 1.1-.2 1.6c-.6 5.4 5.2 8.4 10.3 6.7c9-3 18.8-3.9 28.7-2.4s19.1 5.3 26.8 10.8zm-11.5 85.2c-28.8 12.8-61.4 17.8-94.9 12.8s-63.2-19.5-87-40.3c-6.3-5.5-16.2-1.7-15.2 6.7c5.9 48.5 43 89.1 93 96.7s97.2-20.2 116.8-64.9c3.4-7.7-5-14.3-12.6-10.9zM240.7 446.9c-58.2 8.8-124.5-37.5-166.1-73.7c-28.3-24.5-44.3-59.8-49.8-97.2L.6 111.8C-.8 102 0 91.9 5.7 83.9C20.5 63 63 22.7 175.7 5.6s164.9 8.9 185.1 24.5c.9 .7 1.7 1.4 2.4 2.1c-52.8 4.8-85.1 21-103.6 35.3c-17 13.1-23 32-25 45.9L215.3 244.7c-2.6 .1-5.2 .4-7.9 .8c-35.2 5.3-61.8 32.7-68.2 66.3c-1.6 8.2 8.3 12.2 14.8 7c15.6-12.4 34.1-21.3 54.7-25.4c-3 38.4 4 78.7 25.9 113.6c6.9 11 15 23.1 24.2 35.4c-5.9 2.1-11.9 3.6-18 4.5zM174.1 157c-1-5.3-7.4-6.4-11.8-3.3c-7.7 5.5-16.8 9.3-26.8 10.8s-19.8 .6-28.7-2.4c-5.1-1.7-10.9 1.3-10.3 6.7c.1 .5 .1 1.1 .2 1.6c3.2 21.8 23.2 36.8 44.7 33.5s36.3-23.5 33.1-45.3c-.1-.5-.2-1.1-.3-1.6z"/>
+	</symbol>
+
+	<symbol id="hospital" viewBox="0 0 576 512">
+		<path d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9l2.6-2.4C267.2 438.6 256 404.6 256 368c0-97.2 78.8-176 176-176c28.3 0 55 6.7 78.7 18.5c.9-6.5 1.3-13 1.3-19.6v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5zM432 512c79.5 0 144-64.5 144-144s-64.5-144-144-144s-144 64.5-144 144s64.5 144 144 144zm16-208v48h48c8.8 0 16 7.2 16 16s-7.2 16-16 16H448v48c0 8.8-7.2 16-16 16s-16-7.2-16-16V384H368c-8.8 0-16-7.2-16-16s7.2-16 16-16h48V304c0-8.8 7.2-16 16-16s16 7.2 16 16z"/>
+	</symbol>
+
+	<symbol id="transport" viewBox="0 0 448 512">
+		<path d="M224 0C348.8 0 448 35.2 448 80V96 416c0 17.7-14.3 32-32 32v32c0 17.7-14.3 32-32 32H352c-17.7 0-32-14.3-32-32V448H128v32c0 17.7-14.3 32-32 32H64c-17.7 0-32-14.3-32-32l0-32c-17.7 0-32-14.3-32-32V96 80C0 35.2 99.2 0 224 0zM64 128V256c0 17.7 14.3 32 32 32H352c17.7 0 32-14.3 32-32V128c0-17.7-14.3-32-32-32H96c-17.7 0-32 14.3-32 32zM80 400c17.7 0 32-14.3 32-32s-14.3-32-32-32s-32 14.3-32 32s14.3 32 32 32zm288 0c17.7 0 32-14.3 32-32s-14.3-32-32-32s-32 14.3-32 32s14.3 32 32 32z"/>
+	</symbol>
+
+	<symbol id="education" viewBox="0 0 448 512">
+		<path d="M96 0C43 0 0 43 0 96V416c0 53 43 96 96 96H384h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V384c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H384 96zm0 384H352v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/>
+	</symbol>
+
+	<symbol id="gift" viewBox="0 0 512 512">
+		<path d="M190.5 68.8L225.3 128H224 152c-22.1 0-40-17.9-40-40s17.9-40 40-40h2.2c14.9 0 28.8 7.9 36.3 20.8zM64 88c0 14.4 3.5 28 9.6 40H32c-17.7 0-32 14.3-32 32v64c0 17.7 14.3 32 32 32H480c17.7 0 32-14.3 32-32V160c0-17.7-14.3-32-32-32H438.4c6.1-12 9.6-25.6 9.6-40c0-48.6-39.4-88-88-88h-2.2c-31.9 0-61.5 16.9-77.7 44.4L256 85.5l-24.1-41C215.7 16.9 186.1 0 154.2 0H152C103.4 0 64 39.4 64 88zm336 0c0 22.1-17.9 40-40 40H288h-1.3l34.8-59.2C329.1 55.9 342.9 48 357.8 48H360c22.1 0 40 17.9 40 40zM32 288V464c0 26.5 21.5 48 48 48H224V288H32zM288 512H432c26.5 0 48-21.5 48-48V288H288V512z"/>
+	</symbol>
+
+	<symbol id="cash" viewBox="0 0 576 512">
+		<path d="M400 256C400 317.9 349.9 368 288 368C226.1 368 176 317.9 176 256C176 194.1 226.1 144 288 144C349.9 144 400 194.1 400 256zM272 224V288H264C255.2 288 248 295.2 248 304C248 312.8 255.2 320 264 320H312C320.8 320 328 312.8 328 304C328 295.2 320.8 288 312 288H304V208C304 199.2 296.8 192 288 192H272C263.2 192 256 199.2 256 208C256 216.8 263.2 224 272 224zM0 128C0 92.65 28.65 64 64 64H512C547.3 64 576 92.65 576 128V384C576 419.3 547.3 448 512 448H64C28.65 448 0 419.3 0 384V128zM48 176V336C83.35 336 112 364.7 112 400H464C464 364.7 492.7 336 528 336V176C492.7 176 464 147.3 464 112H112C112 147.3 83.35 176 48 176z"/>
 	</symbol>
 
 	<symbol id="table" viewBox="0 0 16 16">
@@ -56,23 +96,24 @@
 			d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z" />
 	</symbol>
 
-	<symbol id="transferencia" viewBox="0 0 16 16">
+	<symbol id="circle-arrows" viewBox="0 0 16 16">
 		<path
 			d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
 		<path fill-rule="evenodd"
 			d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
 	</symbol>
 
-	<symbol id="banco" viewBox="0 0 16 16">
+	<symbol id="bank" viewBox="0 0 16 16">
 		<path d="M8.277.084a.5.5 0 0 0-.554 0l-7.5 5A.5.5 0 0 0 .5 6h1.875v7H1.5a.5.5 0 0 0 0 1h13a.5.5 0 1 0 0-1h-.875V6H15.5a.5.5 0 0 0 .277-.916l-7.5-5zM12.375 6v7h-1.25V6h1.25zm-2.5 0v7h-1.25V6h1.25zm-2.5 0v7h-1.25V6h1.25zm-2.5 0v7h-1.25V6h1.25zM8 4a1 1 0 1 1 0-2 1 1 0 0 1 0 2zM.5 15a.5.5 0 0 0 0 1h15a.5.5 0 1 0 0-1H.5z"/>
 	</symbol>
 </svg>
 
-<body class="bg-light">
+<body class="bg-white">
 	<main>
 		<div class="d-flex flex-row">
-			<div class="d-flex flex-column flex-shrink-0 bg-light" style="width: 4.8rem; min-height: 100vh;">
-				<a class="navbar-brand mx-auto py-4" href="{{ url_for('home_routes.home_route') }}">
+			<!-- Barra de navegação lateral -->
+			<div class="d-flex flex-column flex-shrink-0 bg-light shadow" style="width: 4.8rem; min-height: 100vh;">
+				<a class="navbar-brand mx-auto py-4" href="{{ url_for('home.home_route') }}">
 					<img style="height: 60px;" src="../static/img/logo.png" alt="identidade visual">
 				</a>
 				<ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
@@ -80,7 +121,7 @@
 						<div class="btn-group dropend">
 							<button type="button" class="btn rounded-pill dropdown-toggle py-2"
 								data-bs-toggle="dropdown" aria-expanded="false" data-bs-placement="right">
-								<svg class="bi pe-none" width="32" height="32" role="img" aria-label="Adicionar">
+								<svg class="pe-none" width="32" height="32" role="img" aria-label="Adicionar">
 									<use xlink:href="#add" />
 								</svg>
 							</button>
@@ -113,7 +154,7 @@
 							<a href="#"
 								class="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none dropdown-toggle"
 								data-bs-toggle="dropdown" aria-expanded="false">
-								<svg class="bi pe-none" width="24" height="24" role="img" aria-label="User">
+								<svg class="pe-none" width="24" height="24" role="img" aria-label="User">
 									<use xlink:href="#user" />
 								</svg>
 							</a>
@@ -125,7 +166,7 @@
 									<hr class="dropdown-divider">
 								</li>
 								<li>
-									<a class="dropdown-item" href="{{ url_for('auth_routes.rota_logout') }}">Sair</a>
+									<a class="dropdown-item" id="logout">Sair</a>
 								</li>
 							</ul>
 						</div>
@@ -134,299 +175,310 @@
 					<li class="nav-item">
 						<a href="{{ url_for('main.render_dashboard') }}" class="nav-link py-3 border-bottom rounded-0"
 							title="Home" data-bs-toggle="tooltip" data-bs-placement="right">
-							<svg class="bi pe-none" width="24" height="24" role="img" aria-label="Home">
+							<svg class="pe-none" width="24" height="24" role="img" aria-label="Home">
 								<use xlink:href="#home" />
 							</svg>
 						</a>
 					</li>
 					<li>
-						<a href="{{ url_for('main.render_teste') }}" class="nav-link py-3 border-bottom rounded-0"
+						<a href="{{ url_for('main.render_historico') }}" class="nav-link py-3 border-bottom rounded-0"
 							title="Resumo" data-bs-toggle="tooltip" data-bs-placement="right">
-							<svg class="bi pe-none" width="24" height="24" role="img" aria-label="Resumo">
+							<svg class="pe-none" width="24" height="24" role="img" aria-label="Resumo">
 								<use xlink:href="#table" />
 							</svg>
 						</a>
 					</li>
 					<li>
-						<a href="{{ url_for('main.render_teste') }}" class="nav-link py-3 border-bottom rounded-0"
+						<a href="{{ url_for('main.render_historico') }}" class="nav-link py-3 border-bottom rounded-0"
 							title="Historico" data-bs-toggle="tooltip" data-bs-placement="right">
-							<svg class="bi pe-none" width="24" height="24" role="img" aria-label="Historico">
+							<svg class="pe-none" width="24" height="24" role="img" aria-label="Historico">
 								<use xlink:href="#list-ul" />
 							</svg>
 						</a>
 					</li>
 				</ul>
-				
-			</div>
-			<div class="modal fade" id="formDespesa" tabindex="-1" aria-labelledby="formDespesaLabel" aria-hidden="true">
-				<!--Formulario modal despesa-->
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="formDespesaLabel">Adicionar despesa</h1>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<form>
-								<div class="row mb-3 gy-3">
-									<div class="col">
-										<div class="form-floating">
-											<div class="form-floating">
-												<select id="contas-bancarias-despesa" class="form-select">
-													</select>
-												<label for="contas-bancarias-despesa">Conta bancária</label>
-											</div>
-										</div>
-									</div>
-									<div class="col">
-										<div class="form-floating">
-											<select id="categorias-despesa" class="form-select">
-												</select>
-											<label for="categorias-despesa">Categoria</label>
-										</div>
-									</div>
-								</div>
-		
-								<div class="input-group has-validation mb-3">
-									<div class="form-floating">
-										<input type="number" step="any" class="form-control" id="valor-despesa"
-											placeholder="Valor">
-										<label for="valor-despesa">Valor</label>
-									</div>
-									<div class="invalid-feedback" id="valor-despesa-erro"></div>
-								</div>
-		
-								<div class="d-flex">
-									<div class="form-check mb-3">
-										<label class="form-check-label" for="status-despesa">
-											Já foi pago?
-										</label>
-										<input class="form-check-input toggle-visibility-button" type="checkbox" value=""
-											id="status-despesa">
-									</div>
-								</div>
-								
-								<div class="input-group has-validation mb-3">
-									<div class="form-floating">
-										<textarea class="form-control" placeholder="Escreva uma breve descrição" id="descricao-despesa" style="height: 4em"></textarea>
-
-										<label for="descricao-despesa">Descrição</label>
-									</div>
-									<div class="invalid-feedback" id="valor-despesa-erro"></div>
-								</div>
-							</form>
-						</div>
-						<div class="modal-footer border-none">
-							<div class="d-flex mx-auto">
-								<button id="despesa-submit" type="button"
-									class="btn btn-indigo text-white rounded-pill px-3">ADICIONAR</button>
-								</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		
-			<div class="modal fade" id="formReceita" tabindex="-1" aria-labelledby="formReceitaLabel" aria-hidden="true">
-				<!--Formulario modal receita-->
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="formReceitaLabel">Adicionar receita</h1>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<form>
-								<div class="row mb-3 gy-3">
-									<div class="col">
-										<div class="form-floating">
-											<div class="form-floating">
-												<select id="contas-bancarias-receita" class="form-select">
-													</select>
-												<label for="contas-bancarias-receita">Conta bancária</label>
-											</div>
-										</div>
-									</div>
-									<div class="col">
-										<div class="form-floating">
-											<select id="categorias-receita" class="form-select">
-												</select>
-											<label for="categorias-receita">Categoria</label>
-										</div>
-									</div>
-								</div>
-		
-								<div class="input-group has-validation mb-3">
-									<div class="form-floating">
-										<input type="number" step="any" class="form-control" id="valor-receita"
-											placeholder="Valor">
-										<label for="valor-receita">Valor</label>
-									</div>
-									<div class="invalid-feedback" id="valor-receita-erro"></div>
-								</div>
-		
-								<div class="d-flex">
-									<div class="form-check mb-3">
-										<label class="form-check-label" for="status-receita">
-											Já foi recebido?
-										</label>
-										<input class="form-check-input toggle-visibility-button" type="checkbox" value=""
-											id="status-receita">
-									</div>
-								</div>
-								
-								<div class="input-group has-validation mb-3">
-									<div class="form-floating">
-										<textarea class="form-control" placeholder="Escreva uma breve descrição" id="descricao-receita" style="height: 4em"></textarea>
-
-										<label for="descricao-receita">Descrição</label>
-									</div>
-									<div class="invalid-feedback" id="valor-receita-erro"></div>
-								</div>
-							</form>
-						</div>
-						<div class="modal-footer border-none">
-							<div class="d-flex mx-auto">
-								<button type="button" id="receita-submit"
-										class="btn btn-indigo text-white rounded-pill px-3">
-									ADICIONAR
-								</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		
-			<div class="modal fade" id="formContaBancaria" tabindex="-1" aria-labelledby="formContaBancariaLabel"
-				aria-hidden="true">
-				<!--Formulario modal conta bancaria-->
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="formContaBancariaLabel">Adicionar conta bancária</h1>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<form>
-								<div class="row mb-3 gy-3">
-									<div class="col-md-8">
-										<div class="input-group has-validation">
-											<div class="form-floating">
-												<input type="number" step="any" class="form-control" id="saldo-conta-bancaria"
-													placeholder="Saldo disponível">
-												<label for="saldo-conta-bancaria">Saldo disponível</label>
-											</div>
-											<div class="invalid-feedback" id="saldo-conta-bancaria-erro"></div>
-										</div>
-									</div>
-									<div class="col-md-4">
-										<div class="form-floating">
-											<select class="form-select" id="selecionar-moeda">
-												</select>
-											<label for="selecionar-moeda">Moeda para conversão</label>
-										</div>
-									</div>
-								</div>
-
-								<div class="row mb-3 gy-3">
-									<div class="col">
-										<div class="form-floating">
-											<select id="instituicao-bancaria" class="form-select">
-												</select>
-											<label for="instituicao-bancaria">Instituição bancária</label>
-										</div>
-									</div>
-									<div class="col">
-										<div class="form-floating">
-											<input type="text" class="form-control" id="nome-conta-bancaria"
-												placeholder="Apelido da conta">
-											<label for="nome-conta-bancaria">Apelido da conta</label>
-											<div class="invalid-feedback" id="nome-conta-bancaria-erro"></div>
-										</div>
-									</div>
-								</div>
-							</form>
-						</div>
-						<div class="modal-footer border-none">
-							<div class="d-flex mx-auto">
-								<button type="submit" id="conta-bancaria-submit" class="btn btn-indigo text-white rounded-pill px-3">
-									ADICIONAR
-								</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="modal fade" id="formTransferencia" tabindex="-1" aria-labelledby="formTransferenciaLabel" aria-hidden="true">
-				<!--Formulario modal receita-->
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="formTransferenciaLabel">Adicionar transferência</h1>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<form>
-								<div class="row mb-3 gy-3">
-									<div class="col">
-										<div class="form-floating">
-											<select id="contas-bancarias-origem" class="form-select">
-												</select>
-											<label for="contas-bancarias-origem">Conta bancária origem</label>
-										</div>
-										<div class="invalid-feedback" id="contas-bancarias-origem-erro"></div>
-									</div>
-									<div class="col">
-										<div class="form-floating">
-											<select id="contas-bancarias-destino" class="form-select">
-												</select>
-											<label for="contas-bancarias-destino">Conta bancária destino</label>
-											</div>
-										<div class="invalid-feedback" id="contas-bancarias-destino-erro"></div>
-									</div>
-								</div>
-		
-								<div class="input-group has-validation mb-3">
-									<div class="form-floating">
-										<input type="number" step="any" class="form-control" id="valor-transferencia"
-											placeholder="Valor">
-										<label for="valor-transferencia">Valor</label>
-									</div>
-									<div class="invalid-feedback" id="valor-transferencia-erro"></div>
-								</div>
-							</form>
-						</div>
-						<div class="modal-footer border-none">
-							<div class="d-flex mx-auto">
-								<button type="button" id="transferencia-submit"
-										class="btn btn-indigo text-white rounded-pill px-3">
-									ADICIONAR
-								</button>
-							</div>
-						</div>
-					</div>
-				</div>
 			</div>
 
 			<div class="col">
 				{% block conteudo %}
+
+				<!-- Adicione aqui o conteúdo de cada página -->
+				
 				{% endblock %}
+				
+				<div class="toast-container position-fixed top-0 end-0 p-3">
+					<div id="flash-message" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+						<div class="toast-header">
+							<strong class="me-auto">Smart Money</strong>
+							<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+						</div>
+						<div class="toast-body">
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</main>
 
-	
+	<!--Formulario modal RECEITA -->
+	<div class="modal fade" id="formReceita" tabindex="-1" aria-labelledby="formReceitaLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="formReceitaLabel">Adicionar receita</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="row mb-3 gy-3">
+							<div class="col">
+								<div class="form-floating">
+									<div class="form-floating">
+										<select id="contas-bancarias-receita" class="form-select">
+											</select>
+										<label for="contas-bancarias-receita">Conta bancária</label>
+									</div>
+								</div>
+							</div>
+							<div class="col">
+								<div class="form-floating">
+									<select id="categorias-receita" class="form-select">
+										</select>
+									<label for="categorias-receita">Categoria</label>
+								</div>
+							</div>
+						</div>
 
+						<div class="input-group has-validation mb-3">
+							<div class="form-floating">
+								<input type="number" min="0" step="0.01" class="form-control" id="valor-receita"
+									placeholder="Valor">
+								<label for="valor-receita">Valor</label>
+							</div>
+							<div class="invalid-feedback" id="valor-receita-erro"></div>
+						</div>
+
+						<div class="d-flex">
+							<div class="form-check mb-3">
+								<label class="form-check-label" for="status-receita">
+									Já foi recebido?
+								</label>
+								<input class="form-check-input toggle-visibility-button" type="checkbox" value=""
+									id="status-receita">
+							</div>
+						</div>
+						
+						<div class="input-group has-validation mb-3">
+							<div class="form-floating">
+								<textarea class="form-control" placeholder="Escreva uma breve descrição" id="descricao-receita" style="height: 4em"></textarea>
+
+								<label for="descricao-receita">Descrição</label>
+							</div>
+							<div class="invalid-feedback" id="valor-receita-erro"></div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer border-none">
+					<div class="d-flex mx-auto">
+						<button type="button" id="receita-submit"
+								class="btn btn-indigo text-white rounded-pill px-3">
+							ADICIONAR
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--Formulario modal CONTA BANCÁRIA -->
+	<div class="modal fade" id="formContaBancaria" tabindex="-1" aria-labelledby="formContaBancariaLabel"
+		aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="formContaBancariaLabel">Adicionar conta bancária</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="input-group has-validation mb-3">
+							<div class="form-floating">
+								<input type="number" min="0" step="0.01" class="form-control" id="saldo-conta-bancaria"
+									placeholder="Saldo disponível">
+								<label for="saldo-conta-bancaria">Saldo disponível</label>
+							</div>
+							<div class="invalid-feedback" id="saldo-conta-bancaria-erro"></div>
+						</div>
+
+						<div class="row mb-3 gy-3">
+							<div class="col">
+								<div class="form-floating">
+									<select id="instituicao-bancaria" class="form-select">
+										</select>
+									<label for="instituicao-bancaria">Instituição bancária</label>
+								</div>
+							</div>
+							<div class="col">
+								<div class="form-floating">
+									<input type="text" class="form-control" id="nome-conta-bancaria"
+										placeholder="Apelido da conta">
+									<label for="nome-conta-bancaria">Apelido da conta</label>
+									<div class="invalid-feedback" id="nome-conta-bancaria-erro"></div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer border-none">
+					<div class="d-flex mx-auto">
+						<button type="submit" id="conta-bancaria-submit" class="btn btn-indigo text-white rounded-pill px-3">
+							ADICIONAR
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--Formulario modal TRANSFERÊNCIA -->
+	<div class="modal fade" id="formTransferencia" tabindex="-1" aria-labelledby="formTransferenciaLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="formTransferenciaLabel">Adicionar transferência</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="row mb-3 gy-3">
+							<div class="col">
+								<div class="form-floating">
+									<select id="contas-bancarias-origem" class="form-select">
+										</select>
+									<label for="contas-bancarias-origem">Conta bancária origem</label>
+								</div>
+								<div class="invalid-feedback" id="contas-bancarias-origem-erro"></div>
+							</div>
+							<div class="col">
+								<div class="form-floating">
+									<select id="contas-bancarias-destino" class="form-select">
+										</select>
+									<label for="contas-bancarias-destino">Conta bancária destino</label>
+									</div>
+								<div class="invalid-feedback" id="contas-bancarias-destino-erro"></div>
+							</div>
+						</div>
+
+						<div class="input-group has-validation mb-3">
+							<div class="form-floating">
+								<input type="number" min="0" step="0.01" class="form-control" id="valor-transferencia"
+									placeholder="Valor">
+								<label for="valor-transferencia">Valor</label>
+							</div>
+							<div class="invalid-feedback" id="valor-transferencia-erro"></div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer border-none">
+					<div class="d-flex mx-auto">
+						<button type="button" id="transferencia-submit"
+								class="btn btn-indigo text-white rounded-pill px-3">
+							ADICIONAR
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--Formulario modal DESPESA -->
+	<div class="modal fade" id="formDespesa" tabindex="-1" aria-labelledby="formDespesaLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="formDespesaLabel">Adicionar despesa</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="row mb-3 gy-3">
+							<div class="col">
+								<div class="form-floating">
+									<div class="form-floating">
+										<select id="contas-bancarias-despesa" class="form-select">
+											</select>
+										<label for="contas-bancarias-despesa">Conta bancária</label>
+									</div>
+								</div>
+							</div>
+							<div class="col">
+								<div class="form-floating">
+									<select id="categorias-despesa" class="form-select">
+										</select>
+									<label for="categorias-despesa">Categoria</label>
+								</div>
+							</div>
+						</div>
+
+						<div class="input-group has-validation mb-3">
+							<div class="form-floating">
+								<input type="number" min="0" step="0.01" class="form-control" id="valor-despesa"
+									placeholder="Valor">
+								<label for="valor-despesa">Valor</label>
+							</div>
+							<div class="invalid-feedback" id="valor-despesa-erro"></div>
+						</div>
+
+						<div class="d-flex">
+							<div class="form-check mb-3">
+								<label class="form-check-label" for="status-despesa">
+									Já foi pago?
+								</label>
+								<input class="form-check-input toggle-visibility-button" type="checkbox" value=""
+									id="status-despesa">
+							</div>
+						</div>
+						
+						<div class="input-group has-validation mb-3">
+							<div class="form-floating">
+								<textarea class="form-control" placeholder="Escreva uma breve descrição" id="descricao-despesa" style="height: 4em"></textarea>
+								<label for="descricao-despesa">Descrição</label>
+							</div>
+							<div class="invalid-feedback" id="valor-despesa-erro"></div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer border-none">
+					<div class="d-flex mx-auto">
+						<button id="despesa-submit" type="button"
+							class="btn btn-indigo text-white rounded-pill px-3">ADICIONAR</button>
+						</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 
 <!-- JQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
 	crossorigin="anonymous"></script>
 
+<!-- Bootstrap: JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+
+<!-- FontAwesome KIT -->
+<script src="https://kit.fontawesome.com/8cb77ca896.js" crossorigin="anonymous"></script>
+
 <script src="../static/js/dashboard/forms/resgatar_dados_backend.js"></script>
 <script src="../static/js/dashboard/forms/forms.js"></script>
 <script src="../static/js/utils.js"></script>
 
-{% block script %}{% endblock %}
+{% block script %}
+
+<!-- Adicione aqui scritps específicos -->
+
+{% endblock %}
 
 </html>
