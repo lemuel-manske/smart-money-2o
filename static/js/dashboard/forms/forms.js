@@ -1,15 +1,14 @@
 jQuery(function($) {
 
-	clean_errors();
+	remover_erros();
 	
 	check_flash_message();
 
 	$('#conta-bancaria-submit').on('click', function () {
-		conta_bancaria_fields = fields.conta_bancaria;
+		conta_bancaria_fields = DASHBOARD_FIELDS.conta_bancaria;
 
 		let [ nome, saldo ] = get_fields_values(conta_bancaria_fields.nome, conta_bancaria_fields.saldo)
-		let [ moeda, instituicao ] = get_select_fields_values(conta_bancaria_fields.moeda_select, 
-				conta_bancaria_fields.instituicao_select)
+		let [ instituicao ] = get_select_fields_values(conta_bancaria_fields.instituicao_select)
 
 		is_error = !completed_fieds(conta_bancaria_fields.saldo, conta_bancaria_fields.nome)
 
@@ -17,15 +16,17 @@ jQuery(function($) {
 			$.ajax({
 				url: 'http://localhost:5000/api/create/conta-bancaria',
 				method: 'POST',
+				xhrFields: {
+					withCredentials: true
+				},
 				headers: {
-					'Authorization': 'Bearer ' + localStorage.getItem('x-sm-update-bearer-token')
+					'X-CSRF-TOKEN':getCookie('csrf_access_token')
 				},
 				contentType: 'application/json',
 				dataType: 'json',
 				data: JSON.stringify({
 					nome: nome,
 					saldo: saldo,
-					moeda: moeda,
 					instituicao: instituicao
 				}),
 				
@@ -44,7 +45,7 @@ jQuery(function($) {
 	})
 
 	$('#despesa-submit').on('click', function () {
-		despesa_fields = fields.despesa;
+		despesa_fields = DASHBOARD_FIELDS.despesa;
 		
 		let [ valor, descricao ] = get_fields_values(despesa_fields.valor, despesa_fields.descricao);
 		let [ conta_bancaria, categoria ] = get_select_fields_id(despesa_fields.contas_bancarias_select,
@@ -57,8 +58,11 @@ jQuery(function($) {
 			$.ajax({
 				url: 'http://localhost:5000/api/create/transacao/despesa',
 				method: 'POST',
+				xhrFields: {
+					withCredentials: true
+				},
 				headers: {
-					'Authorization': 'Bearer ' + localStorage.getItem('x-sm-update-bearer-token')
+					'X-CSRF-TOKEN':getCookie('csrf_access_token')
 				},
 				contentType: 'application/json',
 				dataType: 'json',
@@ -85,7 +89,7 @@ jQuery(function($) {
 	})
 
 	$('#receita-submit').on('click', function () {
-		receita_fields = fields.receita;
+		receita_fields = DASHBOARD_FIELDS.receita;
 		
 		let [ valor, descricao ] = get_fields_values(receita_fields.valor, receita_fields.descricao);
 		let [ conta_bancaria, categoria ] = get_select_fields_id(receita_fields.contas_bancarias_select,
@@ -98,8 +102,11 @@ jQuery(function($) {
 			$.ajax({
 				url: 'http://localhost:5000/api/create/transacao/receita',
 				method: 'POST',
+				xhrFields: {
+					withCredentials: true
+				},
 				headers: {
-					'Authorization': 'Bearer ' + localStorage.getItem('x-sm-update-bearer-token')
+					'X-CSRF-TOKEN':getCookie('csrf_access_token')
 				},
 				contentType: 'application/json',
 				dataType: 'json',
@@ -126,7 +133,7 @@ jQuery(function($) {
 	})
 
 	$('#transferencia-submit').on('click', function () {
-		transferencia_fields = fields.transferencia;
+		transferencia_fields = DASHBOARD_FIELDS.transferencia;
 		
 		let [ valor ] = get_fields_values(transferencia_fields.valor, transferencia_fields.descricao);
 		let [ conta_destino, conta_origem ] = get_select_fields_id(
@@ -139,8 +146,11 @@ jQuery(function($) {
 			$.ajax({
 				url: 'http://localhost:5000/api/create/transferencia',
 				method: 'POST',
+				xhrFields: {
+					withCredentials: true
+				},
 				headers: {
-					'Authorization': 'Bearer ' + localStorage.getItem('x-sm-update-bearer-token')
+					'X-CSRF-TOKEN':getCookie('csrf_access_token')
 				},
 				contentType: 'application/json',
 				dataType: 'json',
@@ -151,7 +161,7 @@ jQuery(function($) {
 				}),
 				
 				success: (res) => {
-					sessionStorage.setItem('flash_message', `Transferência adicionada com sucesso!`);
+					sessionStorage.setItem('flash_message', 'Transferência adicionada com sucesso!');
 					
 					location.reload();
 				},
@@ -164,58 +174,20 @@ jQuery(function($) {
 		}
 	})
 
-
-
-	// $.ajax({
-	// 	url: 'http://localhost:5000/api/list/contas-bancarias',
-	// 	method: 'GET',
-	// 	headers: {
-	// 		'Authorization': 'Bearer ' + localStorage.getItem('x-sm-update-bearer-token')
-	// 	},
-		
-	// 	success: (res) => {
-	// 		// Pegar somente os primeiros 4 elementos
-	// 		let contas_bancarias = (JSON.parse(
-	// 			JSON.stringify(res))).slice(0, 4)
+	$('#logout').on('click', function () {
+		$.ajax({
+			url: 'http://localhost:5000/api/user/logout',
+			method: 'GET',
+			xhrFields: {
+				withCredentials: true
+			},
+			headers: {
+				'X-CSRF-TOKEN':getCookie('csrf_access_token')
+			},
 			
-	// 		for (conta of contas_bancarias) {
-	// 			$('#contas-bancarias-resume').append(
-	// 				criar_article_conta_bancaria(conta.id, conta.moeda, conta.instituicao, parseFloat(conta.saldo).toFixed(2))
-	// 			);
-	// 		}
-	// 	}
-	// })
-
-	// $.ajax({
-	// 	url: 'http://localhost:5000/api/list/categorias',
-	// 	method: 'GET',
-	// 	headers: {
-	// 		'Authorization': 'Bearer ' + localStorage.getItem('x-sm-update-bearer-token')
-	// 	},
-		
-	// 	success: (categorias) => {
-	// 		for (cat of categorias) {
-	// 			alert(cat)
-	// 		}
-	// 	}
-	// })
-
-	// $('#despesa-submit').on('click', function () {
-	// 	despesa_fields = fields.despesa
-
-	// 	let [ contas_bancarias_select, categorias_select, valor, foi_pago, descricao ] = get_validate(
-	// 		despesa_fields.contas_bancarias_select,
-	// 		despesa_fields.categorias_select,
-	// 		despesa_fields.valor,
-	// 		despesa_fields.status,
-	// 		despesa_fields.descricao)
-
-	// 	is_error = !completed_fieds(despesa_fields.valor, despesa_fields.descricao)
-
-	// 	if (!is_error) {
-	// 		$.ajax({
-	// 			url: 'http://localhost:5000/api/create/'
-	// 		})
-	// 	}
-	// })
+			success: (res) => {
+				location.reload()
+			}
+		})
+	})
 })
