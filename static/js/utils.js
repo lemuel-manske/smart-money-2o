@@ -20,10 +20,6 @@ function show_error(field, msg) {
 	$(field + '-erro').text(msg);
 }
 
-function show_super_error(id, msg) {
-	$(id).text(msg);
-}
-
 function completed_fieds(...fields) {
 	let tmp = true;
 	for (let field of fields) {
@@ -35,7 +31,7 @@ function completed_fieds(...fields) {
 	return tmp;
 }
 
-function clean_errors() {
+function remover_erros() {
 	$('.form-control').on('input', function() {
 		$(this).removeClass('is-invalid');
 	});
@@ -64,4 +60,16 @@ function getCookie(name) {
 	const value = `; ${document.cookie}`;
 	const parts = value.split(`; ${name}=`);
 	if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+function set_user_moeda() {
+	$.ajax({
+		url: 'http://localhost:5000/api/user/minha-conta',
+		method: 'GET',
+		
+
+		success: (res) => {
+			localStorage.setItem('moeda', res.msg.moeda)
+		}
+	})
 }
