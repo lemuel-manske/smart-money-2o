@@ -6,19 +6,23 @@ class EnumBase(Enum):
 	@classmethod
 	def to_json(cls):
 		'''
-		Cria um dicionário de representação das classes enumeradoras,
-		contendo chave e valor atribuídos.
+		Cria um dicionário de representação das 
+		classes enumeradoras, contendo chave e valor atribuídos.
 		'''
 		return {
 			cls.__name__: { attr: cls[attr].value for attr in cls._member_names_ }
 		}
 
 	@classmethod
-	def has_name(cls, name):
+	def possui(cls, nome: str):
 		'''
-		Verifica se a classe enumeradora possui o nome especificado.
+		Verifica se a classe enumeradora possui o 
+		nome especificado `nome`.
+
+		Args:
+			nome: str.
 		'''
-		return name in cls._member_names_ 
+		return nome in cls._member_names_ 
 
 
 class Moedas(EnumBase):
@@ -38,9 +42,10 @@ class Moedas(EnumBase):
 
 class Instituicoes(EnumBase):
 	'''
-	NUBANK = "NUBANK"
-	INTER = "INTER"
-	BRADESCO = "BRADESCO"
+	NUBANK = "Nubank"
+	BANCO_INTER = "Banco Inter"
+	BRADESCO = "Bradesco"
+	CARTEIRA = "Carteira"
 	'''
 	NUBANK = "Nubank"
 	BANCO_INTER = "Banco Inter"
