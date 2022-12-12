@@ -4,23 +4,24 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 from app import db
 from app.models import Categoria, ContaBancaria, Transacao, Transferencia
 from app.utils import get_validate, response
-from app.utils.choices import Instituicoes, TipoTransacao
+from app.utils.enums import Instituicoes, TipoTransacao
 
 
 create_routes = Blueprint('create_routes', __name__, url_prefix='/api/create')
 
-@create_routes.route('/conta-bancaria', methods=['POST'])
+@create_routes.post('/conta-bancaria')
 @jwt_required()
 def rota_criar_conta_bancaria():
 	'''
-	Realiza o cadastro de uma nova conta bancária 
-	na conta do usuário via POST.
+	Realiza a criação de uma nova conta bancária na conta do usuário.
 
-	Realiza request de dados em json (nome, saldo e instituição
-	bancária), validando os mesmos (`get_validate`).
+	Args:
+		nome: str;
+		saldo: str;
+		instituicao: str.
 
-	Para instituição bancária é realizado verificação de 'compatibilidade'
-	com os tipos presentes na classe enumeradora `Instituicao` 
+	Para instituição bancária é realizado verificação de compatibilidade
+	com os tipos presentes na classe enumeradora `Instituicao`
 	(`choices.py`).
 
 	Returns:
@@ -36,10 +37,10 @@ def rota_criar_conta_bancaria():
 		'instituicao': str
 	})
 
-	if 	not Instituicoes.has_name(instituicao.upper()):
-		return response(400, 'Nome de instituição informada não existente. Consulte /enum/instituicao')
+	if 	not Instituicoes.possui(instituicao.upper()):
+		return response(404, 'Nome de instituição informada não existente. Consulte /enum/instituicao')
 
-	nova_conta_bancaria: ContaBancaria = ContaBancaria.create(
+	nova_conta_bancaria: ContaBancaria = ContaBancaria.criar_instancia(
 		nome = nome,
 		saldo = saldo,
 		instituicao = Instituicoes[instituicao.upper()],
@@ -49,15 +50,18 @@ def rota_criar_conta_bancaria():
 	return response(200, nova_conta_bancaria.json())
 
 
-@create_routes.route('/transacao/<string:tipo>', methods=['POST'])
+@create_routes.post('/transacao/<string:tipo>')
 @jwt_required()
 def rota_criar_transacao(tipo:str = 'despesa'):
 	'''
-	Realiza o cadastro de uma nova transação 
-	na conta do usuário via POST.
+	Realiza o cadastro de uma nova transação na conta do usuário.
 
-	Realiza request de dados em json (valor, descrição, resolvido, 
-	id_categoria e id_conta_bancaria), validando os mesmos (`get_validate`).
+	Args:
+		valor: str;
+		descricao: str;
+		resolvido: bool;
+		id_categoria: int;
+		id_conta_bancaria: int.
 
 	Para o parâmetro `tipo` na URL, é realizado verificação de 
 	correspondência com os valores presentes na classe
@@ -68,9 +72,9 @@ def rota_criar_transacao(tipo:str = 'despesa'):
 
 	Returns:
 		CÓD. 200 (OK): Cadastro de nova transação e retorno dos dados 
-			cadastrados em formato json.
-		CÓD 401 (UNAUTHORIZED): O id da categoria informado não corresponde;
-			parâmetro na URL não corresponde a nenhum valor na classe `TipoTransacao`
+			cadastrados em formato json;
+		CÓD 401 (UNAUTHORIZED): O id da categoria informado não corresponde, ou
+			parâmetro na URL não corresponde a nenhum valor na classe `TipoTransacao`;
 		CÓD 404 (NOT_FOUND): Nenhuma conta bancária ou categoria com o 
 			id informado foi encontrada.
 	'''
@@ -93,15 +97,15 @@ def rota_criar_transacao(tipo:str = 'despesa'):
 
 	if conta_bancaria == None or categoria == None:
 		return response(404, 'Nenhuma conta bancária ou categoria com o id informado \
-			foi encontrada. Consulte /listar/<nome_classe>.')
+			foi encontrada. Consulte /listar/<nome-da-classe>')
 
 	if categoria.tipo.name != tipo.upper():
 		return response(401, f'O id de categoria informado não corresponde a {tipo}')
 
-	if not TipoTransacao.has_name(tipo.upper()):
+	if not TipoTransacao.possui(tipo.upper()):
 		return response(401, 'O tipo de transação informada não corresponde a `despesa` ou `receita`')
 
-	nova_transacao: Transacao = Transacao.create(
+	nova_transacao: Transacao = Transacao.criar_instancia(
 		tipo = TipoTransacao[tipo.upper()],
 		valor = valor,
 		descricao = descricao,
@@ -116,10 +120,24 @@ def rota_criar_transacao(tipo:str = 'despesa'):
 	return response(200, nova_transacao.json())
 
 
-@create_routes.route('/transacao/realizar', methods=['POST'])
+@create_routes.post('/transacao/realizar')
 @jwt_required()
 def rota_realizar_transacao():
 	'''
+	Realiza a efetuação de uma transação, isto é, a transação
+	é tida como paga ou recebida e o saldo da conta bancária
+	associada é reavido.
+
+	Args:
+		id_transacao: int.
+
+	Returns:
+		CÓD. 200 (OK): Cadastro da categoria e retorno dos dados 
+			cadastrados em formato json;
+		CÓD 401 (UNAUTHORIZED): Usuário não possui permissão para
+			efetuar a transação;
+		CÓD 404 (NOT_FOUND): Transação com id informado não foi
+			encontrada.
 	'''
 	id_transacao = get_validate(request.get_json(), 
 	{
@@ -134,7 +152,7 @@ def rota_realizar_transacao():
 	if transacao.id_usuario != get_jwt_identity():
 		return response(401, 'Você não possui permissão para modificar essa transação')
 
-	transacao.update(
+	transacao.atualizar_instancia(
 		resolvido = True
 	)
 	db.session.commit()
@@ -144,24 +162,24 @@ def rota_realizar_transacao():
 	return response(200, 'Transação foi resolvida')
 
 
-@create_routes.route('/categoria/<string:tipo>', methods=['POST'])
+@create_routes.post('/categoria/<string:tipo>')
 @jwt_required()
 def rota_criar_categoria(tipo:str):
 	'''
-	Realiza o cadastro de uma nova categoria 
-	na conta do usuário via POST.
+	Realiza o cadastro de uma nova categoria na conta do usuário.
 
-	Realiza request de dados em json (nome e ícone), validando os 
-	mesmos (`get_validate`).
+	Args:
+		nome: str;
+		icone: str.
 
-	Para o tipo de categoria verificação de 'compatibilidade'
+	Para o tipo de categoria (informado p/ URL) verificação de 'compatibilidade'
 	com os tipos presentes na classe enumeradora `TipoTransacao` 
 	(choices.py).
 
 	Returns:
 		CÓD. 200 (OK): Cadastro da categoria e retorno dos dados 
-			cadastrados em formato json.
-		CÓD 401 (BAD_REQUEST): Tipo de categoria informado não 
+			cadastrados em formato json;
+		CÓD 401 (UNAUTHORIZED): Tipo de categoria informado não 
 			compatível com 'despesa' ou 'receita'.
 	'''
 	nome, icone = get_validate(request.get_json(), 
@@ -170,10 +188,10 @@ def rota_criar_categoria(tipo:str):
 		'icone': str
 	})
 
-	if not TipoTransacao.has_name(tipo.upper()):
+	if not TipoTransacao.possui(tipo.upper()):
 		return response(401, 'O tipo de categoria informada por URL não corresponde a `despesa` ou `receita`')
 
-	nova_categoria: Categoria = Categoria.create(
+	nova_categoria: Categoria = Categoria.criar_instancia(
 		tipo = TipoTransacao[tipo.upper()],
 		nome = nome,
 		icone = icone,
@@ -183,12 +201,25 @@ def rota_criar_categoria(tipo:str):
 	return response(200, nova_categoria.json())
 
 
-@create_routes.route('/transferencia', methods=['POST'])
+@create_routes.post('/transferencia')
 @jwt_required()
 def rota_criar_transferencia():
 	'''
 	Realiza o cadastro de uma nova transferência
-	entre contas bancárias na conta do usuário via POST.
+	entre contas bancárias na conta do usuário.
+
+	Args:
+		valor: str;
+		id_conta_bancaria_origem: int;
+		id_conta_bancaria_destino: int.
+	
+	Returns:
+		CÓD. 200 (OK): Criação da transferência e retorno dos dados 
+			cadastrados em formato json;
+		CÓD 400 (BAD_REQUEST): A conta bancária de origem deve ser
+			diferente da conta bancária de destino;
+		CÓD 401 (UNAUTHORIZED): O usuário da sessão atual não possui
+			acesso a conta bancária de origem ou destino.
 	'''
 	valor, id_conta_bancaria_origem, id_conta_bancaria_destino = get_validate(request.get_json(), 
 	{
@@ -211,7 +242,7 @@ def rota_criar_transferencia():
 	if (conta_bancaria_destino.id == conta_bancaria_origem.id):
 		return response(400, 'A conta de destino deve ser diferente da conta de origem', 'contas_bancarias_destino_select')
 
-	nova_transferencia: Transferencia = Transferencia.create(
+	nova_transferencia: Transferencia = Transferencia.criar_instancia(
 		valor = valor,
 		id_usuario = id_usuario,
 		id_conta_bancaria_origem = id_conta_bancaria_origem,

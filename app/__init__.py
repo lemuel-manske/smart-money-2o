@@ -19,6 +19,7 @@ def create_app(config=Config):
 	jwt.init_app(app)
 
 	with app.app_context():
+		# Habilitar chaves estrangeiras
 		db.session.execute('PRAGMA FOREIGN_KEYS=ON')
 
 	from app.api.auth import auth_routes
@@ -27,9 +28,9 @@ def create_app(config=Config):
 	from app.api.delete import delete_routes
 	from app.api.list import list_routes
 
-	from app.routes.auth import auth
-	from app.routes.home import home
-	from app.routes.main import main
+	from app.routes.auth import auth_render
+	from app.routes.home import home_render
+	from app.routes.main import main_render
 
 	app.register_blueprint(auth_routes)
 	app.register_blueprint(user_routes)
@@ -37,8 +38,8 @@ def create_app(config=Config):
 	app.register_blueprint(delete_routes)
 	app.register_blueprint(list_routes)
 
-	app.register_blueprint(auth)
-	app.register_blueprint(home)
-	app.register_blueprint(main)
+	app.register_blueprint(auth_render)
+	app.register_blueprint(home_render)
+	app.register_blueprint(main_render)
 	
 	return app

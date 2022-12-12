@@ -2,9 +2,7 @@ from functools import wraps
 
 from flask import redirect, url_for
 from flask_jwt_extended import verify_jwt_in_request
-
-from app.models import Usuario
-
+ 
 
 def check_for_jwt(route):
 	'''

@@ -5,74 +5,31 @@ from flask import Response, Blueprint, request
 from flask_jwt_extended import create_access_token, get_jwt, get_jwt_identity, set_access_cookies
 
 from app import bcrypt
+
 from app.utils import get_validate, response, email_validate
-from app.utils.choices import Instituicoes, TipoTransacao
+from app.utils.enums import Instituicoes, TipoTransacao
 
 from app.models import Categoria, ContaBancaria, Usuario
+
+from app.api.categorias_padrao import CATEGORIAS_PADRAO
 
 
 auth_routes = Blueprint('auth_routes', __name__, url_prefix='/api/auth')
 
-
-categorias_padroes = [
-	{
-		'tipo': 'DESPESA',
-		'icone': 'shirt',
-		'nome': 'Vestuário',
-	},
-	{
-		'tipo': 'DESPESA',
-		'icone': 'hospital',
-		'nome': 'Saúde',
-	},
-	{
-		'tipo': 'DESPESA',
-		'icone': 'market',
-		'nome': 'Mercado',
-	},
-	{
-		'tipo': 'DESPESA',
-		'icone': 'entertainment',
-		'nome': 'Entretenimento',
-	},
-	{
-		'tipo': 'DESPESA',
-		'icone': 'transport',
-		'nome': 'Transporte',
-	},
-	{
-		'tipo': 'DESPESA',
-		'icone': 'education',
-		'nome': 'Educação',
-	},	
-	{
-		'tipo': 'RECEITA',
-		'icone': 'gift',
-		'nome': 'Presente',
-	},
-	{
-		'tipo': 'RECEITA',
-		'icone': 'cash',
-		'nome': 'Salário',
-	},
-
-]
-
-
 @auth_routes.post('/login')
 def rota_login():
 	'''
-	Realiza o login do usuário via POST.
+	Realiza o login do usuário.
 
-	Realiza request de dados em json (email e senha), 
-	validando os mesmos (`get_validade`).
+	Args:
+		email: str;
+		senha: str.
 
 	Returns:
 		CÓD. 200 (OK): Criação de JWT (identidade id) e 
-			retorna objeto usuário em formato json.
-		CÓD. 401 (UNAUTHORIZED): Senha incorreta.
-		CÓD. 404 (NOT_FOUND): Usuário não encontrado 
-			no banco de dados.
+			retorna objeto usuário em formato json;
+		CÓD. 401 (UNAUTHORIZED): Senha incorreta;
+		CÓD. 404 (NOT_FOUND): Usuário não encontrado.
 	'''
 	email, senha = get_validate(request.get_json(),
 		{
@@ -91,7 +48,6 @@ def rota_login():
 	tk = create_access_token(identity=usuario.id)
 
 	res = response(200, tk)
-	
 	set_access_cookies(res, tk)
 
 	return res
@@ -100,19 +56,22 @@ def rota_login():
 @auth_routes.post('/cadastro')
 def rota_cadastro():
 	'''
-	Realiza registro de um novo usuário via POST.
+	Realiza registro de um novo usuário.
 
-	Realiza request de dados em json (email, senha e nome),
-	validando os mesmos (`get_validate`).
+	Args:
+		email: str;
+		senha: str;
+		nome: str.
 
-	Realiza o login imediatamente após confirmação de sucesso (JWT).
+	Realiza o login imediatamente após confirmação de 
+	sucesso (criação de JWT).
 
 	Realiza a adição de categorias padrão na conta do usuário.
 
 	Returns:
 		CÓD. 200 (OK): Criação de JWT (identidade id) e 
-			retorna objeto usuário em formato json.
-		CÓD. 400 (BAD REQUEST): Email inválido com base em regex.
+			retorna objeto usuário em formato json;
+		CÓD. 400 (BAD REQUEST): Email inválido com base em regex;
 		CÓD. 409 (CONFLICT): Usuário já existe (filtro p/ email).
 	'''
 	email, senha, nome = get_validate(request.get_json(), \
@@ -130,21 +89,21 @@ def rota_cadastro():
 	
 	senha_hash = bcrypt.generate_password_hash(senha).decode('UTF-8')
 
-	novo_usuario: Usuario = Usuario.create(
+	novo_usuario: Usuario = Usuario.criar_instancia(
 		email = email,
 		senha = senha_hash,
 		nome = nome
 	)
 
-	for categoria in categorias_padroes:
-		Categoria.create(
+	for categoria in CATEGORIAS_PADRAO:
+		Categoria.criar_instancia(
 			tipo = TipoTransacao[categoria['tipo']],
 			nome = categoria['nome'],
 			icone = categoria['icone'],
 			id_usuario = novo_usuario.id
 		)
 	
-	ContaBancaria.create(
+	ContaBancaria.criar_instancia(
 		nome = 'Carteira',
 		saldo = 0,
 		instituicao = Instituicoes['CARTEIRA'],
@@ -154,7 +113,6 @@ def rota_cadastro():
 	tk = create_access_token(identity=novo_usuario.id)
 
 	res = response(200, tk)
-	
 	set_access_cookies(res, tk)
 
 	return res

@@ -8,15 +8,28 @@ from app.utils import get_validate, response
 
 delete_routes = Blueprint('delete_routes', __name__, url_prefix='/api/delete')
 
-@delete_routes.route('/conta-bancaria', methods=['DELETE'])
+@delete_routes.delete('/conta-bancaria')
 @jwt_required()
 def rota_deletar_conta_bancaria():
 	'''
+	Realiza a exclusão de uma conta bancária e todos os 
+	outros registros associados, como transações e transferências.
+
+	Args:
+		id_conta_bancaria: int - id da conta bancária para ser excluída.
+	
+	Returns:
+		CÓD. 200 (OK): Conta bancária removida;
+		CÓD. 401 (UNAUTHORIZED): Conta bancária foi encontrada, porém o
+			usuário da sessão atual não possui acesso a ela 
+			(pertence a outro usuário);
+		CÓD. 404 (NOT_FOUND): Nenhuma conta bancária encontrada com o
+			id informado.
 	'''
 	id_conta_bancaria = get_validate(request.get_json(), 
-	{
-		'id_conta_bancaria': int
-	})
+		{
+			'id_conta_bancaria': int
+		})
 
 	conta_bancaria: ContaBancaria = ContaBancaria.query.filter_by(id=id_conta_bancaria).first()
 
@@ -32,10 +45,22 @@ def rota_deletar_conta_bancaria():
 	return response(200, 'Conta bancária removida com sucesso')
 
 
-@delete_routes.route('/transacao', methods=['DELETE'])
+@delete_routes.delete('/transacao')
 @jwt_required()
 def rota_deletar_transacao():
 	'''
+	Realiza a exclusão de uma transação.
+
+	Args:
+		id_transacao: int - id da transação para ser excluída.
+	
+	Returns:
+		CÓD. 200 (OK): Transação removida;
+		CÓD. 401 (UNAUTHORIZED): Transação foi encontrada, porém o
+			usuário da sessão atual não possui acesso a ela 
+			(pertence a outro usuário);
+		CÓD. 404 (NOT_FOUND): Nenhuma transação encontrada com o
+			id informado.
 	'''
 	id_transacao = get_validate(request.get_json(), 
 	{
@@ -58,10 +83,22 @@ def rota_deletar_transacao():
 	return response(200, 'Transação removida com sucesso')
 
 
-@delete_routes.route('/transferencia', methods=['DELETE'])
+@delete_routes.delete('/transferencia')
 @jwt_required()
 def rota_deletar_transferencia():
 	'''
+	Realiza a exclusão de uma transferência.
+	
+	Args:
+		id_transferencia: int - id da transação para ser excluída.
+	
+	Returns:
+		CÓD. 200 (OK): Transferência removida;
+		CÓD. 401 (UNAUTHORIZED): Transferência foi encontrada, porém o
+			usuário da sessão atual não possui acesso a ela 
+			(pertence a outro usuário);
+		CÓD. 404 (NOT_FOUND): Nenhuma transferência encontrada com o
+			id informado.
 	'''
 	id_transferencia = get_validate(request.get_json(), 
 	{
@@ -81,4 +118,4 @@ def rota_deletar_transferencia():
 	db.session.delete(transferencia)
 	db.session.commit()
 
-	return response(200, 'Transferêmcia removida com sucesso')
+	return response(200, 'Transferência removida com sucesso')

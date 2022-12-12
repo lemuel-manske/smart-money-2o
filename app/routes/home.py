@@ -1,31 +1,38 @@
-from flask import jsonify, Blueprint, render_template
+from flask import Blueprint, render_template
 
-from app.utils.choices import Moedas, Instituicoes, TipoTransacao
 from app.utils import response
+from app.utils.enums import Moedas, Instituicoes, TipoTransacao
 
 
-home = Blueprint('home', __name__)
+home_render = Blueprint('home_render', __name__)
 
-@home.route('/', methods=['GET'])
+@home_render.get('/')
 def home_route():
+	'''
+	Rota padrão (home) da aplicação.
+	'''
 	return render_template('home.html', title='Home')
 
 
-@home.route('/enum/<string:classe>', methods=['GET'])
+@home_render.get('/enum/<string:classe>')
 def rota_informacoes_enum(classe: str):
 	'''
 	Retorna classes enumeradores existentes.
-	'''
+
+	Args:
+		classe: str - classe `Enum` a ser exibida.
 	
-	resultado = None
+	Returns:
+		CÓD. 404 (NOT_FOUND): Classe não encontrada;
+		CÓD. 200 (OK): Sucesso - retorna a classe em formato json.
+	'''
+	enums = {
+		'moedas': Moedas.to_json(),
+		'tipo-transacao': TipoTransacao.to_json(),
+		'instituicao-bancaria': Instituicoes.to_json(),
+	}
 
-	if classe == 'moedas':
-		resultado = Moedas.to_json()
-	elif classe == 'tipo-transacao':
-		resultado = TipoTransacao.to_json()
-	elif classe == 'instituicao-bancaria':
-		resultado = Instituicoes.to_json()
-	else:	
-		return response(404, 'Nenhuma classe encontrada com o nome informado.')
+	if classe in enums.keys():
+		return response(200, enums[classe])
 
-	return jsonify(resultado)
+	return response(404, 'Nenhuma classe encontrada com o nome informado.')

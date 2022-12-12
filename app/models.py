@@ -5,7 +5,7 @@ from sqlalchemy.sql import func
 from sqlalchemy import inspect
 
 from app import db
-from app.utils.choices import Instituicoes, Moedas, TipoTransacao
+from app.utils.enums import Instituicoes, Moedas, TipoTransacao
 from app.utils import do_add_commit
 
 
@@ -13,10 +13,19 @@ T = TypeVar('T')
 
 def get_val(self, field: str) -> str:
 	'''
-	Captura o valor do campo (`self.__gettattribute`),
-	realizando verificação de compatibilidade com Enum,
-	retornando o nome do enumerador ou simplesmente o atributo,
-	caso não seja uma instancia de Enum.
+	Retorna o valor de `field`, utilizando
+	__getattribute__, verificando a compatibilidade
+	com `Enum` (captura `value` do campo) e 
+	`db.Model` (captura `to_json` do campo).
+
+	Args:
+		self: Any;
+		field: str;
+
+	Returns:
+		Caso sub-classe de `Enum`: `value`;
+		Caso sub-classe de `db.Model`: `to_json()`;
+		Se não: valor normal;
 	'''
 	v = self.__getattribute__(field)
 
@@ -29,7 +38,8 @@ def get_val(self, field: str) -> str:
 
 def to_json(*fields) -> dict:
 	'''
-	Retorna um dicionário contendo os atributos da classe.
+	Retorna um dicionário (chave e valor) contendo os
+	atributos da classe (como chave) e seus respectivos valores.
 	'''
 	return lambda self: {
 		field: get_val(self, field) for field in fields
@@ -37,31 +47,35 @@ def to_json(*fields) -> dict:
 
 class BaseModelClass():
 	@classmethod
-	def create(cls: Type[T], **kwargs) -> T:
+	def criar_instancia(cls: Type[T], **kwargs) -> T:
 		'''
-		Realiza a criação de instância de modelo (´db.Model´).
-		Adiciona e salva as alterações no banco de dados 
-		automaticamente (`do_add_commit`).
+		Realiza a criação de instância de modelo ´db.Model´.
+		Adiciona e salva as alterações no banco de dados
+		automaticamente `do_add_commit`.
 
 		Args:
-			kwargs: Dicionário contendo dados necessários.
+			kwargs: Dicionário contendo dados necessários
+				para criação.
 
 		Returns:
-			inst: Instância de modelo criada
+			inst: Instância de modelo do tipo `cls` criada.
 		'''
 		inst = cls(**kwargs)
 		do_add_commit(inst)
 
 		return inst
 	
-	def update(self, **kwargs) -> None:
+	def atualizar_instancia(self, **kwargs) -> None:
 		'''
 		Realiza o update dos atributos de uma instancia de 
-		modelo (`db.Model`). Salva as alterações automaticamente
-		no banco de dados.
+		modelo `db.Model`. Salva as alterações automaticamente
+		no banco de dados `db.session.commit()`.
+
+		Não permite modificação do campo `id`.
 		
 		Args:
-			kwargs: Dicionário contendo novos dados.
+			kwargs: Dicionário contendo novos dados parciais 
+				ou totais.
 		
 		Returns:
 			None.
@@ -126,11 +140,12 @@ class Transacao(BaseModelClass, db.Model):
 	__tablename__ = 'transacao'
 
 	id = db.Column(db.Integer, primary_key=True)
-	tipo = db.Column(db.Enum(TipoTransacao), nullable=False) # despesa | receita
 	valor = db.Column(db.Numeric, nullable=False)
+	tipo = db.Column(db.Enum(TipoTransacao), nullable=False) # despesa | receita
 	descricao = db.Column(db.Text, nullable=False)
 	resolvido = db.Column(db.Boolean, nullable=False, default=False)
 		# pago e não pago (despesa) | recebido e não recebido(receita)
+		# caso a transação ainda não foi concluída, o saldo da conta bancária não é reavido
 	data_origem = db.Column(db.DateTime(timezone=True), nullable=False, server_default=func.now())
 	
 	id_usuario = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
