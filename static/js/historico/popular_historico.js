@@ -3,13 +3,21 @@ const ARTICLES = {
 		valor_despesas: '#valor-despesas',
 		tabela_despesas: '#tabela-despesas',
 		despesas_pagas: '#despesas-pagas',
-		despesas_nao_pagas: '#despesas-nao-pagas',
+		despesas_nao_pagas: '#despesas-nao-pagas'
 	},
 	receita: {
 		valor_receitas: '#valor-receitas',
 		tabela_receitas: '#tabela-receitas',
 		receitas_pagas: '#receitas-recebidas',
-		receitas_nao_pagas: '#receitas-nao-recebidas',
+		receitas_nao_pagas: '#receitas-nao-recebidas'
+	},
+	transferencia: {
+		valor_transferencias: '#valor-transferencias',
+		tabela_transferencias: '#tabela-transferencias'
+	},
+	contas_bancarias: {
+		saldo_contas_bancarias: '#saldo-contas-bancarias',
+		tabela_contas_bancarias: '#tabela-contas-bancarias'
 	}
 }
 
@@ -194,6 +202,88 @@ jQuery(function($) {
 					</tr>
 				`);
 			})
+		}
+	})
+
+	// Resgatar TRANSFERENCIAS
+	$.ajax({
+		url: 'http://localhost:5000/api/list/transferencias',
+		method: 'GET',
+
+		success: (res) => {
+			let transferencias = JSON.parse(JSON.stringify(res));
+
+			let valor_transferencias = 0.0;
+
+			for (transf of transferencias) {
+				valor_transferencias += parseFloat(transf.valor);
+			}
+
+			$(ARTICLES.transferencia.valor_transferencias).append(`${MOEDA_USUARIO} ${(valor_transferencias).toFixed(2)}`);
+		
+			$.each(transferencias, function(i, transf) {
+				$('#transferencias-default-row').toggleClass('d-none', !(transferencias.length === 0));
+
+				$(`${ARTICLES.transferencia.tabela_transferencias} tbody`).append(`
+					<tr>
+						<th scope="row" id="${transf.id}">${MOEDA_USUARIO} ${parseFloat(transf.valor).toFixed(2)}</th>
+						<td>${transf.conta_bancaria_origem.nome}</td>
+						<td>${transf.conta_bancaria_destino.nome}</td>
+						<td>
+							<ul class="d-flex list-unstyled">
+								<li class="px-2">
+									<a type="button" class="excluir-transferencia">
+										<svg fill="#dc3545" width="24" height="24" role="img" aria-label="Excluir">
+											<use xlink:href="#circle-x" />
+										</svg>
+									</a>
+								</li>
+							</ul>
+						</td>
+					</tr>
+				`);
+			});
+		}
+	})
+
+	// Resgatar CONTAS BANCÁRIAS
+	$.ajax({
+		url: 'http://localhost:5000/api/list/contas-bancarias',
+		method: 'GET',
+
+		success: (res) => {
+			let contas = JSON.parse(JSON.stringify(res));
+
+			let saldo_contas = 0.0;
+
+			for (conta of contas) {
+				saldo_contas += parseFloat(conta.saldo);
+			}
+
+			$(ARTICLES.contas_bancarias.saldo_contas).append(`${MOEDA_USUARIO} ${(saldo_contas).toFixed(2)}`);
+		
+			$.each(contas, function(i, conta) {
+				$('#contas-bancarias-default-row').toggleClass('d-none', !(contas.length === 0));
+
+				$(`${ARTICLES.contas_bancarias.tabela_contas_bancarias} tbody`).append(`
+					<tr>
+						<th scope="row" id="${conta.id}">${MOEDA_USUARIO} ${parseFloat(conta.saldo).toFixed(2)}</th>
+						<td>${conta.nome}</td>
+						<td>${conta.instituicao}</td>
+						<td>
+							<ul class="d-flex list-unstyled">
+								<li class="px-2">
+									<a type="button" class="excluir-conta-bancaria">
+										<svg fill="#dc3545" width="24" height="24" role="img" aria-label="Excluir">
+											<use xlink:href="#circle-x" />
+										</svg>
+									</a>
+								</li>
+							</ul>
+						</td>
+					</tr>
+				`);
+			});
 		}
 	})
 })
