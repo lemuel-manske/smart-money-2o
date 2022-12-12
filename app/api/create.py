@@ -249,6 +249,6 @@ def rota_criar_transferencia():
 		id_conta_bancaria_destino = id_conta_bancaria_destino
 	)
 
-	nova_transferencia.realizar_transferencia(conta_bancaria_origem, conta_bancaria_destino)
+	nova_transferencia.realizar_transferencia()
 
 	return response(200, nova_transferencia.json())
