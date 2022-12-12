@@ -17,7 +17,7 @@ def check_for_jwt(route):
 	@wraps(route)
 	def wrapper(*args, **kwargs):
 		if verify_jwt_in_request(optional=True) == None:
-			return redirect(url_for('auth.render_login'))
+			return redirect(url_for('auth_render.render_login'))
 		
 		return route(*args, **kwargs)
 
