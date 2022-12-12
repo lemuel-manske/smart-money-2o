@@ -18,4 +18,4 @@ curl <host>:5000/login -X POST -H "Content-Type: application/json" --data '{ "em
 
 #### Minha conta - GET
 
-curl <host>/minha-conta -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY2NzgyOTU5MSwianRpIjoiYTU1MDFjN2UtOTE3ZC00ZWZkLWIyZDYtZTEyM2IwOTliNmY1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjY3ODI5NTkxLCJleHAiOjE2NjgwODg3OTF9.VNcB0rXBsCi50KZEq4Xu-v-80aXC3FC4fayTNE_OLRA" -H "Content-Type: application/json"
+curl <host>/minha-conta -H "X-CSRF-TOKEN: <seu_token_gerado_por_login>"
