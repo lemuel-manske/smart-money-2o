@@ -32,9 +32,9 @@ jQuery(function($) {
 		method: 'GET',
 		
 		success: (res) => {
-			let data = (JSON.parse(JSON.stringify(res)));
+			let dados = (JSON.parse(JSON.stringify(res)));
 
-			let instituicoes_bancarias = data['Instituicoes'];
+			let instituicoes_bancarias = dados.msg.Instituicoes;
 
 			$.each(instituicoes_bancarias, function (i, inst) {
 				$(DASHBOARD_FIELDS.conta_bancaria.instituicao_select).append(

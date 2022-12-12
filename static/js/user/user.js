@@ -11,12 +11,12 @@ const CADASTRO_FIELDS = {
 
 jQuery(function($) {
 
-	remover_erros();
+	removeErrors();
 
 	$('#login-submit').on('click', function() {
-		let [ email, senha ] = get_fields_values(LOGIN_FIELDS.email, LOGIN_FIELDS.senha)
+		let [ email, senha ] = getFieldsValues(LOGIN_FIELDS.email, LOGIN_FIELDS.senha)
 
-		is_error = !completed_fieds(
+		is_error = !completedFields(
 			LOGIN_FIELDS.email,
 			LOGIN_FIELDS.senha)
 		
@@ -33,23 +33,23 @@ jQuery(function($) {
 				}),
 				
 				success: (res) => {
-					set_user_moeda()
+					setMoeda()
 
 					location.pathname = '/app/';
 				},
 
 				error: (xhr) => {
 					response = xhr.responseJSON;
-					show_error(LOGIN_FIELDS[response.target], response.msg);
+					showError(LOGIN_FIELDS[response.target], response.msg);
 				}
 			})
 		}
 	})
 
 	$('#cadastro-submit').on('click', function () {
-		let [ email, nome, senha ] = get_fields_values(CADASTRO_FIELDS.email, CADASTRO_FIELDS.nome, CADASTRO_FIELDS.senha)
+		let [ email, nome, senha ] = getFieldsValues(CADASTRO_FIELDS.email, CADASTRO_FIELDS.nome, CADASTRO_FIELDS.senha)
 
-		let is_error = !completed_fieds(
+		let is_error = !completedFields(
 			CADASTRO_FIELDS.email,
 			CADASTRO_FIELDS.nome,
 			CADASTRO_FIELDS.senha
@@ -69,14 +69,14 @@ jQuery(function($) {
 				}),
 
 				success: (res) => {
-					set_user_moeda()
+					setMoeda()
 
 					location.pathname = '/app/';
 				},
 				
 				error: (xhr) => {
 					response = xhr.responseJSON;
-					show_error(CADASTRO_FIELDS[response.target], response.msg);
+					showError(CADASTRO_FIELDS[response.target], response.msg);
 				}
 			})
 		}

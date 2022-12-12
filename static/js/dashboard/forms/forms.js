@@ -1,16 +1,16 @@
 jQuery(function($) {
 
-	remover_erros();
+	removeErrors();
 	
-	check_flash_message();
+	checkFlashMessage();
 
 	$('#conta-bancaria-submit').on('click', function () {
 		conta_bancaria_fields = DASHBOARD_FIELDS.conta_bancaria;
 
-		let [ nome, saldo ] = get_fields_values(conta_bancaria_fields.nome, conta_bancaria_fields.saldo)
-		let [ instituicao ] = get_select_fields_values(conta_bancaria_fields.instituicao_select)
+		let [ nome, saldo ] = getFieldsValues(conta_bancaria_fields.nome, conta_bancaria_fields.saldo)
+		let [ instituicao ] = getSelectFieldsValues(conta_bancaria_fields.instituicao_select)
 
-		is_error = !completed_fieds(conta_bancaria_fields.saldo, conta_bancaria_fields.nome)
+		is_error = !completedFields(conta_bancaria_fields.saldo, conta_bancaria_fields.nome)
 
 		if (!is_error) {
 			$.ajax({
@@ -47,12 +47,12 @@ jQuery(function($) {
 	$('#despesa-submit').on('click', function () {
 		despesa_fields = DASHBOARD_FIELDS.despesa;
 		
-		let [ valor, descricao ] = get_fields_values(despesa_fields.valor, despesa_fields.descricao);
-		let [ conta_bancaria, categoria ] = get_select_fields_id(despesa_fields.contas_bancarias_select,
+		let [ valor, descricao ] = getFieldsValues(despesa_fields.valor, despesa_fields.descricao);
+		let [ conta_bancaria, categoria ] = getSelectFieldsId(despesa_fields.contas_bancarias_select,
 			despesa_fields.categorias_select);
-		let [ status ] = get_check_box_fields_values(despesa_fields.status);
+		let [ status ] = getCheckBoxFieldsValues(despesa_fields.status);
 		
-		is_error = !completed_fieds(despesa_fields.valor, despesa_fields.descricao);
+		is_error = !completedFields(despesa_fields.valor, despesa_fields.descricao);
 
 		if (!is_error) {
 			$.ajax({
@@ -91,12 +91,12 @@ jQuery(function($) {
 	$('#receita-submit').on('click', function () {
 		receita_fields = DASHBOARD_FIELDS.receita;
 		
-		let [ valor, descricao ] = get_fields_values(receita_fields.valor, receita_fields.descricao);
-		let [ conta_bancaria, categoria ] = get_select_fields_id(receita_fields.contas_bancarias_select,
+		let [ valor, descricao ] = getFieldsValues(receita_fields.valor, receita_fields.descricao);
+		let [ conta_bancaria, categoria ] = getSelectFieldsId(receita_fields.contas_bancarias_select,
 			receita_fields.categorias_select);
-		let [ status ] = get_check_box_fields_values(receita_fields.status);
+		let [ status ] = getCheckBoxFieldsValues(receita_fields.status);
 
-		is_error = !completed_fieds(receita_fields.valor, receita_fields.descricao);
+		is_error = !completedFields(receita_fields.valor, receita_fields.descricao);
 
 		if (!is_error) {
 			$.ajax({
@@ -135,12 +135,12 @@ jQuery(function($) {
 	$('#transferencia-submit').on('click', function () {
 		transferencia_fields = DASHBOARD_FIELDS.transferencia;
 		
-		let [ valor ] = get_fields_values(transferencia_fields.valor, transferencia_fields.descricao);
-		let [ conta_destino, conta_origem ] = get_select_fields_id(
+		let [ valor ] = getFieldsValues(transferencia_fields.valor, transferencia_fields.descricao);
+		let [ conta_destino, conta_origem ] = getSelectFieldsId(
 			transferencia_fields.contas_bancarias_destino_select,
 			transferencia_fields.contas_bancarias_origem_select);
 
-		is_error = !completed_fieds(transferencia_fields.valor);
+		is_error = !completedFields(transferencia_fields.valor);
 
 		if (!is_error) {
 			$.ajax({
@@ -168,7 +168,7 @@ jQuery(function($) {
 
 				error: (xhr) => {
 					response = xhr.responseJSON;
-					show_error(transferencia_fields[response.target], response.msg);
+					showError(transferencia_fields[response.target], response.msg);
 				}
 			})
 		}

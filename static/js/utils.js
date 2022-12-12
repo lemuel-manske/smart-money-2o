@@ -1,37 +1,37 @@
-function get_fields_values(...fields) {
+function getFieldsValues(...fields) {
 	return fields.map((id) => $(id).val());
 }
 
-function get_select_fields_values(...fields) {
+function getSelectFieldsValues(...fields) {
 	return fields.map((id) => $(`${id} option:selected`).attr('value'));
 }
 
-function get_select_fields_id(...fields) {
+function getSelectFieldsId(...fields) {
 	return fields.map((id) => $(`${id} option:selected`).attr('id'));
 }
 
-function get_check_box_fields_values(...fields) {
+function getCheckBoxFieldsValues(...fields) {
 	return fields.map((id) => $(`${id}`).is(':checked'));
 }
 
-function show_error(field, msg) {
+function showError(field, msg) {
 	$(field).toggleClass('is-invalid', true);
 	$(field).parent().toggleClass('is-invalid', true);
 	$(field + '-erro').text(msg);
 }
 
-function completed_fieds(...fields) {
+function completedFields(...fields) {
 	let tmp = true;
 	for (let field of fields) {
 		if (!$(field).val()) {
-			show_error(field, 'Preencha o campo.');
+			showError(field, 'Preencha o campo.');
 			tmp = false;
 		}
 	}
 	return tmp;
 }
 
-function remover_erros() {
+function removeErrors() {
 	$('.form-control').on('input', function() {
 		$(this).removeClass('is-invalid');
 	});
@@ -43,7 +43,7 @@ function remover_erros() {
 	});
 }
 
-function check_flash_message() {
+function checkFlashMessage() {
 	if (sessionStorage.getItem('flash_message')) {
 		let flash_message = sessionStorage.getItem('flash_message');
 
@@ -62,12 +62,11 @@ function getCookie(name) {
 	if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
-function set_user_moeda() {
+function setMoeda() {
 	$.ajax({
 		url: 'http://localhost:5000/api/user/minha-conta',
 		method: 'GET',
 		
-
 		success: (res) => {
 			localStorage.setItem('moeda', res.msg.moeda)
 		}

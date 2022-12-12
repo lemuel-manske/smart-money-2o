@@ -8,7 +8,7 @@ const ATUALIZAR_CONTA_FIELDS = {
 
 jQuery(function($) {
 
-	remover_erros();
+	removeErrors();
 
 	$.ajax({
 		url: 'http://localhost:5000/enum/moedas',
@@ -17,7 +17,7 @@ jQuery(function($) {
 		success: (res) => {
 			let dados = (JSON.parse(JSON.stringify(res)));
 
-			let moedas = dados['Moedas'];
+			let moedas = dados.msg.Moedas;
 
 			$.each(moedas, function (i, moeda) {
 				$(ATUALIZAR_CONTA_FIELDS.moedas_select).append(
@@ -45,11 +45,11 @@ jQuery(function($) {
 	$('#atualizar-submit').on('click', function () {
 		atualizar_fields = ATUALIZAR_CONTA_FIELDS;
 		
-		let [ nome, senha, senha_nova ] = get_fields_values(atualizar_fields.nome, atualizar_fields.senha,
+		let [ nome, senha, senha_nova ] = getFieldsValues(atualizar_fields.nome, atualizar_fields.senha,
 				atualizar_fields.senha_nova)
-		let [ moeda ] = get_select_fields_values(atualizar_fields.moedas_select)
+		let [ moeda ] = getSelectFieldsValues(atualizar_fields.moedas_select)
 		
-		let is_error = !completed_fieds(
+		let is_error = !completedFields(
 			atualizar_fields.nome,
 			atualizar_fields.senha,
 			atualizar_fields.senha_nova
@@ -83,7 +83,7 @@ jQuery(function($) {
 				
 				error: (xhr) => {
 					response = xhr.responseJSON;
-					show_error(atualizar_fields[response.target], response.msg);
+					showError(atualizar_fields[response.target], response.msg);
 				}
 			})
 		}
