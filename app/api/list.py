@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from app.models import Usuario
@@ -22,15 +22,16 @@ def rota_listar(classe):
 		CÓD. 404 (NOT_FOUND): Nome da classe informada não contempla
 			nenhum modelo do banco de dados.
 	'''
+	usuario: Usuario = Usuario.query.filter_by(id=get_jwt_identity()).first()
+	
 	classes = {
 		'contas-bancarias': usuario.contas_bancarias,
 		'transacoes': usuario.transacoes,
 		'categorias': usuario.categorias,
 		'transferencias': usuario.transferencias,
 	}
-	usuario: Usuario = Usuario.query.filter_by(id=get_jwt_identity()).first()
 
 	if classe in classes.keys():
-		return response(200, [ instance.json() for instance in classes[classe] ])
+		return jsonify([ instance.json() for instance in classes[classe] ])
 
 	return response(404, 'Nenhuma classe encontrada com o nome informado')
