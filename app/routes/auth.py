@@ -28,4 +28,4 @@ def render_minha_conta():
 	Serve como o perfil do usuário, e também
 	página que o usário pode atualizar a senha e o nome.
 	'''
-	return render_template('minha_conta.html')
+	return render_template('minha_conta.html', title='Minha Conta')
