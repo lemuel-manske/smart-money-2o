@@ -3,7 +3,8 @@
 {% block conteudo %}
 
 <div class="container-fluid px-4 mt-5">
-	<article class="col p-3 my-5 bg-light shadow rounded-4">
+	<!-- DESPESAS -->
+	<article class="col p-3 my-5 bg-white border shadow rounded-4">
 		<div class="p-2">
 			<div class="ms-5">
 				<header class="d-flex align-items-center pb-2">
@@ -58,7 +59,8 @@
 		</div>
 	</article>
 
-	<article class="col p-3 my-5 bg-light shadow rounded-4">
+	<!-- RECEITAS -->
+	<article class="col p-3 my-5 bg-white border shadow rounded-4">
 		<div class="p-2">
 			<div class="ms-5">
 				<header class="d-flex align-items-center pb-2">
@@ -112,6 +114,78 @@
 			</table>
 		</div>
 	</article>
+
+	<div class="row mb-3">
+		<!-- CONTAS BANCÁRIAS -->
+		<article class="col p-3 mx-3 my-2 bg-white border shadow rounded-4">
+			<div class="p-2">
+				<div class="ms-5">
+					<header class="d-flex align-items-center pb-2">
+						<svg class="me-3" height="2em" width="2em">
+							<use xlink:href="#bank" />
+						</svg>
+						<h3 class="mb-0 fw-bold">CONTAS BANCÁRIAS</h3>
+					</header>
+					<h3>
+						<p id="saldo-contas-bancarias"></p>
+					</h3>
+				</div>
+				<table class="table" id="tabela-contas-bancarias">
+					<thead>
+						<tr>
+							<th scope="col">Nome</th>
+							<th scope="col">Saldo</th>
+							<th scope="col">Instituição bancária</th>
+							<th scope="col">Ações</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr id="contas-bancarias-default-row">
+							<th scope="row">...</th>
+							<td>...</td>
+							<td>...</td>
+							<td>...</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</article>
+		
+		<!-- TRANSFERÊNCIAS -->
+		<article class="col p-3 mx-3 my-2 bg-white border shadow rounded-4">
+			<div class="p-2">
+				<div class="ms-5">
+					<header class="d-flex align-items-center pb-2">
+						<svg class="me-3" height="2em" width="2em">
+							<use xlink:href="#circle-arrows" />
+						</svg>
+						<h3 class="mb-0 fw-bold">TRANSFERÊNCIAS</h3>
+					</header>
+					<h3>
+						<p id="valor-transferencias"></p>
+					</h3>
+				</div>
+				<table class="table" id="tabela-transferencias">
+					<thead>
+						<tr>
+							<th scope="col">Valor</th>
+							<th scope="col">Conta origem</th>
+							<th scope="col">Conta destino</th>
+							<th scope="col">Ações</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr id="transferencias-default-row">
+							<th scope="row">...</th>
+							<td>...</td>
+							<td>...</td>
+							<td>...</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</article>
+	</div>
 </div>
 
 {% endblock %}

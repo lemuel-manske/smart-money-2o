@@ -113,7 +113,7 @@
 		<div class="d-flex flex-row">
 			<!-- Barra de navegação lateral -->
 			<div class="d-flex flex-column flex-shrink-0 bg-light shadow" style="width: 4.8rem; min-height: 100vh;">
-				<a class="navbar-brand mx-auto py-4" href="{{ url_for('home.home_route') }}">
+				<a class="navbar-brand mx-auto py-4" href="{{ url_for('home_render.home_route') }}">
 					<img style="height: 60px;" src="../static/img/logo.png" alt="identidade visual">
 				</a>
 				<ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
@@ -160,7 +160,7 @@
 							</a>
 							<ul class="dropdown-menu text-small shadow mb-2 ms-1">
 								<li>
-									<a class="dropdown-item" href="{{ url_for('auth.render_minha_conta') }}">Minha conta</a>
+									<a class="dropdown-item" href="{{ url_for('auth_render.render_minha_conta') }}">Minha conta</a>
 								</li>
 								<li>
 									<hr class="dropdown-divider">
@@ -173,7 +173,7 @@
 					</li>
 
 					<li class="nav-item">
-						<a href="{{ url_for('main.render_dashboard') }}" class="nav-link py-3 border-bottom rounded-0"
+						<a href="{{ url_for('main_render.render_dashboard') }}" class="nav-link py-3 border-bottom rounded-0"
 							title="Home" data-bs-toggle="tooltip" data-bs-placement="right">
 							<svg class="pe-none" width="24" height="24" role="img" aria-label="Home">
 								<use xlink:href="#home" />
@@ -181,7 +181,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="{{ url_for('main.render_historico') }}" class="nav-link py-3 border-bottom rounded-0"
+						<a href="{{ url_for('main_render.render_historico') }}" class="nav-link py-3 border-bottom rounded-0"
 							title="Resumo" data-bs-toggle="tooltip" data-bs-placement="right">
 							<svg class="pe-none" width="24" height="24" role="img" aria-label="Resumo">
 								<use xlink:href="#table" />
@@ -189,7 +189,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="{{ url_for('main.render_historico') }}" class="nav-link py-3 border-bottom rounded-0"
+						<a href="{{ url_for('main_render.render_historico') }}" class="nav-link py-3 border-bottom rounded-0"
 							title="Historico" data-bs-toggle="tooltip" data-bs-placement="right">
 							<svg class="pe-none" width="24" height="24" role="img" aria-label="Historico">
 								<use xlink:href="#list-ul" />
